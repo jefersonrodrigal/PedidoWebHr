@@ -1,0 +1,122 @@
+@using BackendApi.ViewModels
+@model PainelViewModel
+
+
+<!DOCTYPE html>
+<html lang="pt-br">
+@{
+             await Html.RenderPartialAsync("_HeadPartial");
+}
+<body>
+    <div class="d-flex" id="wrapper">
+        @{
+            await Html.RenderPartialAsync("_SideBar");
+        }
+        <!-- Page content wrapper-->
+        <div id="page-content-wrapper">
+            @{
+                await Html.RenderPartialAsync("_NavBar");
+            }
+            <!-- Conteudo da Página-->
+            <div class="container">
+                <div class="align-items-center justify-content-between mb-4">
+                    <h1 class="h3 mb-0 text-gray-800 text-center">Consulta de Pedidos</h1>
+                </div>
+                <!-- Total vendido -->
+                <div class="col-xl-3 mb-4 mx-auto">
+                    <div class="card border-left-success shadow h-100 py-2">
+                        <div class="card-body">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-success mb-1">
+                                        Total vendido no período:
+                                    </div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800">R$17.733.828,93</div>
+                                </div>
+                                <div class="col-auto">
+                                    <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--Tabela Pedidos -->
+                @foreach(var pedido in Model.Pedidos)
+                {
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">Pedidos</h6>
+                        </div>
+                        <table class="table table-borderless">
+                            <thead>
+                                <tr>
+                                    <th scope="col">N° Pedido:</th>
+                                    <th scope="col">N° HR:</th>
+                                    <th scope="col">Cliente:</th>
+                                    <th scope="col">Data Emissão:</th>
+                                    <th scope="col">Valor Total:</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr> 
+                                    <th scope="row">@pedido.NumPpd</th>
+                                    <td>@pedido.NumNfv</td>
+                                    @{
+                                        foreach (var cliente in @Model.Cliente)
+                                        {
+                                            if (cliente.CodCli == pedido.CodCli)
+                                            {
+                                                <td>@cliente.NomCli</td>
+                                                break;
+                                            }
+                                        }
+                                    }
+                                    <td>@pedido.DatEmi.Value.ToString("dd/MM/yyyy")</td>
+                                    <td>R$32.430,00</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="card-body">
+                            <table id="dadosTabela" class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Código</th>
+                                        <th scope="col">Quantidade</th>
+                                        <th scope="col">Unidade</th>
+                                        <th scope="col">Produto</th>
+                                        <th scope="col">Preço Unit.</th>
+                                        <th scope="col">Preço Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var produto in Model.Produtos)
+                                    {
+                                        @if(produto.Numppd == pedido.NumPpd)
+                                        {
+                                            var Codpro = produto.CodPro;
+                                        
+                                            <tr>
+                                                <th scope="col">@Codpro</th>
+                                                <td>@Convert.ToInt32(produto.Quantidade)</td>
+                                                <td>@produto.Unimed</td>
+                                                <td>@produto.DescPro</td>
+                                                <td>@produto.PreUni.Value.ToString("C")</td>
+                                                @{var precTotal = (Convert.ToInt32(produto.Quantidade) * produto.PreUni);}
+                                                <td>@precTotal.Value.ToString("C")</td>
+                                            </tr>
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                  </div>
+                }
+            </div>
+
+        </div>
+    </div>
+    @{
+        await Html.RenderPartialAsync("_ScriptsCdnBootstrap");
+    }
+</body>
+</html>
