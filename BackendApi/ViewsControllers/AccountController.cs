@@ -24,7 +24,7 @@ namespace BackendApi.ViewsControllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> Login([FromForm]UsuarioViewModel user)
+        public async Task<ActionResult> Login([FromForm]UsuarioViewModel user, int page=1, int pageSize=10)
         {
             if(ModelState.IsValid)
             {

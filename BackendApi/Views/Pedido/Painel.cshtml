@@ -41,7 +41,7 @@
                     </div>
                 </div>
                 <!--Tabela Pedidos -->
-                @foreach(var pedido in Model.Pedidos)
+                @foreach(var pedido in Model.Produtos)
                 {
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
@@ -59,7 +59,7 @@
                             </thead>
                             <tbody>
                                 <tr> 
-                                    <th scope="row">@pedido.NumPpd</th>
+                                    <th scope="row">@pedido.Numppd</th>
                                     <td>@pedido.NumNfv</td>
                                     @{
                                         foreach (var cliente in @Model.Cliente)
@@ -71,7 +71,7 @@
                                             }
                                         }
                                     }
-                                    <td>@pedido.DatEmi.Value.ToString("dd/MM/yyyy")</td>
+                                    <td>@pedido.DateEmi.Value.ToString("dd/MM/yyyy")</td>
                                     <td>R$32.430,00</td>
                                 </tr>
                             </tbody>
@@ -91,7 +91,7 @@
                                 <tbody>
                                     @foreach (var produto in Model.Produtos)
                                     {
-                                        @if(produto.Numppd == pedido.NumPpd)
+                                        @if(produto.Numppd == pedido.Numppd)
                                         {
                                             var Codpro = produto.CodPro;
                                         
@@ -112,6 +112,16 @@
                   </div>
                 }
             </div>
+            @if (Model.PageSize > 1)
+            {
+                <div>
+                    @for (int i = 1; i <= Model.PageSize; i++)
+                    {
+                        <a href="?page=@i">@i</a>
+                    }
+                </div>
+            }
+
 
         </div>
     </div>

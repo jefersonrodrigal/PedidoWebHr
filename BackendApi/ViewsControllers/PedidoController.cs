@@ -19,79 +19,56 @@ namespace BackendApi.ViewsControllers
 
         [Authorize]
         [HttpGet("/painel/{CodRep}")]
-        public async Task<IActionResult> Painel(int CodRep)
+        public async Task<IActionResult> Painel(int CodRep, int page=1, int pageSize=10)
         {
             try
             {
-                var representante = await _context.E090rep.Where(x => x.Codrep == CodRep)
-                    .Select(x => new RepresentanteModel
-                    {
-                        CodRep = x.Codrep,
-                        NomRep = x.Nomrep
-                    })
-                    .FirstOrDefaultAsync();
+                 var representante = await _context.E090rep
+                .Where(x => x.Codrep == CodRep)
+                .Select(x => new RepresentanteModel
+                {
+                    CodRep = x.Codrep,
+                    NomRep = x.Nomrep
+                })
+                .FirstOrDefaultAsync();
 
-                var pedidos = await _context.Usu_t009ppd.Where(x => x.UsuCodrep == CodRep)
-                    .AsNoTracking()
-                    .Select(x => new PedidoModel
-                    {
-                        NumPpd = x.UsuNumppd,
-                        DatEmi = x.UsuDatemi,
-                        CodCli = x.UsuCodcli,
-                        NumNfv = x.UsuNumnfv
-                    }).ToListAsync();
+                // Join de pedidos, produtos e clientes com paginação no banco
+                var queryProdutos = from pedido in _context.Usu_t009ppd
+                                    join produto in _context.Usu_t009ppi on pedido.UsuNumppd equals produto.UsuNumppd
+                                    join cliente in _context.E085cli on pedido.UsuCodcli equals cliente.Codcli
+                                    where pedido.UsuCodrep == CodRep
+                                    orderby pedido.UsuNumppd descending
+                                    select new PedidoProdutoModel
+                                    {
+                                        Numppd = produto.UsuNumppd,
+                                        CodPro = produto.UsuCodpro,
+                                        Unimed = produto.UsuUnimed,
+                                        PreUni = produto.UsuPreuni,
+                                        Quantidade = produto.UsuQtdped,
+                                        DescPro = produto.UsuDesnfv,
+                                        NomCli = cliente.Nomcli,
+                                        CodCli = cliente.Codcli,
+                                        NumNfv = pedido.UsuNumnfv,
+                                        DateEmi = pedido.UsuDatemi
+                                    };
 
-                var dataProdutos = await _context.Usu_t009ppi.AsNoTracking()
-                    .Select(x => new ProdutoModel
-                    {
-                        NumPpd = x.UsuNumppd,
-                        CodPro = x.UsuCodpro,
-                        Unimed = x.UsuUnimed,
-                        PreUni = x.UsuPreuni,
-                        Quantidade = x.UsuQtdped,
-                        DescPro = x.UsuDesnfv,
-                    }).ToListAsync();
+                var totalItems = await queryProdutos.CountAsync();
+                var totalPages = (int)Math.Ceiling(totalItems / (double)pageSize);
 
-                var dataclientes = await _context.E085cli.AsNoTracking()
-                    .Select(x => new ClienteModel
-                    {
-                        CodCli = x.Codcli,
-                        NomCli = x.Nomcli
-                    }).ToListAsync();
+                var produtosPaginados = await queryProdutos
+                    .Skip((page - 1) * pageSize)
+                    .Take(pageSize)
+                    .ToListAsync();
 
-                var clientes = from pedido in pedidos
-                               join cliente in dataclientes
-                               on pedido.CodCli equals cliente.CodCli
-                               select new PedidoClienteModel
-                               {
-                                   CodCli = pedido.CodCli,
-                                   Numped = pedido.NumPpd,
-                                   NomCli = cliente.NomCli
-                               };
-
-                var produtos = from pedido in pedidos
-                               join produto in dataProdutos
-                               on pedido.NumPpd equals produto.NumPpd
-                               select new PedidoProdutoModel
-                               {
-                                   Numppd = produto.NumPpd,
-                                   CodPro = produto.CodPro,
-                                   Unimed = produto.Unimed,
-                                   PreUni = produto.PreUni,
-                                   Quantidade = produto.Quantidade,
-                                   DescPro = produto.DescPro,
-                               };
-
-                var data = produtos.ToList();
-
-                PainelViewModel viewmodel = new PainelViewModel
+                var viewModel = new PainelViewModel
                 {
                     Representante = representante,
-                    Pedidos = pedidos,
-                    Produtos = data,
-                    Cliente = clientes,
+                    Produtos = produtosPaginados,
+                    PaginaAtual = page,
+                    PageSize = totalPages
                 };
-                return View(viewmodel);
+
+                return View(viewModel);
             }
             catch (Exception ex)
             {
