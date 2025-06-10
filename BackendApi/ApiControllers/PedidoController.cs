@@ -58,7 +58,7 @@ namespace BackendApi.ApiControllers
                 {
                     Representante = representante,
                     Pedidos = pedidos,
-                    Produtos = produtos
+                    Produtos = null
                 };
 
                 return Ok(viewmodel);

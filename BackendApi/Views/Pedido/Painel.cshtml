@@ -59,19 +59,10 @@
                             </thead>
                             <tbody>
                                 <tr> 
-                                    <th scope="row">@pedido.Numppd</th>
+                                    <th scope="row">@pedido.NumPpd</th>
                                     <td>@pedido.NumNfv</td>
-                                    @{
-                                        foreach (var cliente in @Model.Cliente)
-                                        {
-                                            if (cliente.CodCli == pedido.CodCli)
-                                            {
-                                                <td>@cliente.NomCli</td>
-                                                break;
-                                            }
-                                        }
-                                    }
-                                    <td>@pedido.DateEmi.Value.ToString("dd/MM/yyyy")</td>
+                                    <td>@pedido.NomCli</td>
+                                    <td>@pedido.DatEmi?.ToString("dd/MM/yyyy")</td>
                                     <td>R$32.430,00</td>
                                 </tr>
                             </tbody>
@@ -89,22 +80,17 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach (var produto in Model.Produtos)
+                                    @foreach (var produto in pedido.Produtos)
                                     {
-                                        @if(produto.Numppd == pedido.Numppd)
-                                        {
-                                            var Codpro = produto.CodPro;
-                                        
-                                            <tr>
-                                                <th scope="col">@Codpro</th>
-                                                <td>@Convert.ToInt32(produto.Quantidade)</td>
-                                                <td>@produto.Unimed</td>
-                                                <td>@produto.DescPro</td>
-                                                <td>@produto.PreUni.Value.ToString("C")</td>
-                                                @{var precTotal = (Convert.ToInt32(produto.Quantidade) * produto.PreUni);}
-                                                <td>@precTotal.Value.ToString("C")</td>
-                                            </tr>
-                                        }
+                                        <tr>
+                                            <th scope="col">@produto.CodPro</th>
+                                            <td>@Convert.ToInt32(produto.Quantidade)</td>
+                                            <td>@produto.Unimed</td>
+                                            <td>@produto.DescPro</td>
+                                            <td>@produto.PreUni?.ToString("C")</td>
+                                            @{var precTotal = (Convert.ToInt32(produto.Quantidade) * produto.PreUni);}
+                                            <td>@precTotal?.ToString("C")</td>
+                                        </tr>
                                     }
                                 </tbody>
                             </table>

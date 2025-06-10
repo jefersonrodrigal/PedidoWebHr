@@ -32,30 +32,36 @@ namespace BackendApi.ViewsControllers
                 })
                 .FirstOrDefaultAsync();
 
-                // Join de pedidos, produtos e clientes com paginação no banco
-                var queryProdutos = from pedido in _context.Usu_t009ppd
-                                    join produto in _context.Usu_t009ppi on pedido.UsuNumppd equals produto.UsuNumppd
-                                    join cliente in _context.E085cli on pedido.UsuCodcli equals cliente.Codcli
-                                    where pedido.UsuCodrep == CodRep
-                                    orderby pedido.UsuNumppd descending
-                                    select new PedidoProdutoModel
-                                    {
-                                        Numppd = produto.UsuNumppd,
-                                        CodPro = produto.UsuCodpro,
-                                        Unimed = produto.UsuUnimed,
-                                        PreUni = produto.UsuPreuni,
-                                        Quantidade = produto.UsuQtdped,
-                                        DescPro = produto.UsuDesnfv,
-                                        NomCli = cliente.Nomcli,
-                                        CodCli = cliente.Codcli,
-                                        NumNfv = pedido.UsuNumnfv,
-                                        DateEmi = pedido.UsuDatemi
-                                    };
+             var query = from pedido in _context.Usu_t009ppd
+                         join produto in _context.Usu_t009ppi on pedido.UsuNumppd equals produto.UsuNumppd
+                         join cliente in _context.E085cli on pedido.UsuCodcli equals cliente.Codcli
+                         where pedido.UsuCodrep == CodRep
+                         group new { pedido, produto, cliente }  by produto.UsuNumppd into g
+                         orderby g.First().pedido.UsuDatemi descending
+                         select new PedidoModel
+                         {
+                            NumPpd = g.Key,
+                            NomCli = g.First().cliente.Nomcli,
+                            NumNfv = g.First().pedido.UsuNumnfv,
+                            DatEmi = g.First().pedido.UsuDatemi,
+                            Produtos = g.Select(p => new ProdutoModel
+                            {
+                                NumPpd = p.produto.UsuNumppd,
+                                SeqIpd = p.produto.UsuSeqipd,
+                                CodPro = p.produto.UsuCodpro,
+                                DescPro = p.produto.UsuDesnfv,
+                                PreUni = p.produto.UsuPreuni,
+                                Unimed = p.produto.UsuUnimed,
+                                Quantidade = p.produto.UsuQtdped
+                            })
+                            .ToList()
+                                
+                         };
 
-                var totalItems = await queryProdutos.CountAsync();
+                var totalItems = await query.CountAsync();
                 var totalPages = (int)Math.Ceiling(totalItems / (double)pageSize);
 
-                var produtosPaginados = await queryProdutos
+                var produtos = await query
                     .Skip((page - 1) * pageSize)
                     .Take(pageSize)
                     .ToListAsync();
@@ -63,7 +69,7 @@ namespace BackendApi.ViewsControllers
                 var viewModel = new PainelViewModel
                 {
                     Representante = representante,
-                    Produtos = produtosPaginados,
+                    Produtos = produtos,
                     PaginaAtual = page,
                     PageSize = totalPages
                 };
