@@ -4,16 +4,19 @@ using BackendApi.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace BackendApi.ViewsControllers
 {
     public class PedidoController : Controller
     {
         private readonly ApplicationContext _context;
+        private readonly IMemoryCache _cache;
 
 
-        public PedidoController(ApplicationContext context)
+        public PedidoController(ApplicationContext context, IMemoryCache cache)
         {
+            _cache = cache;
             _context = context;
         }
 
@@ -32,31 +35,29 @@ namespace BackendApi.ViewsControllers
                 })
                 .FirstOrDefaultAsync();
 
-             var query = from pedido in _context.Usu_t009ppd
-                         join produto in _context.Usu_t009ppi on pedido.UsuNumppd equals produto.UsuNumppd
-                         join cliente in _context.E085cli on pedido.UsuCodcli equals cliente.Codcli
-                         where pedido.UsuCodrep == CodRep
-                         group new { pedido, produto, cliente }  by produto.UsuNumppd into g
-                         orderby g.First().pedido.UsuDatemi descending
-                         select new PedidoModel
-                         {
-                            NumPpd = g.Key,
-                            NomCli = g.First().cliente.Nomcli,
-                            NumNfv = g.First().pedido.UsuNumnfv,
-                            DatEmi = g.First().pedido.UsuDatemi,
-                            Produtos = g.Select(p => new ProdutoModel
-                            {
-                                NumPpd = p.produto.UsuNumppd,
-                                SeqIpd = p.produto.UsuSeqipd,
-                                CodPro = p.produto.UsuCodpro,
-                                DescPro = p.produto.UsuDesnfv,
-                                PreUni = p.produto.UsuPreuni,
-                                Unimed = p.produto.UsuUnimed,
-                                Quantidade = p.produto.UsuQtdped
-                            })
-                            .ToList()
-                                
-                         };
+                var query = _context.Usu_t009ppd
+                            .Join(_context.Usu_t009ppi, pedido => pedido.UsuNumppd, produto => produto.UsuNumppd, (pedido, produto) => new { pedido, produto })
+                            .Join(_context.E085cli, pp => pp.pedido.UsuCodcli, cliente => cliente.Codcli, (pp, cliente) => new { pp.pedido, pp.produto, cliente })
+                            .Where(p => p.pedido.UsuCodrep == CodRep)
+                            .GroupBy(p => p.produto.UsuNumppd)
+                            .OrderByDescending(g => g.First().pedido.UsuDatemi)
+                            .Select(g => new PedidoModel
+                             {
+                                  NumPpd = g.Key,
+                                  NomCli = g.First().cliente.Nomcli,
+                                  NumNfv = g.First().pedido.UsuNumnfv,
+                                  DatEmi = g.First().pedido.UsuDatemi,
+                                  Produtos = g.Select(p => new ProdutoModel
+                                  {
+                                      NumPpd = p.produto.UsuNumppd,
+                                      SeqIpd = p.produto.UsuSeqipd,
+                                      CodPro = p.produto.UsuCodpro,
+                                      DescPro = p.produto.UsuDesnfv,
+                                      PreUni = p.produto.UsuPreuni,
+                                      Unimed = p.produto.UsuUnimed,
+                                      Quantidade = p.produto.UsuQtdped
+                                  }).ToList()
+                             });
 
                 var totalItems = await query.CountAsync();
                 var totalPages = (int)Math.Ceiling(totalItems / (double)pageSize);
@@ -74,11 +75,17 @@ namespace BackendApi.ViewsControllers
                     PageSize = totalPages
                 };
 
+                if (!_cache.TryGetValue("ApplicationCache", out PainelViewModel? valor))
+                {
+                    valor = viewModel;
+                    _cache.Set("ApplicationCache", valor, TimeSpan.FromSeconds(60));
+                }
+
                 return View(viewModel);
             }
             catch (Exception ex)
             {
-                return BadRequest(ex);
+                return BadRequest(ex.Message);
             }
             
         }
