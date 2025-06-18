@@ -8,6 +8,6 @@ namespace BackendApi.ViewModels
         public IEnumerable<PedidoModel> Pedidos { get; set; } = new List<PedidoModel>();
         public List<PedidoModel>? Produtos { get; set; }
         public int PaginaAtual { get; set; } = 1;
-        public int PageSize { get; set; } = 10;
+        public int PageSize { get; set; } = 5;
     }
 }

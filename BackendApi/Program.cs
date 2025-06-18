@@ -1,5 +1,7 @@
 using BackendApi.Cors;
 using BackendApi.Database.Context;
+using BackendApi.Routes;
+
 // using BackendApi.Database.Entityes;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
@@ -52,7 +54,6 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-
 /*
 // Aplica as migrações ao iniciar a aplicação
 // Comentado para não quebrar o banco de dados do ERP 
@@ -78,15 +79,6 @@ app.UseAuthorization();
 app.UseCors("CorsPolicy");
 app.UseEndpoints(endpoints => endpoints.MapControllers());
 
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Account}/{action=Login}/{id?}");
-
-
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+app.RoutesRegister();
 
 app.Run();

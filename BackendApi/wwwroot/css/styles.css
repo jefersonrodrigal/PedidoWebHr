@@ -4825,6 +4825,7 @@ textarea.form-control-lg {
   color: var(--bs-list-group-action-hover-color);
   text-decoration: none;
   background-color: var(--bs-list-group-action-hover-bg);
+  transition: all 0.4s ease;
 }
 .list-group-item-action:active {
   color: var(--bs-list-group-action-active-color);

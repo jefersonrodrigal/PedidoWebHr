@@ -1,0 +1,37 @@
+﻿<!-- Views/Shared/_Layout.cshtml -->
+<!DOCTYPE html>
+<html lang="pt-br">
+        <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+
+        <!-- Favicon-->
+        <link rel="icon" type="image/x-icon" href="~/img/Logo_HR.png" />
+
+        <!-- Core theme CSS (includes Bootstrap)-->
+        <link href="~/css/styles.css" rel="stylesheet" />
+        <link href="~/css/paginas.css" rel="stylesheet" />
+        <link href="~/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+        <title>Pedido.Net</title>
+    </head>
+    <body>
+        <header>
+
+        </header>
+
+        <main role="main" class="container">
+            @RenderBody()
+        </main>
+
+        <footer>
+            <p>&copy; @DateTime.Now.Year - Meu Site</p>
+        </footer>
+
+        <!-- Bootstrap core JS-->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+        <!-- Core theme JS-->
+        <script src="~/javascript/scripts.js"></script>
+    </body>
+</html>

@@ -1,118 +1,444 @@
 @using BackendApi.ViewModels
 @model PainelViewModel
 
-
 <!DOCTYPE html>
 <html lang="pt-br">
-@{
-             await Html.RenderPartialAsync("_HeadPartial");
-}
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>Pedido.Net</title>
+
+    <!-- Favicon-->
+    <link rel="icon" type="image/x-icon" href="~/img/Logo_HR.png" />
+
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link href="~/css/styles.css" rel="stylesheet" />
+    <link href="~/css/paginas.css" rel="stylesheet" />
+    <link href="~/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+
+</head>
 <body>
     <div class="d-flex" id="wrapper">
-        @{
-            await Html.RenderPartialAsync("_SideBar");
-        }
+        <!-- Sidebar-->
+        <div class="border-end corelementos" id="sidebar-wrapper">
+            <div class="sidebar-heading corelementos"><a href="pedidos.html" style="text-decoration: none; color: inherit;"><dt> Pedido.Net</dt></a></div>
+            <div class="list-group list-group-flush">
+                <a href="@Url.RouteUrl("pedidosPorRepresentantes", new {codrep= Model.Representante.CodRep})"
+                    class="list-group-item list-group-item-action corelementos p-3 fas fas fa-list-alt text-gray-200">
+                    Pedidos</a>
+
+                <button class="dropdown-btn">
+                    <i class="fas fa-shopping-cart text-gray-200"></i> Pedidos
+                    <i class="fa fa-caret-down"></i>
+                </button>
+                <div class="dropdown-container">
+                    <a href="#" id="pedido_itens">Pré-Pedido</a>
+                    <a href="lancar_pedidos.html" id="pedido_itens">Lançar Pedido</a>
+                    <a href="#" id="pedido_itens">Listar Pedidos</a>
+                </div>
+                <a href="@Url.RouteUrl("clientes", new {codrep= Model.Representante.CodRep})"
+                    class="list-group-item list-group-item-action corelementos p-3 fas fa-address-book text-gray-200">
+                    Clientes
+                 </a>
+
+                <a class="list-group-item list-group-item-action corelementos p-3" href="#!">
+                    <i class="fas fa-file-alt text-gray-200"></i> Relatório Comissões</a>
+
+                <!-- Sidebar Empresa -->
+                <div class="sidebar-card d-none d-lg-flex">
+                    <img class="sidebar-card-illustration mb-2" src="~/img/Logo_HR_side.png" alt="...">
+                </div>
+            </div>
+        </div>
         <!-- Page content wrapper-->
         <div id="page-content-wrapper">
-            @{
-                await Html.RenderPartialAsync("_NavBar");
-            }
+            <!-- Top navigation-->
+            <nav class="navbar navbar-expand-lg navbar-light bg-light mb-4 shadow">
+                <div class="container-fluid">
+                    <button class="btn corelementos" id="sidebarToggle"><i class="fas fa-bars"></i></button>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav ms-auto mt-2 mt-lg-0">
+                            <li class="nav-item active"><a class="nav-link" href="#!"><i class="fas fa-user-circle text-gray-200"></i>@Model.Representante!.NomRep</a></li>
+                            <li><a href="#"><i></i>@Html.ActionLink("Sair", "Logout", "Account", null, new { @class = "nav-item active nav-link fas fa-sign-out-alt text-gray-200" })</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
             <!-- Conteudo da Página-->
             <div class="container">
-                <div class="align-items-center justify-content-between mb-4">
+                <div class="align-items-center justify-content-between mb-4 mt-5">
                     <h1 class="h3 mb-0 text-gray-800 text-center">Consulta de Pedidos</h1>
                 </div>
-                <!-- Total vendido -->
-                <div class="col-xl-3 mb-4 mx-auto">
-                    <div class="card border-left-success shadow h-100 py-2">
-                        <div class="card-body">
-                            <div class="row no-gutters align-items-center">
-                                <div class="col mr-2">
-                                    <div class="text-xs font-weight-bold text-success mb-1">
-                                        Total vendido no período:
+
+                <!-- Content Row -->
+                <div class="row">
+
+                    <!-- Earnings (Monthly) Card Example -->
+                    <div class="col-xl-3 col-md-6 mb-5">
+                        <div class="card border-left-primary shadow h-100 py-2">
+                            <div class="card-body">
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col mr-2">
+                                        <div class="text-xs font-weight-bold text-uppercase mb-1">
+                                            Lorem Ipsum
+                                        </div>
+                                        <div class="h5 mb-0 font-weight-bold text-gray-800">R$40,000</div>
                                     </div>
-                                    <div class="h5 mb-0 font-weight-bold text-gray-800">R$17.733.828,93</div>
+                                    <div class="col-auto">
+                                        <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                                    </div>
                                 </div>
-                                <div class="col-auto">
-                                    <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Earnings (Monthly) Card Example -->
+                    <div class="col-xl-3 col-md-6 mb-5">
+                        <div class="card border-left-success shadow h-100 py-2">
+                            <div class="card-body">
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col mr-2">
+                                        <div class="text-xs font-weight-bold text-uppercase mb-1">
+                                            Total vendido no período:
+                                        </div>
+                                        <div class="h5 mb-0 font-weight-bold text-gray-800">R$5.953,72</div>
+                                    </div>
+                                    <div class="col-auto">
+                                        <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Earnings (Monthly) Card Example -->
+                    <div class="col-xl-3 col-md-6 mb-5">
+                        <div class="card border-left-info shadow h-100 py-2">
+                            <div class="card-body">
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col mr-2">
+                                        <div class="text-xs font-weight-bold text-uppercase mb-1">
+                                            Lorem Ipsum
+                                        </div>
+                                        <div class="row no-gutters align-items-center">
+                                            <div class="col-auto">
+                                                <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">50%</div>
+                                            </div>
+                                            <div class="col">
+                                                <div class="progress progress-sm mr-2">
+                                                    <div class="progress-bar bg-info" role="progressbar"
+                                                         style="width: 50%" aria-valuenow="50" aria-valuemin="0"
+                                                         aria-valuemax="100"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-auto">
+                                        <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Pending Requests Card Example -->
+                    <div class="col-xl-3 col-md-6 mb-5">
+                        <div class="card border-left-warning shadow h-100 py-2">
+                            <div class="card-body">
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col mr-2">
+                                        <div class="text-xs font-weight-bold text-uppercase mb-1">
+                                            Lorem Ipsum
+                                        </div>
+                                        <div class="h5 mb-0 font-weight-bold text-gray-800">18</div>
+                                    </div>
+                                    <div class="col-auto">
+                                        <i class="fas fa-comments fa-2x text-gray-300"></i>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+                <form class="row gx-3 gy-2 align-items-center">
+                    <div class="col-sm-3">
+                        <label class="visually-hidden" for="specificSizeInputName">Cliente</label>
+                        <input type="text" class="form-control" id="specificSizeInputName" placeholder="Cliente">
+                    </div>
+                    <div class="col-sm-3">
+                        <label class="visually-hidden" for="specificSizeSelect">Status</label>
+                        <select class="form-select" id="specificSizeSelect">
+                            <option selected>Status</option>
+                            <option value="1">Não enviado</option>
+                            <option value="2">Enviado - Análise Comercial</option>
+                            <option value="3">Aguardando Liberação Financeira</option>
+                            <option value="4">Liberado p/ Faturar</option>
+                            <option value="5">Faturado</option>
+                            <option value="6">Faturado Parcial</option>
+                            <option value="7">Cancelado</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-3">
+                        <label class="visually-hidden" for="specificSizeSelect">Período</label>
+                        <select class="form-select" id="specificSizeSelect">
+                            <option selected>Período</option>
+                            <option value="1">Todos</option>
+                            <option value="2">1 ANO</option>
+                            <option value="3">180 DIAS</option>
+                            <option value="4">90 DIAS</option>
+                            <option value="5">60 DIAS</option>
+                            <option value="6">30 DIAS</option>
+                            <option value="7">15 DIAS</option>
+                            <option value="8">Personalizado</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-3">
+                        <label class="visually-hidden" for="specificSizeSelect">Ordenar por</label>
+                        <select class="form-select" id="specificSizeSelect">
+                            <option selected>Ordenar por</option>
+                            <option value="1">número do Pedido Web</option>
+                            <option value="2">Data de Emissão do Pedido</option>
+                            <option value="3">Data de Previsão do Faturamento</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-3">
+                        <label class="visually-hidden" for="specificSizeSelect">Mais Recentes</label>
+                        <select class="form-select" id="specificSizeSelect">
+                            <option selected>Mais Recentes</option>
+                            <option value="1">Mais Recentes</option>
+                            <option value="2">Mais Antigos</option>
+                        </select>
+                    </div>
+                    <div class="col-auto">
+                        <button type="submit" class="btn corelementos">Buscar</button>
+                    </div>
+                    <div class="col-auto">
+                        <button type="submit" class="btn corelementos">Limpar Filtros</button>
+                    </div>
+                </form>
                 <!--Tabela Pedidos -->
-                @foreach(var pedido in Model.Produtos)
+                @foreach (var pedido in Model.Produtos)
                 {
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
                             <h6 class="m-0 font-weight-bold text-primary">Pedidos</h6>
                         </div>
-                        <table class="table table-borderless">
-                            <thead>
-                                <tr>
-                                    <th scope="col">N° Pedido:</th>
-                                    <th scope="col">N° HR:</th>
-                                    <th scope="col">Cliente:</th>
-                                    <th scope="col">Data Emissão:</th>
-                                    <th scope="col">Valor Total:</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr> 
-                                    <th scope="row">@pedido.NumPpd</th>
-                                    <td>@pedido.NumNfv</td>
-                                    <td>@pedido.NomCli</td>
-                                    <td>@pedido.DatEmi?.ToString("dd/MM/yyyy")</td>
-                                    <td>R$32.430,00</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        <div class="card-body">
-                            <table id="dadosTabela" class="table table-striped">
+                        <div class="table-responsive">
+                            <table class="table table-borderless">
                                 <thead>
                                     <tr>
-                                        <th scope="col">Código</th>
-                                        <th scope="col">Quantidade</th>
-                                        <th scope="col">Unidade</th>
-                                        <th scope="col">Produto</th>
-                                        <th scope="col">Preço Unit.</th>
-                                        <th scope="col">Preço Total</th>
+                                        <th scope="col">N° Pedido:</th>
+                                        <th scope="col">N° HR:</th>
+                                        <th scope="col">Nome:</th>
+                                        <th scope="col">Data Emissão:</th>
+                                        <th scope="col">Valor Total:</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach (var produto in pedido.Produtos)
-                                    {
-                                        <tr>
-                                            <th scope="col">@produto.CodPro</th>
-                                            <td>@Convert.ToInt32(produto.Quantidade)</td>
-                                            <td>@produto.Unimed</td>
-                                            <td>@produto.DescPro</td>
-                                            <td>@produto.PreUni?.ToString("C")</td>
-                                            @{var precTotal = (Convert.ToInt32(produto.Quantidade) * produto.PreUni);}
-                                            <td>@precTotal?.ToString("C")</td>
-                                        </tr>
-                                    }
+                                    <tr>
+                                        <th scope="row">@pedido.NumPpd</th>
+                                        <td>@pedido.NumNfv</td>
+                                        <td>@pedido.NomCli</td>
+                                        <td>@pedido.DatEmi?.ToString("dd/MM/yyyy")</td>
+                                        <td>R$32.430,00</td>
+                                    </tr>
                                 </tbody>
                             </table>
+                            <div class="card-body">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr class="info-card">
+                                            <th scope="col">Código</th>
+                                            <th scope="col">Quantidade</th>
+                                            <th scope="col">Unidade</th>
+                                            <th scope="col">Produto</th>
+                                            <th scope="col">Preço Unit.</th>
+                                            <th scope="col">Preço Total</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    @foreach (var produto in pedido.Produtos)
+                                        {
+                                            <tr>
+                                                <th scope="row">@produto.CodPro</th>
+                                                <td>@Convert.ToInt32(produto.Quantidade)</td>
+                                                <td>@produto.Unimed</td>
+                                                <td>@produto.DescPro</td>
+                                                <td>@produto.PreUni?.ToString("C")</td>
+                                                @{var precTotal = (Convert.ToInt32(produto.Quantidade) * produto.PreUni);}
+                                                <td>@precTotal?.ToString("C")</td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
-                  </div>
+                    </div>
+
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">Pedidos</h6>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-borderless">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">N° Pedido:</th>
+                                        <th scope="col">N° HR:</th>
+                                        <th scope="col">Nome:</th>
+                                        <th scope="col">Data Emissão:</th>
+                                        <th scope="col">Valor Total:</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <th scope="row">78537</th>
+                                        <td></td>
+                                        <td>SUPERMERCADO ROHR LTDA - 52.155.830/0019-1 - CENTRO</td>
+                                        <td>29/05/2025</td>
+                                        <td>R$32.430,00</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="card-body">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr class="info-card">
+                                            <th scope="col">Código</th>
+                                            <th scope="col">Quantidade</th>
+                                            <th scope="col">Unidade</th>
+                                            <th scope="col">Produto</th>
+                                            <th scope="col">Preço Unit.</th>
+                                            <th scope="col">Preço Total</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <th scope="row">P-07826</th>
+                                            <td>150</td>
+                                            <td>FRD</td>
+                                            <td>SACOLA IMP BRANCA OXI 50X60 FD 1000 SMART CASA ROHR</td>
+                                            <td>R$132,60</td>
+                                            <td>R$19.890,00</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">P-07870	</th>
+                                            <td>150</td>
+                                            <td>FRD</td>
+                                            <td>SACOLA IMP BRANCA OXI 50X60 FD 1000 SMART CASA ROHR	</td>
+                                            <td>R$83,60	</td>
+                                            <td>R$12.540,00</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">Pedidos</h6>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-borderless">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">N° Pedido:</th>
+                                        <th scope="col">N° HR:</th>
+                                        <th scope="col">Nome:</th>
+                                        <th scope="col">Data Emissão:</th>
+                                        <th scope="col">Valor Total:</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <th scope="row">78537</th>
+                                        <td></td>
+                                        <td>SUPERMERCADO ROHR LTDA - 52.155.830/0019-1 - CENTRO</td>
+                                        <td>29/05/2025</td>
+                                        <td>R$32.430,00</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="card-body">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr class="info-card">
+                                            <th scope="col">Código</th>
+                                            <th scope="col">Quantidade</th>
+                                            <th scope="col">Unidade</th>
+                                            <th scope="col">Produto</th>
+                                            <th scope="col">Preço Unit.</th>
+                                            <th scope="col">Preço Total</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <th scope="row">P-07826</th>
+                                            <td>150</td>
+                                            <td>FRD</td>
+                                            <td>SACOLA IMP BRANCA OXI 50X60 FD 1000 SMART CASA ROHR</td>
+                                            <td>R$132,60</td>
+                                            <td>R$19.890,00</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">P-07870	</th>
+                                            <td>150</td>
+                                            <td>FRD</td>
+                                            <td>SACOLA IMP BRANCA OXI 50X60 FD 1000 SMART CASA ROHR	</td>
+                                            <td>R$83,60	</td>
+                                            <td>R$12.540,00</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
                 }
-            </div>
-            @if (Model.PageSize > 1)
-            {
-                <div>
-                    @for (int i = 1; i <= Model.PageSize; i++)
-                    {
-                        <a href="?page=@i">@i</a>
-                    }
-                </div>
-            }
-
-
-        </div>
-    </div>
     @{
-        await Html.RenderPartialAsync("_ScriptsCdnBootstrap");
+        int maxPagesToShow = 5;
+        int startPage = Math.Max(1, Model.PaginaAtual - 2);
+        int endPage = Math.Min(Model.PageSize, startPage + maxPagesToShow - 1);
     }
+
+    @if (Model.PageSize > 1)
+    {
+        <nav aria-label="Page navigation">
+            <ul class="pagination">
+                <li class="page-item">
+                    <a class="page-link" href="?page=1" aria-label="Voltar">
+                        <span aria-hidden="true">&laquo;</span>
+                        <span class="sr-only">Voltar</span>
+                    </a>
+                </li>
+
+                @for (int i = startPage; i <= endPage; i++)
+                {
+                    <li class="page-item @(i == Model.PaginaAtual ? "active" : "")">
+                        <a class="page-link" href="?page=@i">@i</a>
+                    </li>
+                }
+
+                <li class="page-item">
+                    <a class="page-link" href="?page=@Model.PageSize" aria-label="Avançar">
+                        <span aria-hidden="true">&raquo;</span>
+                        <span class="sr-only">Avançar</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    }
+
+            </div>
+        </div>
+        <a class="back-to-top" href="#"><i class="fas fa-angle-up"></i></a>
+    </div>
+    <!-- Bootstrap core JS-->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Core theme JS-->
+    <script src="~/javascript/scripts.js"></script>
 </body>
 </html>

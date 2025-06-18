@@ -4,6 +4,7 @@
     {
         public int CodRep {  get; set; }
         public string? NomRep { get; set; }
+        public long? Cliente { get; set; }
 
     }
 }
