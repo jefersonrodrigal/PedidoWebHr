@@ -1,0 +1,56 @@
+﻿<form class="row gx-3 gy-2 align-items-center">
+    <div class="col-sm-3">
+        <label class="visually-hidden" for="specificSizeInputName">Cliente</label>
+        <input type="text" class="form-control" id="specificSizeInputName" placeholder="Cliente">
+    </div>
+    <div class="col-sm-3">
+        <label class="visually-hidden" for="specificSizeSelect">Status</label>
+        <select class="form-select" id="specificSizeSelect">
+            <option selected>Status</option>
+            <option value="1">Não enviado</option>
+            <option value="2">Enviado - Análise Comercial</option>
+            <option value="3">Aguardando Liberação Financeira</option>
+            <option value="4">Liberado p/ Faturar</option>
+            <option value="5">Faturado</option>
+            <option value="6">Faturado Parcial</option>
+            <option value="7">Cancelado</option>
+        </select>
+    </div>
+    <div class="col-sm-3">
+        <label class="visually-hidden" for="specificSizeSelect">Período</label>
+        <select class="form-select" id="specificSizeSelect">
+            <option selected>Período</option>
+            <option value="1">Todos</option>
+            <option value="2">1 ANO</option>
+            <option value="3">180 DIAS</option>
+            <option value="4">90 DIAS</option>
+            <option value="5">60 DIAS</option>
+            <option value="6">30 DIAS</option>
+            <option value="7">15 DIAS</option>
+            <option value="8">Personalizado</option>
+        </select>
+    </div>
+    <div class="col-sm-3">
+        <label class="visually-hidden" for="specificSizeSelect">Ordenar por</label>
+        <select class="form-select" id="specificSizeSelect">
+            <option selected>Ordenar por</option>
+            <option value="1">número do Pedido Web</option>
+            <option value="2">Data de Emissão do Pedido</option>
+            <option value="3">Data de Previsão do Faturamento</option>
+        </select>
+    </div>
+    <div class="col-sm-3">
+        <label class="visually-hidden" for="specificSizeSelect">Mais Recentes</label>
+        <select class="form-select" id="specificSizeSelect">
+            <option selected>Mais Recentes</option>
+            <option value="1">Mais Recentes</option>
+            <option value="2">Mais Antigos</option>
+        </select>
+    </div>
+    <div class="col-auto">
+        <button type="submit" class="btn corelementos">Buscar</button>
+    </div>
+    <div class="col-auto">
+        <button type="submit" class="btn corelementos">Limpar Filtros</button>
+    </div>
+</form>

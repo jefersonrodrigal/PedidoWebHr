@@ -7,7 +7,7 @@ namespace BackendApi.ViewModels
         public RepresentanteModel? Representante { get; set; }
         public IEnumerable<PedidoModel> Pedidos { get; set; } = new List<PedidoModel>();
         public List<PedidoModel>? Produtos { get; set; }
-        public int PaginaAtual { get; set; } = 1;
-        public int PageSize { get; set; } = 5;
+        public int PaginaAtual { get; set; }
+        public int PageSize { get; set; } 
     }
 }

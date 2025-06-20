@@ -14,7 +14,7 @@ namespace BackendApi.Routes
 
             endpoint.MapControllerRoute(
                 name: "clientes",
-                pattern: "/clientes/{codrep}",
+                pattern: "/clientes/representante/{codrep}",
                 defaults: new { controller= "Cliente", action= "GetClientesByRepresentanteAsync"});
 
             endpoint.MapControllerRoute(

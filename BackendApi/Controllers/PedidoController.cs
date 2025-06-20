@@ -21,7 +21,7 @@ namespace BackendApi.ViewsControllers
 
         [Authorize]
         [HttpGet("pedidos/representante/{CodRep}")]
-        public async Task<IActionResult> PedidoRepresentanteAsync(int codRep, int page=1, int pageSize=5)
+        public async Task<IActionResult> PedidoRepresentanteAsync(int codRep, int page=1, int pageSize=2)
         {
             try
             {
@@ -35,6 +35,7 @@ namespace BackendApi.ViewsControllers
                 .FirstOrDefaultAsync();
 
                 var query = _context.Usu_t009ppd
+                            .AsNoTracking()
                             .Join(_context.Usu_t009ppi, pedido => pedido.UsuNumppd, produto => produto.UsuNumppd, (pedido, produto) => new { pedido, produto })
                             .Join(_context.E085cli, pp => pp.pedido.UsuCodcli, cliente => cliente.Codcli, (pp, cliente) => new { pp.pedido, pp.produto, cliente })
                             .Where(p => p.pedido.UsuCodrep == codRep)
@@ -89,6 +90,10 @@ namespace BackendApi.ViewsControllers
             
         }
 
-
+        [HttpGet("pedidos/keepalive")]
+        public IActionResult KeepAliveServer()
+        {
+            return Ok();
+        }
     }
 }

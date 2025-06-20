@@ -48,15 +48,23 @@
                                     <tbody id="tbody1">
                                         @foreach(var cliente in Model.Clientes)
                                         {
-                                        <tr>
-                                            <td scope="row">@cliente.NomCli</td>
-                                            <td>@(cliente.SitCli == "A" ? "Ativo" : "Inativo")</td>
-                                            <td>@cliente.Cgccpf</td>
-                                            <td>@cliente.CodCli</td>
-                                            <td>@cliente.Endereço</td>
-                                            <td>@cliente.Contato</td>
-                                            <td><button type="button" class="btn corelementos" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Info</button></td>
-                                        </tr>
+                                            <tr>
+                                                <td scope="row">@cliente.NomCli</td>
+                                                <td>@(cliente.SitCli == "A" ? "Ativo" : "Inativo")</td>
+                                                <td>@cliente.Cgccpf</td>
+                                                <td>@cliente.CodCli</td>
+                                                <td>@cliente.Endereço</td>
+                                                <td>@cliente.Contato</td>
+                                                <td>
+                                                    <button type="button"
+                                                            class="btn-info-cliente btn corelementos"
+                                                            data-bs-toggle="modal"
+                                                            data-bs-target="#staticBackdrop"
+                                                            data-id =@cliente.CodCli>
+                                                            Info
+                                                    </button>
+                                               </td>
+                                            </tr>    
                                         }
                                     </tbody>
                                 </table>
@@ -75,5 +83,7 @@
         await Html.RenderPartialAsync("~/Views/Shared/_ScriptsJsPartial.cshtml");
         await Html.RenderPartialAsync("_ScriptSearchBar.cshtml");
     }
+    <script src="~/javascript/request.js"></script>
+    <script src="~/javascript/scriptKeepAlive.js"></script>
 </body>
 </html>
