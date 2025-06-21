@@ -6,9 +6,16 @@
         {
             services.AddCors(options =>
             {
-                options.AddPolicy("CorsPolicy", policy =>
+                options.AddPolicy("HomologPolicy", policy =>
                 {
-                    policy.WithOrigins("http://127.0.0.1:5500", "https://another-site.com")
+                    policy.AllowAnyOrigin()
+                          .AllowAnyMethod()
+                          .AllowAnyHeader();
+                });
+
+                options.AddPolicy("ProductionPolicy", policy =>
+                {
+                    policy.WithOrigins()
                           .AllowAnyMethod()
                           .AllowAnyHeader();
                 });

@@ -8,16 +8,10 @@ using Microsoft.Extensions.Caching.Memory;
 
 namespace BackendApi.ViewsControllers
 {
-    public class PedidoController : Controller
+    public class PedidoController(ApplicationContext context, IMemoryCache cache) : Controller
     {
-        private readonly ApplicationContext _context;
-        private readonly IMemoryCache _cache;
-
-        public PedidoController(ApplicationContext context, IMemoryCache cache)
-        {
-            _cache = cache;
-            _context = context;
-        }
+        private readonly ApplicationContext _context = context;
+        private readonly IMemoryCache _cache = cache;
 
         [Authorize]
         [HttpGet("pedidos/representante/{CodRep}")]
@@ -90,10 +84,26 @@ namespace BackendApi.ViewsControllers
             
         }
 
+        [Authorize]
         [HttpGet("pedidos/keepalive")]
         public IActionResult KeepAliveServer()
         {
             return Ok();
+        }
+
+        [Authorize]
+        [HttpPost("pedidos/busca/cliente")]
+        public async Task<ActionResult> BuscaPedidoPorClienteAsync([FromForm] PainelViewModel request)
+        {
+            Console.WriteLine(request.Cliente);
+
+
+
+            if(ModelState.IsValid)
+            {
+                return Ok(request);
+            }
+            return BadRequest();
         }
     }
 }

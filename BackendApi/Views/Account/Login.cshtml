@@ -1,32 +1,40 @@
-﻿@model BackendApi.ViewModels.UsuarioViewModel
+﻿@using BackendApi.ViewModels
+@model LoginViewModel
 
 <!doctype html>
 <html lang="pt-br">
     @{
          await Html.RenderPartialAsync("_HeadPartialLogin");
     }
-<body>
-    <div class="main-login">
-        <div class="left-login">
-            <h1>Pedido.Net<br> Faça Login para continuar</h1>
-            <img src="~/img/business-deal-animate.svg" class="left-login-image" alt="Business Animação">
-        </div>
-        <form asp-controller="Account" asp-action="Login" method="POST">
-            <div class="right-login">
-                <div class="card-login">
-                    <h1>LOGIN</h1>
-                    <div class="textfield">
-                        <label for="Username">Usuário</label>
-                        <input asp-for="Username" name="Username" type="text" placeholder="Usuário" id="usuario" required>
-                    </div>
-                    <div class="textfield">
-                        <label for="Password">Senha</label>
-                        <input asp-for="Password" name="Password" type="password" placeholder="senha" id="senha" required>
-                    </div>
-                    <button class="btn-login" type="submit" data-button>login</button>
-                </div>
+
+    <body>
+        <div class="main-login">
+            <div class="left-login">
+                <h1>Pedido.Net<br />Faça Login para continuar</h1>
+                <img src="~/img/business-deal-animate.svg" class="left-login-image" alt="Business Animação" />
             </div>
-        </form>
-    </div>
-</body>
+
+            <form asp-controller="Account" asp-action="Login" method="POST">
+                <div class="right-login">
+                    <div class="card-login">
+                        <h1>LOGIN</h1>
+
+                        <div class="textfield">
+                            <label asp-for="Username"></label>
+                            <input asp-for="Username" class="form-control" placeholder="Usuário" required />
+                            <span asp-validation-for="Username" class="text-danger"></span>
+                        </div>
+
+                        <div class="textfield">
+                            <label asp-for="Password"></label>
+                            <input asp-for="Password" class="form-control" placeholder="Senha" type="password" required />
+                            <span asp-validation-for="Password" class="text-danger"></span>
+                        </div>
+
+                        <button type="submit" class="btn-login" data-button>Login</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </body>
 </html>

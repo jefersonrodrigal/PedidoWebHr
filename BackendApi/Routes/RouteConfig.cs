@@ -6,6 +6,11 @@ namespace BackendApi.Routes
     {
         public static void RoutesRegister(this IEndpointRouteBuilder endpoint)
         {
+            endpoint.MapControllerRoute(
+                name:"pedidoporcliente",
+                pattern: "pedidos/busca/cliente",
+                defaults: new { controller = "Pedido", action = "BuscaPedidoPorClienteAsync" }
+                );
 
             endpoint.MapControllerRoute(
                 name: "pedidosPorRepresentantes",

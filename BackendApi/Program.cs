@@ -74,9 +74,11 @@ app.UseStaticFiles();
 app.UseRouting(); 
 
 app.UseAuthentication();
+
+app.UseCors("HomologPolicy");
+
 app.UseAuthorization();
 
-app.UseCors("CorsPolicy");
 app.UseEndpoints(endpoints => endpoints.MapControllers());
 
 app.RoutesRegister();
