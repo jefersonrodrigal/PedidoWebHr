@@ -60,8 +60,8 @@
                                                             class="btn-info-cliente btn corelementos"
                                                             data-bs-toggle="modal"
                                                             data-bs-target="#staticBackdrop"
-                                                            data-id =@cliente.CodCli>
-                                                            Info
+                                                            data-id=@cliente.CodCli>
+                                                        Info
                                                     </button>
                                                </td>
                                             </tr>    
@@ -81,9 +81,10 @@
     </div>
     @{
         await Html.RenderPartialAsync("~/Views/Shared/_ScriptsJsPartial.cshtml");
-        await Html.RenderPartialAsync("_ScriptSearchBar.cshtml");
     }
-    <script src="~/javascript/request.js"></script>
+    
     <script src="~/javascript/scriptKeepAlive.js"></script>
+    <script src="~/javascript/searchbar.js"></script>
+    <script src="~/javascript/request.js"></script>
 </body>
 </html>

@@ -66,8 +66,8 @@ namespace BackendApi.ViewsControllers
             return View("Cliente", model);
         }
 
-        [HttpGet("clientes/representante/cliente/{codCli}")]
-        public async Task<IActionResult> GetinfoClientes(int codcli)
+        [HttpGet("clientes/representante/cliente/{codcli}")]
+        public async Task<IActionResult> GetinfoClientes(long codcli)
         {
             var cliente = await _context.E085hcls.AsNoTracking()
                                            .Where(x => x.CodCli == codcli && x.CodEmp == 99)
