@@ -21,7 +21,6 @@ namespace BackendApi.ViewsControllers
             _cache = cache;
         }
 
-
         [Authorize]
         [HttpGet("clientes/representante/{codrep}")]
         public async Task<IActionResult> GetClientesByRepresentanteAsync(int codrep)
@@ -66,6 +65,7 @@ namespace BackendApi.ViewsControllers
             return View("Cliente", model);
         }
 
+        [Authorize]
         [HttpGet("clientes/representante/cliente/{codcli}")]
         public async Task<IActionResult> GetinfoClientes(long codcli)
         {

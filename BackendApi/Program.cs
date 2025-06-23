@@ -81,6 +81,8 @@ app.UseAuthorization();
 
 app.UseEndpoints(endpoints => endpoints.MapControllers());
 
-app.RoutesRegister();
+app.LoginRoute();
+app.PedidoRouters();
+app.ClienteRouters();
 
 app.Run();

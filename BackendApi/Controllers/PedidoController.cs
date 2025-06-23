@@ -83,27 +83,5 @@ namespace BackendApi.ViewsControllers
             }
             
         }
-
-        [Authorize]
-        [HttpGet("pedidos/keepalive")]
-        public IActionResult KeepAliveServer()
-        {
-            return Ok();
-        }
-
-        [Authorize]
-        [HttpPost("pedidos/busca/cliente")]
-        public async Task<ActionResult> BuscaPedidoPorClienteAsync([FromForm] PainelViewModel request)
-        {
-            Console.WriteLine(request.Cliente);
-
-
-
-            if(ModelState.IsValid)
-            {
-                return Ok(request);
-            }
-            return BadRequest();
-        }
     }
 }
