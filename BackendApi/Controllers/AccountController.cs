@@ -51,7 +51,7 @@ namespace BackendApi.ViewsControllers
             return BadRequest("Usuario ou senha invalidos");
         }
 
-        [HttpGet("/logout")]
+        [HttpPost("/logout")]
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
