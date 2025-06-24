@@ -9,5 +9,6 @@
         public decimal? PreUni { get; set; }
         public decimal? Quantidade { get; set; }
         public string? DescPro { get; set; }
+        public decimal? TotalPreco { get; set; }
     }
 }

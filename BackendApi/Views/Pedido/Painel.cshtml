@@ -153,7 +153,7 @@
                                         <td>@pedido.NumNfv</td>
                                         <td>@pedido.NomCli</td>
                                         <td>@pedido.DatEmi?.ToString("dd/MM/yyyy")</td>
-                                        <td>R$32.430,00</td>
+                                        <td>@pedido.Produtos.Sum(p => p.TotalPreco ?? 0).ToString("C")</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -178,8 +178,7 @@
                                                 <td>@produto.Unimed</td>
                                                 <td>@produto.DescPro</td>
                                                 <td>@produto.PreUni?.ToString("C")</td>
-                                                @{var precTotal = (Convert.ToInt32(produto.Quantidade) * produto.PreUni);}
-                                                <td>@precTotal?.ToString("C")</td>
+                                                <td>@produto.TotalPreco?.ToString("C")</td>
                                             </tr>
                                         }
                                     </tbody>
@@ -198,6 +197,6 @@
     @{
         await Html.RenderPartialAsync("_ScriptsCdnBootstrap");
     }
-    <script src="~/javascript/scriptKeepAlive.js"></script>
+
 </body>
 </html>

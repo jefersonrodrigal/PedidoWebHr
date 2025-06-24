@@ -49,7 +49,8 @@ namespace BackendApi.Controllers
                                       DescPro = p.produto.UsuDesnfv,
                                       PreUni = p.produto.UsuPreuni,
                                       Unimed = p.produto.UsuUnimed,
-                                      Quantidade = p.produto.UsuQtdped
+                                      Quantidade = p.produto.UsuQtdped,
+                                      TotalPreco = p.produto.UsuPreuni * p.produto.UsuQtdped
                                   }).ToList()
                              });
 
