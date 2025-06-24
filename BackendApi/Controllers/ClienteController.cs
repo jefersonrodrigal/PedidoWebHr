@@ -67,6 +67,8 @@ namespace BackendApi.ViewsControllers
 
         [Authorize]
         [HttpGet("clientes/representante/cliente/{codcli}")]
+
+        [Authorize]
         public async Task<IActionResult> GetinfoClientes(long codcli)
         {
             var cliente = await _context.E085hcls.AsNoTracking()

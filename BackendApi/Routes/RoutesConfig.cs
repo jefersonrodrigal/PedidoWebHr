@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Builder;
-
-namespace BackendApi.Routes
+﻿namespace BackendApi.Routes
 {
     public static class RoutesConfig
     {
@@ -9,7 +7,13 @@ namespace BackendApi.Routes
         {
             endpoint.MapControllerRoute(
                 name: "Default",
-                pattern: "{controller=Account}/{action=Login}/{id?}");
+                pattern: "/",
+                defaults: new {controller = "Account", action= "Login" });
+
+            endpoint.MapControllerRoute(
+                name: "post",
+                pattern: "/",
+                defaults: new { controller = "Account", action = "Login" });
 
             endpoint.MapControllerRoute(
                 name: "logout",
@@ -20,7 +24,7 @@ namespace BackendApi.Routes
         public static void PedidoRouters(this IEndpointRouteBuilder endpoint)
         {
             endpoint.MapControllerRoute(
-                name: "pedidosPorRepresentantes",
+                name: "pedidos",
                 pattern: "pedidos/representante/{codrep}",
                 defaults: new {controler= "Pedido", action= "PedidoRepresentanteAsync"});
         }

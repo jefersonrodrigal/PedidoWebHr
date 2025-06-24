@@ -17,7 +17,7 @@ namespace BackendApi.ViewsControllers
             _context = context;
         }
 
-        [HttpGet("/")]
+        [HttpGet]
         public ActionResult Login()
         {
             return View();
@@ -44,7 +44,9 @@ namespace BackendApi.ViewsControllers
 
                     await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
 
-                    return Redirect($"pedidos/representante/{repres.Codrep}");
+                    var url = Url.RouteUrl("pedidos", new { codrep = repres.Codrep }) ?? "/erro";
+
+                    return Redirect(url);
                 }
             }
 

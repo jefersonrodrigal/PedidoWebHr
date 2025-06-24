@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 
-namespace BackendApi.ViewsControllers
+namespace BackendApi.Controllers
 {
     public class PedidoController(ApplicationContext context, IMemoryCache cache) : Controller
     {
