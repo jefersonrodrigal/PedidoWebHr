@@ -2,7 +2,6 @@
 {
     public static class CustomRoutesExtensions
     {
-
         public static void LoginRoute (this IEndpointRouteBuilder endpoint)
         {
             endpoint.MapControllerRoute(
@@ -41,5 +40,6 @@
                 pattern: "clientes/info/{codcli}",
                 defaults: new { controller = "Cliente", action = "GetinfoClientes" });
         }
+
     }
 }

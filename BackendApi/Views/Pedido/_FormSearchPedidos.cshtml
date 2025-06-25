@@ -1,45 +1,14 @@
 ﻿@using BackendApi.ViewModels
-@model PainelViewModel
+@model BuscaPedidoViewModel
 
 <form asp-controller="Pedido" asp-action="BuscaPedidoPorClienteAsync" method="POST" class="row gx-3 gy-2 align-items-center">
     <div class="col-sm-3">
         <label asp-for="Cliente" class="visually-hidden">Cliente</label>
-        <input asp-for="Cliente" class="form-control" placeholder="Cliente" disabled />
-    </div>
-
-    <div class="col-sm-3">
-        <label asp-for="Status" class="visually-hidden">Status</label>
-        <select asp-for="Status" class="form-select" asp-items="Model.StatusList" disabled>
-            <option value="">Status</option>
-        </select>
-    </div>
-
-    <div class="col-sm-3">
-        <label asp-for="Periodo" class="visually-hidden">Período</label>
-        <select asp-for="Periodo" class="form-select" asp-items="Model.PeriodoList" disabled>
-            <option value="">Período</option>
-        </select>
-    </div>
-
-    <div class="col-sm-3">
-        <label asp-for="OrdenarPor" class="visually-hidden">Ordenar por</label>
-        <select asp-for="OrdenarPor" class="form-select" asp-items="Model.OrdenarPorList" disabled>
-            <option value="">Ordenar por</option>
-        </select>
-    </div>
-
-    <div class="col-sm-3">
-        <label asp-for="OrdemData" class="visually-hidden">Ordem</label>
-        <select asp-for="OrdemData" class="form-select" asp-items="Model.OrdemDataList" disabled>
-            <option value="">Mais Recentes</option>
-        </select>
+        <input asp-for="Cliente" class="form-control" placeholder="Cliente" />
     </div>
 
     <div class="col-auto">
-        <button type="submit" class="btn corelementos" disabled>Buscar</button>
-    </div>
-    <div class="col-auto">
-        <button type="reset" class="btn corelementos" disabled>Limpar Filtros</button>
+        <button type="submit" class="btn corelementos" >Buscar</button>
     </div>
 </form>
 <br />

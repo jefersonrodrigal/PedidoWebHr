@@ -1,202 +1,173 @@
 @using BackendApi.ViewModels
 @model PainelViewModel
 
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <meta name="description" content="" />
-    <meta name="author" content="" />
-    <title>Pedido.Net</title>
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
 
-    <!-- Favicon-->
-    <link rel="icon" type="image/x-icon" href="~/img/Logo_HR.png" />
-
-    <!-- Core theme CSS (includes Bootstrap)-->
-    <link href="~/css/styles.css" rel="stylesheet" />
-    <link href="~/css/paginas.css" rel="stylesheet" />
-    <link href="~/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-</head>
 <body>
-    <div class="d-flex" id="wrapper">
-        <!-- Sidebar-->
-        @{
-            await Html.RenderPartialAsync("_SideBar");
-        }
-        <!-- Page content wrapper-->
-        <div id="page-content-wrapper">
-            <!-- Top navigation-->
-            @{
-                await Html.RenderPartialAsync("_NavBar");
-            }
-            <!-- Conteudo da Página-->
-            <div class="container">
-                <div class="align-items-center justify-content-between mb-4 mt-5">
-                    <h1 class="h3 mb-0 text-gray-800 text-center">Consulta de Pedidos</h1>
-                </div>
+    <!-- Conteudo da Página-->
+    <div class="container">
+        <div class="align-items-center justify-content-between mb-4 mt-5">
+            <h1 class="h3 mb-0 text-gray-800 text-center">Consulta de Pedidos</h1>
+        </div>
 
-                <!-- Content Row -->
-                <div class="row">
+        <!-- Content Row -->
+        <div class="row">
 
-                    <!-- Earnings (Monthly) Card Example -->
-                    <div class="col-xl-3 col-md-6 mb-5">
-                        <div class="card border-left-primary shadow h-100 py-2">
-                            <div class="card-body">
-                                <div class="row no-gutters align-items-center">
-                                    <div class="col mr-2">
-                                        <div class="text-xs font-weight-bold text-uppercase mb-1">
-                                            Lorem Ipsum
-                                        </div>
-                                        <div class="h5 mb-0 font-weight-bold text-gray-800">R$40,000</div>
-                                    </div>
-                                    <div class="col-auto">
-                                        <i class="fas fa-calendar fa-2x text-gray-300"></i>
-                                    </div>
+            <!-- Earnings (Monthly) Card Example -->
+            <div class="col-xl-3 col-md-6 mb-5">
+                <div class="card border-left-primary shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-uppercase mb-1">
+                                    Lorem Ipsum
                                 </div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">R$40,000</div>
                             </div>
-                        </div>
-                    </div>
-
-                    <!-- Earnings (Monthly) Card Example -->
-                    <div class="col-xl-3 col-md-6 mb-5">
-                        <div class="card border-left-success shadow h-100 py-2">
-                            <div class="card-body">
-                                <div class="row no-gutters align-items-center">
-                                    <div class="col mr-2">
-                                        <div class="text-xs font-weight-bold text-uppercase mb-1">
-                                            Total vendido no período:
-                                        </div>
-                                        <div class="h5 mb-0 font-weight-bold text-gray-800">R$5.953,72</div>
-                                    </div>
-                                    <div class="col-auto">
-                                        <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Earnings (Monthly) Card Example -->
-                    <div class="col-xl-3 col-md-6 mb-5">
-                        <div class="card border-left-info shadow h-100 py-2">
-                            <div class="card-body">
-                                <div class="row no-gutters align-items-center">
-                                    <div class="col mr-2">
-                                        <div class="text-xs font-weight-bold text-uppercase mb-1">
-                                            Lorem Ipsum
-                                        </div>
-                                        <div class="row no-gutters align-items-center">
-                                            <div class="col-auto">
-                                                <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">50%</div>
-                                            </div>
-                                            <div class="col">
-                                                <div class="progress progress-sm mr-2">
-                                                    <div class="progress-bar bg-info" role="progressbar"
-                                                         style="width: 50%" aria-valuenow="50" aria-valuemin="0"
-                                                         aria-valuemax="100"></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-auto">
-                                        <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Pending Requests Card Example -->
-                    <div class="col-xl-3 col-md-6 mb-5">
-                        <div class="card border-left-warning shadow h-100 py-2">
-                            <div class="card-body">
-                                <div class="row no-gutters align-items-center">
-                                    <div class="col mr-2">
-                                        <div class="text-xs font-weight-bold text-uppercase mb-1">
-                                            Lorem Ipsum
-                                        </div>
-                                        <div class="h5 mb-0 font-weight-bold text-gray-800">18</div>
-                                    </div>
-                                    <div class="col-auto">
-                                        <i class="fas fa-comments fa-2x text-gray-300"></i>
-                                    </div>
-                                </div>
+                            <div class="col-auto">
+                                <i class="fas fa-calendar fa-2x text-gray-300"></i>
                             </div>
                         </div>
                     </div>
                 </div>
-                @{
-                    await Html.RenderPartialAsync("_FormSearchPedidos");
-                }
-                <!--Tabela Pedidos -->
-                @foreach (var pedido in Model.Produtos)
-                {
-                    <div class="card shadow mb-4">
-                        <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">Pedidos</h6>
-                        </div>
-                        <div class="table-responsive">
-                            <table class="table table-borderless">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">N° Pedido:</th>
-                                        <th scope="col">N° HR:</th>
-                                        <th scope="col">Nome:</th>
-                                        <th scope="col">Data Emissão:</th>
-                                        <th scope="col">Valor Total:</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <th scope="row">@pedido.NumPpd</th>
-                                        <td>@pedido.NumNfv</td>
-                                        <td>@pedido.NomCli</td>
-                                        <td>@pedido.DatEmi?.ToString("dd/MM/yyyy")</td>
-                                        <td>@pedido.Produtos.Sum(p => p.TotalPreco ?? 0).ToString("C")</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                            <div class="card-body">
-                                <table class="table table-striped">
-                                    <thead>
-                                        <tr class="info-card">
-                                            <th scope="col">Código</th>
-                                            <th scope="col">Quantidade</th>
-                                            <th scope="col">Unidade</th>
-                                            <th scope="col">Produto</th>
-                                            <th scope="col">Preço Unit.</th>
-                                            <th scope="col">Preço Total</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                    @foreach (var produto in pedido.Produtos)
-                                        {
-                                            <tr>
-                                                <th scope="row">@produto.CodPro</th>
-                                                <td>@Convert.ToInt32(produto.Quantidade)</td>
-                                                <td>@produto.Unimed</td>
-                                                <td>@produto.DescPro</td>
-                                                <td>@produto.PreUni?.ToString("C")</td>
-                                                <td>@produto.TotalPreco?.ToString("C")</td>
-                                            </tr>
-                                        }
-                                    </tbody>
-                                </table>
+            </div>
+
+            <!-- Earnings (Monthly) Card Example -->
+            <div class="col-xl-3 col-md-6 mb-5">
+                <div class="card border-left-success shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-uppercase mb-1">
+                                    Total vendido no período:
+                                </div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">R$5.953,72</div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
                             </div>
                         </div>
                     </div>
-                }
-                @{
-                    await Html.RenderPartialAsync("_Pagination");
-                }
+                </div>
+            </div>
+
+            <!-- Earnings (Monthly) Card Example -->
+            <div class="col-xl-3 col-md-6 mb-5">
+                <div class="card border-left-info shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-uppercase mb-1">
+                                    Lorem Ipsum
+                                </div>
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col-auto">
+                                        <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">50%</div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="progress progress-sm mr-2">
+                                            <div class="progress-bar bg-info" role="progressbar"
+                                                    style="width: 50%" aria-valuenow="50" aria-valuemin="0"
+                                                    aria-valuemax="100">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pending Requests Card Example -->
+            <div class="col-xl-3 col-md-6 mb-5">
+                <div class="card border-left-warning shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-uppercase mb-1">
+                                    Lorem Ipsum
+                                </div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">18</div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-comments fa-2x text-gray-300"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-        <a class="back-to-top" href="#"><i class="fas fa-angle-up"></i></a>
+        @{
+            await Html.RenderPartialAsync("_FormSearchPedidos", new BuscaPedidoViewModel());
+        }
+        <!--Tabela Pedidos -->
+        @foreach (var pedido in Model.Produtos)
+        {
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Pedidos</h6>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-borderless">
+                        <thead>
+                            <tr>
+                                <th scope="col">N° Pedido:</th>
+                                <th scope="col">N° HR:</th>
+                                <th scope="col">Nome:</th>
+                                <th scope="col">Data Emissão:</th>
+                                <th scope="col">Valor Total:</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th scope="row">@pedido.NumPpd</th>
+                                <td>@pedido.NumNfv</td>
+                                <td>@pedido.NomCli</td>
+                                <td>@pedido.DatEmi?.ToString("dd/MM/yyyy")</td>
+                                <td>@pedido.Produtos.Sum(p => p.TotalPreco ?? 0).ToString("C")</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="card-body">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr class="info-card">
+                                    <th scope="col">Código</th>
+                                    <th scope="col">Quantidade</th>
+                                    <th scope="col">Unidade</th>
+                                    <th scope="col">Produto</th>
+                                    <th scope="col">Preço Unit.</th>
+                                    <th scope="col">Preço Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            @foreach (var produto in pedido.Produtos)
+                                {
+                                    <tr>
+                                        <th scope="row">@produto.CodPro</th>
+                                        <td>@Convert.ToInt32(produto.Quantidade)</td>
+                                        <td>@produto.Unimed</td>
+                                        <td>@produto.DescPro</td>
+                                        <td>@produto.PreUni?.ToString("C")</td>
+                                        <td>@produto.TotalPreco?.ToString("C")</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        }
+        @{
+            await Html.RenderPartialAsync("_Pagination");
+        }
     </div>
-    @{
-        await Html.RenderPartialAsync("_ScriptsCdnBootstrap");
-    }
+    <a class="back-to-top" href="#"><i class="fas fa-angle-up"></i></a>
 
 </body>
-</html>
