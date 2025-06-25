@@ -22,7 +22,7 @@ namespace BackendApi.ViewsControllers
         }
 
         [Authorize]
-        [HttpGet("clientes/representante/{codrep}")]
+        [HttpGet]
         public async Task<IActionResult> GetClientesByRepresentanteAsync(int codrep)
         {
             var representante = await _context.E090rep.Where(x => x.Codrep == codrep)
@@ -66,10 +66,10 @@ namespace BackendApi.ViewsControllers
         }
 
         [Authorize]
-        [HttpGet("clientes/representante/cliente/{codcli}")]
+        [HttpGet]
 
         [Authorize]
-        public async Task<IActionResult> GetinfoClientes(long codcli)
+        public async Task<IActionResult> GetinfoClientesAsync(long codcli)
         {
             var cliente = await _context.E085hcls.AsNoTracking()
                                            .Where(x => x.CodCli == codcli && x.CodEmp == 99)

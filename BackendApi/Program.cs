@@ -69,20 +69,16 @@ using (var scope = app.Services.CreateScope())
     migrationService.ApplyMigrations();
 }*/
 
-app.UseStaticFiles();
+app.UseStaticFiles(); 
 
-app.UseRouting(); 
+app.UseRouting();     
 
-app.UseAuthentication();
+app.UseCors("HomologPolicy"); 
 
-app.UseCors("HomologPolicy");
+app.UseAuthentication(); 
 
-app.UseAuthorization();
+app.UseAuthorization();  
 
-app.UseEndpoints(endpoints => endpoints.MapControllers());
-
-app.LoginRoute();
-app.PedidoRouters();
-app.ClienteRouters();
+app.UseEndpoints(endpoints => endpoints.MapCustomRoutes()); 
 
 app.Run();

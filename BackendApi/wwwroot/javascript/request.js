@@ -3,7 +3,7 @@
 buttons.forEach(function (botao) {
     botao.addEventListener("click", function () {
         const id = botao.getAttribute("data-id");
-        fetch(`https://localhost:7121/clientes/representante/cliente/${id}`)
+        fetch(`https://localhost:7121/clientes/info/${id}`)
             .then(res => res.json())
             .then(data => {
                 document.getElementById("codCli").textContent = data.CodCli;

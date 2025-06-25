@@ -14,13 +14,13 @@ namespace BackendApi.Controllers
         private readonly IMemoryCache _cache = cache;
 
         [Authorize]
-        [HttpGet("pedidos/representante/{CodRep}")]
-        public async Task<IActionResult> PedidoRepresentanteAsync(int codRep, int page=1, int pageSize=2)
+        [HttpGet]
+        public async Task<IActionResult> PedidoRepresentanteAsync(int codrep, int page=1, int pageSize=2)
         {
             try
             {
                  var representante = await _context.E090rep
-                .Where(x => x.Codrep == codRep)
+                .Where(x => x.Codrep == codrep)
                 .Select(x => new RepresentanteModel
                 {
                     CodRep = x.Codrep,
@@ -32,7 +32,7 @@ namespace BackendApi.Controllers
                             .AsNoTracking()
                             .Join(_context.Usu_t009ppi, pedido => pedido.UsuNumppd, produto => produto.UsuNumppd, (pedido, produto) => new { pedido, produto })
                             .Join(_context.E085cli, pp => pp.pedido.UsuCodcli, cliente => cliente.Codcli, (pp, cliente) => new { pp.pedido, pp.produto, cliente })
-                            .Where(p => p.pedido.UsuCodrep == codRep)
+                            .Where(p => p.pedido.UsuCodrep == codrep)
                             .GroupBy(p => p.produto.UsuNumppd)
                             .OrderByDescending(g => g.First().pedido.UsuDatemi)
                             .Select(g => new PedidoModel

@@ -1,6 +1,6 @@
 ﻿namespace BackendApi.Routes
 {
-    public static class RoutesConfig
+    public static class CustomRoutesExtensions
     {
 
         public static void LoginRoute (this IEndpointRouteBuilder endpoint)
@@ -26,7 +26,7 @@
             endpoint.MapControllerRoute(
                 name: "pedidos",
                 pattern: "pedidos/representante/{codrep}",
-                defaults: new {controler= "Pedido", action= "PedidoRepresentanteAsync"});
+                defaults: new {controller= "Pedido", action= "PedidoRepresentante" });
         }
 
         public static void ClienteRouters(this IEndpointRouteBuilder endpoint)
@@ -34,7 +34,12 @@
             endpoint.MapControllerRoute(
                 name: "clientes",
                 pattern: "/clientes/representante/{codrep}",
-                defaults: new { controller = "Cliente", action = "GetClientesByRepresentanteAsync" });
+                defaults: new { controller = "Cliente", action = "GetClientesByRepresentante" });
+
+            endpoint.MapControllerRoute(
+                name: "info",
+                pattern: "clientes/info/{codcli}",
+                defaults: new { controller = "Cliente", action = "GetinfoClientes" });
         }
     }
 }
