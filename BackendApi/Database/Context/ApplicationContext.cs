@@ -19,6 +19,8 @@ namespace BackendApi.Database.Context
         public virtual DbSet<T009PPD> Usu_t009ppd { get; set; }
         public virtual DbSet<T009PPI> Usu_t009ppi { get; set; }
         public virtual DbSet<E085HCL> E085hcls { get; set; }
+        public virtual DbSet<E075PRO> E075pros { get; set; }
+        public virtual DbSet<E075PRO1> E075pros1 { get; set; }
 
 
     }
