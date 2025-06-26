@@ -57,5 +57,13 @@ for (i = 0; i < dropdown.length; i++) {
   });
 }
 
+const campoAnterior = document.getElementById('inputDesconto');
+const meuSeletor = document.getElementById('seletorDesconto');
 
-
+campoAnterior.addEventListener('input', function () {
+    if (campoAnterior.value.trim() !== '') {
+        meuSeletor.disabled = false;
+    } else {
+        meuSeletor.disabled = true;
+    }
+});

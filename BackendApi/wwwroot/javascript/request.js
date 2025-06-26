@@ -24,5 +24,3 @@ buttons.forEach(function (botao) {
     });
 });
 
-
-

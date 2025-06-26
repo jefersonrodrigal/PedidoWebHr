@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
+using System.Security.Claims;
 using System.Text.RegularExpressions;
 
 namespace BackendApi.Controllers
@@ -192,5 +193,24 @@ namespace BackendApi.Controllers
             return BadRequest("Dado Invalido para pesquisa");
         }
 
+        [Authorize]
+        [HttpGet]
+        public ActionResult RenderPageLancamentoPedido()
+        {
+
+            var result = _context.E090rep.Select(x => new RepresentanteModel
+            {
+                CodRep = x.Codrep,
+                NomRep = x.Nomrep,
+            }).FirstOrDefault(x => x.CodRep == Convert.ToInt32(User.FindFirstValue(ClaimTypes.UserData)));
+
+
+            CreatePedidoViewModel model = new CreatePedidoViewModel()
+            {
+                Representante = result!
+            };
+
+            return View("CreatePedidoView", model);
+        }
     }
 }

@@ -31,6 +31,12 @@
                 name: "buscapedido",
                 pattern: "pedidos/busca-pedido",
                 defaults: new {controller = "Pedido", action = "PegarUltimosPedidos" });
+
+
+            endpoint.MapControllerRoute(
+                name: "createpedido",
+                pattern: "pedidos/lancamento-pedido",
+                defaults: new { controller = "Pedido", action = "RenderPageLancamentoPedido" });
         }
 
         public static void ClienteRouters(this IEndpointRouteBuilder endpoint)
