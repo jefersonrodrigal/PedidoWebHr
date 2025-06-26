@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
+using System.Linq;
 using System.Text.Json;
 
 
@@ -38,7 +39,8 @@ namespace BackendApi.ViewsControllers
             {
                 var clientes = await _context.E085hcls.AsNoTracking()
                                       .Where(x => x.CodRep == representante.CodRep && x.CodEmp == 99)
-                                      .Join(_context.E085cli,
+                                      .Join(_context.E085cli
+                                            .OrderByDescending(x => x.Datcad),
                                             hist => hist.CodCli,
                                             cliente => cliente.Codcli,
                                             (hist, cliente) => new ClienteModel

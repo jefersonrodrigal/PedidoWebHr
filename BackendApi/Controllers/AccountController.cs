@@ -36,7 +36,9 @@ namespace BackendApi.ViewsControllers
                     var claims = new List<Claim>
                     {
                         new Claim(ClaimTypes.Name, user.Username!),
-                        new Claim(ClaimTypes.Role, "Representante")
+                        new Claim(ClaimTypes.Role, "Representante"),
+                        new Claim(ClaimTypes.NameIdentifier, repres.Nomrep),
+                        new Claim(ClaimTypes.UserData, Convert.ToString(repres.Codrep))
                     };
 
                     var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);

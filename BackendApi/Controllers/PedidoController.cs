@@ -1,11 +1,12 @@
 ﻿using BackendApi.Database.Context;
+using BackendApi.Extensions;
 using BackendApi.Models;
 using BackendApi.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
-using System.Security.Claims;
+using System.Text.RegularExpressions;
 
 namespace BackendApi.Controllers
 {
@@ -92,12 +93,103 @@ namespace BackendApi.Controllers
         }
 
         [Authorize]
-        [HttpGet]
-        public IActionResult PegarUltimosPedidos()
+        [HttpPost]
+        public async Task<IActionResult> PegarUltimosPedidos(BuscaPedidoViewModel request)
         {
-            var userName = User.FindFirstValue(ClaimTypes.Name);
-            
-            return Ok(userName);
+            if(request.Cliente != null)
+            {
+                if (request.Cliente.IsCpf() || request.Cliente.IsCnpj())
+                {
+                    var data = Regex.Replace(request.Cliente, @"[^a-zA-Z0-9]", "");
+
+                    var query = await _context.Usu_t009ppd
+                                     .AsNoTracking()
+                                     .Join(_context.Usu_t009ppi,
+                                         pedido => pedido.UsuNumppd,
+                                         produto => produto.UsuNumppd,
+                                         (pedido, produto) => new { pedido, produto })
+                                     .Join(_context.E085cli,
+                                         pp => pp.pedido.UsuCodcli,
+                                         cliente => cliente.Codcli,
+                                         (pp, cliente) => new { pp.pedido, pp.produto, cliente })
+                                     .Where(p => p.cliente.Cgccpf == Convert.ToInt64(data))
+                                     .GroupBy(p => p.produto.UsuNumppd)
+                                     .OrderByDescending(g => g.First().pedido.UsuDatemi)
+                                     .Take(3)
+                                     .Select(g => new PedidoModel
+                                     {
+                                         NumPpd = g.Key,
+                                         NomCli = g.First().cliente.Nomcli,
+                                         NumNfv = g.First().pedido.UsuNumnfv,
+                                         DatEmi = g.First().pedido.UsuDatemi,
+                                         Produtos = g.Select(p => new ProdutoModel
+                                         {
+                                             NumPpd = p.produto.UsuNumppd,
+                                             SeqIpd = p.produto.UsuSeqipd,
+                                             CodPro = p.produto.UsuCodpro,
+                                             DescPro = p.produto.UsuDesnfv,
+                                             PreUni = p.produto.UsuPreuni,
+                                             Unimed = p.produto.UsuUnimed,
+                                             Quantidade = p.produto.UsuQtdped,
+                                             TotalPreco = p.produto.UsuPreuni * p.produto.UsuQtdped
+                                         }).ToList()
+                                     })
+                                     .ToListAsync();
+
+                    PedidoViewModel model = new PedidoViewModel()
+                    {
+                        Pedidos = query
+                    };
+
+                    return View("LastPedidos", model);
+                }
+                else
+                {
+                    var query = await _context.Usu_t009ppd
+                                    .AsNoTracking()
+                                    .Join(_context.Usu_t009ppi,
+                                        pedido => pedido.UsuNumppd,
+                                        produto => produto.UsuNumppd,
+                                        (pedido, produto) => new { pedido, produto })
+                                    .Join(_context.E085cli,
+                                        pp => pp.pedido.UsuCodcli,
+                                        cliente => cliente.Codcli,
+                                        (pp, cliente) => new { pp.pedido, pp.produto, cliente })
+                                    .Where(p => p.cliente.Nomcli == request.Cliente)
+                                    .GroupBy(p => p.produto.UsuNumppd)
+                                    .OrderByDescending(g => g.First().pedido.UsuDatemi)
+                                    .Take(3)
+                                    .Select(g => new PedidoModel
+                                    {
+                                        NumPpd = g.Key,
+                                        NomCli = g.First().cliente.Nomcli,
+                                        NumNfv = g.First().pedido.UsuNumnfv,
+                                        DatEmi = g.First().pedido.UsuDatemi,
+                                        Produtos = g.Select(p => new ProdutoModel
+                                        {
+                                            NumPpd = p.produto.UsuNumppd,
+                                            SeqIpd = p.produto.UsuSeqipd,
+                                            CodPro = p.produto.UsuCodpro,
+                                            DescPro = p.produto.UsuDesnfv,
+                                            PreUni = p.produto.UsuPreuni,
+                                            Unimed = p.produto.UsuUnimed,
+                                            Quantidade = p.produto.UsuQtdped,
+                                            TotalPreco = p.produto.UsuPreuni * p.produto.UsuQtdped
+                                        }).ToList()
+                                    })
+                                    .ToListAsync();
+
+                    PedidoViewModel model = new PedidoViewModel()
+                    {
+                        Pedidos = query
+                    };
+
+                    return View("LastPedidos", model);
+                }
+
+            }
+
+            return BadRequest("Dado Invalido para pesquisa");
         }
 
     }

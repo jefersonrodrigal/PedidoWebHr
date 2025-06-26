@@ -25,7 +25,9 @@
             @{
                 await Html.RenderPartialAsync("~/Views/Shared/_PartialNavBar.cshtml");
             }
-            @RenderBody()
+          <div class="container">
+                @RenderBody()
+          </div>
         </div>
     </div>
     <!-- Bootstrap core JS-->

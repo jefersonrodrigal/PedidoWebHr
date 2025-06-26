@@ -1,10 +1,10 @@
 ﻿@using BackendApi.ViewModels
 @model BuscaPedidoViewModel
 
-<form asp-route="buscapedido" method="get" class="row gx-3 gy-2 align-items-center">
+<form asp-route="buscapedido" method="post" class="row gx-3 gy-2 align-items-center">
     <div class="col-sm-3">
-        <label asp-for="Cliente" class="visually-hidden">Cliente</label>
-        <input asp-for="Cliente" class="form-control" placeholder="Cliente" />
+        <label asp-for="Cliente" class="visually-hidden">Busca Cliente</label>
+        <input asp-for="Cliente" class="form-control" placeholder="CNPJ ou Nome do Cliente" />
     </div>
 
     <div class="col-auto">
