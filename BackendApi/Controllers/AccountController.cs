@@ -44,7 +44,7 @@ namespace BackendApi.ViewsControllers
 
                     await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
 
-                    var url = Url.RouteUrl("pedidos", new { codrep = repres.Codrep }) ?? "/erro";
+                    var url = Url.RouteUrl("pedidos", new { user = repres.Aperep }) ?? "/erro";
 
                     return Redirect(url);
                 }

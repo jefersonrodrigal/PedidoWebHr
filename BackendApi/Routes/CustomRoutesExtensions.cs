@@ -24,15 +24,20 @@
         {
             endpoint.MapControllerRoute(
                 name: "pedidos",
-                pattern: "pedidos/representante/{codrep}",
+                pattern: "pedidos/representante/{user}",
                 defaults: new {controller= "Pedido", action= "PedidoRepresentante" });
+
+            endpoint.MapControllerRoute(
+                name: "buscapedido",
+                pattern: "pedidos/busca-pedido",
+                defaults: new {controller = "Pedido", action = "PegarUltimosPedidos" });
         }
 
         public static void ClienteRouters(this IEndpointRouteBuilder endpoint)
         {
             endpoint.MapControllerRoute(
                 name: "clientes",
-                pattern: "/clientes/representante/{codrep}",
+                pattern: "/clientes/representante/{user}",
                 defaults: new { controller = "Cliente", action = "GetClientesByRepresentante" });
 
             endpoint.MapControllerRoute(

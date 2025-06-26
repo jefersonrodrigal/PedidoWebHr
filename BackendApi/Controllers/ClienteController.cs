@@ -23,9 +23,9 @@ namespace BackendApi.ViewsControllers
 
         [Authorize]
         [HttpGet]
-        public async Task<IActionResult> GetClientesByRepresentanteAsync(int codrep)
+        public async Task<IActionResult> GetClientesByRepresentanteAsync(string user)
         {
-            var representante = await _context.E090rep.Where(x => x.Codrep == codrep)
+            var representante = await _context.E090rep.Where(x => x.Aperep == user)
                                                .Select(x => new RepresentanteModel
                                                {
                                                    NomRep = x.Nomrep,
@@ -34,35 +34,41 @@ namespace BackendApi.ViewsControllers
                                                .FirstOrDefaultAsync();
 
 
-            var clientes = await _context.E085hcls.AsNoTracking()
-                                                  .Where(x => x.CodRep == codrep && x.CodEmp == 99)
-                                                  .Join(_context.E085cli,
-                                                        hist => hist.CodCli,
-                                                        cliente => cliente.Codcli,
-                                                        (hist, cliente) => new ClienteModel
-                                                        {
-                                                            NomCli = cliente.Nomcli,
-                                                            CodCli = cliente.Codcli,
-                                                            SitCli = cliente.Sitcli,
-                                                            Endereço = cliente.Endcli,
-                                                            Contato = cliente.Foncli,
-                                                            Cgccpf = cliente.Cgccpf
-                                                        }
-                                                  ).ToListAsync();
-
-            ClienteViewModel model = new ClienteViewModel()
+            if(representante != null)
             {
-                Representante = representante!,
-                Clientes = clientes
-            };
+                var clientes = await _context.E085hcls.AsNoTracking()
+                                      .Where(x => x.CodRep == representante.CodRep && x.CodEmp == 99)
+                                      .Join(_context.E085cli,
+                                            hist => hist.CodCli,
+                                            cliente => cliente.Codcli,
+                                            (hist, cliente) => new ClienteModel
+                                            {
+                                                NomCli = cliente.Nomcli,
+                                                CodCli = cliente.Codcli,
+                                                SitCli = cliente.Sitcli,
+                                                Endereço = cliente.Endcli,
+                                                Contato = cliente.Foncli,
+                                                Cgccpf = cliente.Cgccpf
+                                            }
+                                      ).ToListAsync();
 
-            if (!_cache.TryGetValue("ApplicationCache", out ClienteViewModel? valor))
-            {
-                valor = model;
-                _cache.Set("ApplicationCache", valor, TimeSpan.FromMinutes(3));
+                ClienteViewModel model = new ClienteViewModel()
+                {
+                    Representante = representante!,
+                    Clientes = clientes
+                };
+
+                if (!_cache.TryGetValue("ApplicationCache", out ClienteViewModel? valor))
+                {
+                    valor = model;
+                    _cache.Set("ApplicationCache", valor, TimeSpan.FromMinutes(3));
+                }
+
+                return View("Cliente", model);
             }
+            
+            return NotFound("Representante Não encontrado");
 
-            return View("Cliente", model);
         }
 
         [Authorize]

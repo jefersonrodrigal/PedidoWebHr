@@ -1,7 +1,9 @@
-﻿<div class="border-end corelementos" id="sidebar-wrapper">
+﻿@using System.Security.Claims
+
+<div class="border-end corelementos" id="sidebar-wrapper">
     <div class="sidebar-heading corelementos"><a href="pedidos.html" style="text-decoration: none; color: inherit;"><dt> Pedido.Net</dt></a></div>
     <div class="list-group list-group-flush">
-        <a href="@Url.RouteUrl("pedidos", new { codrep = Model.Representante.CodRep })"
+        <a href="@Url.RouteUrl("pedidos", new { user = User.FindFirstValue(ClaimTypes.Name) })"
            class="list-group-item list-group-item-action corelementos p-3 fas fas fa-list-alt text-gray-200">
             Consulta Pedidos
         </a>
@@ -15,7 +17,7 @@
             <a href="lancar_pedidos.html" id="pedido_itens">Lançar Pedido</a>
             <a href="#" id="pedido_itens">Listar Pedidos</a>
         </div>
-        <a href="@Url.RouteUrl("clientes", new { codrep = Model.Representante.CodRep })"
+        <a href="@Url.RouteUrl("clientes", new { user = User.FindFirstValue(ClaimTypes.Name)})"
            class="list-group-item list-group-item-action corelementos p-3 fas fa-address-book text-gray-200">
             Clientes
         </a>

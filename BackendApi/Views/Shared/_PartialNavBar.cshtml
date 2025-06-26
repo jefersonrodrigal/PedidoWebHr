@@ -1,4 +1,6 @@
-﻿<nav class="navbar navbar-expand-lg navbar-light bg-light mb-4 shadow">
+﻿@using System.Security.Claims
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light mb-4 shadow">
     <div class="container-fluid">
         <button class="btn corelementos" id="sidebarToggle">
             <i class="fas fa-bars"></i>
@@ -13,8 +15,7 @@
             <ul class="navbar-nav ms-auto mt-2 mt-lg-0 align-items-center">
                 <li class="nav-item active">
                     <a class="nav-link" href="#">
-                        <i class="fas fa-user-circle text-gray-200"></i>@(Model.Representante.NomRep != null ?
-                                                                         Model.Representante.NomRep : "Representante")
+                        <i class="fas fa-user-circle text-gray-200"></i> @User.FindFirstValue(ClaimTypes.Name)
                     </a>
                 </li>
                 <li class="nav-item active">
