@@ -213,6 +213,20 @@ namespace BackendApi.Controllers
             return View("CreatePedidoView", model);
         }
 
+        [HttpGet]
+        public IActionResult GetClientFormGeneratePerdido(string cliente)
+        {
+            var query = _context.E085cli.FirstOrDefault(x => x.Cgccpf == Convert.ToInt64(cliente));
 
+            ClienteModel dataClient = new ClienteModel()
+            {
+                NomCli = query.Nomcli,
+                Cgccpf = query.Cgccpf,
+                Endereço = query.Endcli,
+                Contato = query.Foncli
+            };
+
+            return Ok(dataClient);
+        }
     }
 }

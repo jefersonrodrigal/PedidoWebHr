@@ -1,4 +1,6 @@
-﻿const buttons = document.querySelectorAll(".btn-info-cliente");
+﻿
+/* Dados Modal */
+const buttons = document.querySelectorAll(".btn-info-cliente");
 
 buttons.forEach(function (botao) {
     botao.addEventListener("click", function () {
@@ -23,4 +25,41 @@ buttons.forEach(function (botao) {
         
     });
 });
+
+
+
+const btn = document.getElementById("btn-search-cliente");
+const tbody = document.getElementById("tbl-dados-clientes");
+
+btn.addEventListener('click', () => {
+    const cliente = document.getElementById("input-search-client").value.replace(/[^\d]/g, "");
+    fetch(`https://localhost:7121/pedidos/lancamento-pedido/busca-cliente/${cliente}`)
+        .then(response => {
+            if (!response.ok) throw new Error("Erro ao buscar os dados da API");
+            return response.json();
+        })
+        .then(cliente => {
+            const tbody = document.getElementById("tbl-dados-clientes");
+            const linha = document.createElement("tr");
+            linha.innerHTML = `
+      <th scope="row">${cliente.nom_cli}</th>
+      <td>${formatarCnpj(cliente.cgccpf)}</td>
+      <td>${cliente.endereço}</td>
+      <td>${cliente.contato}</td>
+      <td><button type="button" class="btn corelementos"><i class="fa fa-plus"></i></button></td>
+    `;
+
+            tbody.appendChild(linha);
+        })
+        .catch(erro => {
+            console.error("Erro ao carregar os dados:", erro);
+        });
+
+    function formatarCnpj(cgccpf) {
+        const str = cgccpf.toString();
+        return str.length === 14
+            ? str.replace(/^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})$/, "$1.$2.$3/$4-$5")
+            : str.replace(/^(\d{3})(\d{3})(\d{3})(\d{2})$/, "$1.$2.$3-$4");
+    }
+})
 

@@ -104,13 +104,14 @@
     </div>
     <div class="table-responsive">
         <div class="card-body">
-            <form action="">
                 <div class="row mb-2">
                     <div class="col">
                         <label class="visually-hidden" for="specificSizeInputName">Cliente</label>
-                        <input type="text" class="form-control" id="specificSizeInputName" placeholder="Digite o Nome ou CPF" required />
+                        <input type="text" class="form-control" id="input-search-client" placeholder="Digite o Nome ou CPF" required />
                     </div>
-                    <div class="col"><button type="submit" class="btn corelementos">Buscar</button></div>
+                    <div class="col">
+                        <button type="button" class="btn corelementos " id="btn-search-cliente">Buscar</button>
+                    </div>
                 </div>
                 <table class="table table-striped">
                     <thead>
@@ -122,19 +123,8 @@
                             <th scope="col">Adicionar</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr>
-                            <th scope="row">MARIA GLAICE DE VASCONCELOS MARTINS</th>
-                            <td>26.135.834/0001-06</td>
-                            <td>RUA CORONEL JOSE LIBANIO,365</td>
-                            <td>
-                                (85)3345-1474
-                            </td>
-                            <td><button type="button" class="btn corelementos"><i class="fa fa-plus"></i></button></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </form>
+                    <tbody id="tbl-dados-clientes"></tbody>
+          </table>
         </div>
     </div>
 </div>
@@ -347,8 +337,10 @@
 </div>
 <a class="back-to-top" href="#"><i class="fas fa-angle-up"></i></a>
 </div>
-<script src="~/javascript/saveOnLocalStorage.js"></script>
+    <script src="~/javascript/saveOnLocalStorage.js"></script>
+    <script src="~/javascript/request.js"></script>
 </div>
+
 <div id="overlay" style="
     position: fixed;
     top: 0; left: 0;

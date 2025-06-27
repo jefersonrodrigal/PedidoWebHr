@@ -37,6 +37,11 @@
                 name: "createpedido",
                 pattern: "pedidos/lancamento-pedido",
                 defaults: new { controller = "Pedido", action = "RenderPageLancamentoPedido" });
+
+            endpoint.MapControllerRoute(
+                name: "createpedidobuscacliente",
+                pattern: "pedidos/lancamento-pedido/busca-cliente/{cliente}",
+                defaults: new { controller = "Pedido", action = "GetClientFormGeneratePerdido" });
         }
 
         public static void ClienteRouters(this IEndpointRouteBuilder endpoint)
