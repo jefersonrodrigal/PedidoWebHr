@@ -20,6 +20,8 @@ document.addEventListener("DOMContentLoaded", () => {
                     document.getElementById("Cidade").textContent = data.Cidade;
                     document.getElementById("EmailCli").textContent = data.EmailCli;
                     document.getElementById("FaxCli").textContent = data.FaxCli;
+
+
                 })
                 .catch(err => console.error('Erro no GET:', err));
 
@@ -73,6 +75,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 setTimeout(() => {
                     overlay.style.display = 'none';
                 }, 1000);
+
+                const input = document.getElementById('input-search-client');
+                input.value = '';
             })
             .catch(erro => {
                 console.error("Erro ao carregar os dados:", erro);
@@ -102,6 +107,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 linha.innerHTML = `
                 <th scope="row">${product.cod_pro}</th>
                 <td>${product.desc_pro}</td>
+                <td>${product.unimed}</td>
+                <td>${product.pre_uni}</td>
                 <td>
                    <label class="visually-hidden" for="specificSizeInputName">Produtos</label>
                    <input type="text" class="form-control" id="specificSizeInputName" placeholder="Quantidade" required />

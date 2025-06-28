@@ -246,15 +246,16 @@ namespace BackendApi.Controllers
         [HttpGet]
         public IActionResult GetProductFromFormToGenerateOrder(string produto)
         {
-            var query = _context.E075pros.FirstOrDefault(x => x.Codpro == produto);
+            var query = _context.E075pros.FirstOrDefault(x => x.Codpro == produto && x.UsuPreuni != null);
 
             ProdutoModel product = new ProdutoModel()
             {
                 CodPro = query.Codpro,
                 DescPro = query.Despro,
                 Unimed = query.Unimed,
+                PreUni = query.UsuPreuni
             };
-
+            Console.WriteLine(product.PreUni);
             return Ok(product);
         }
     }

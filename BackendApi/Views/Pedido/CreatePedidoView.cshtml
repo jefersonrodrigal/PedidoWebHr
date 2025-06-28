@@ -76,7 +76,6 @@
                         <option value="2">Não</option>
                     </select>
                 </div>
-
             </div>
         </form>
     </div>
@@ -90,29 +89,31 @@
         </h6>
     </div>
     <div class="table-responsive">
-        <div class="card-body">
-                <div class="row mb-2">
-                    <div class="col">
-                        <label class="visually-hidden" for="specificSizeInputName">Cliente</label>
-                        <input type="text" class="form-control" id="input-search-client" placeholder="Digite o Nome ou CPF" required />
-                    </div>
-                    <div class="col">
-                        <button type="button" class="btn corelementos" id="btn-search-cliente">Buscar</button>
-                        <button type="button" class="btn corelementos " id="btn-remove-itens-td">Remover</button>
-                    </div>
+    <div class="card-body">
+            <div class="row mb-2">
+                <div class="col">
+                    <label class="visually-hidden" for="specificSizeInputName">Cliente</label>
+                    <input type="text" class="form-control" id="input-search-client" placeholder="Digite o Nome ou CPF" required />
                 </div>
-                <table class="table table-striped">
-                    <thead>
-                        <tr class="info-card">
-                            <th scope="col">Nome</th>
-                            <th scope="col">CNPJ/CPF</th>
-                            <th scope="col">Endereço</th>
-                            <th scope="col">Telefone</th>
-                            <th scope="col">Adicionar</th>
-                        </tr>
-                    </thead>
-                    <tbody id="tbl-dados-clientes"></tbody>
-          </table>
+                <div class="col">
+                    <button type="button" class="btn corelementos" id="btn-search-cliente">Buscar</button>
+                    <button type="button" class="btn corelementos " id="btn-remove-itens-td">Remover</button>
+                </div>
+            </div>
+            <table class="table table-striped">
+                <thead>
+                    <tr class="info-card">
+                        <th scope="col">Nome</th>
+                        <th scope="col">CNPJ/CPF</th>
+                        <th scope="col">Endereço</th>
+                        <th scope="col">Telefone</th>
+                        <th scope="col">Adicionar</th>
+                    </tr>
+                </thead>
+                <tbody id="tbl-dados-clientes">
+                    <!--Cria dinamicamente-->
+                </tbody>
+            </table>
         </div>
     </div>
 </div>
@@ -260,7 +261,7 @@
                     </div>
                     <div class="col">
                         <button id="btn-search-products" type="button" class="btn corelementos">Buscar</button>
-                        <button id="btn-search-products" type="button" class="btn corelementos">Incluir no Pedido</button>
+                        <button id="btn-include" type="button" class="btn corelementos">Incluir no Pedido</button>
                    </div>
                 </div>
                 <table id="dados-produtos" class="table table-striped">
@@ -268,14 +269,15 @@
                         <tr class="info-card">
                             <th scope="col">Código</th>
                             <th scope="col">Descrição</th>
+                            <th scope="col">Unidade</th>
+                            <th scope="col">Preço Unit</th>
                             <th scope="col">Quantidade</th>
-                            <th scope="col">Preço Unit.:</th>
+                            <th scope="col">Total</th>
                             <th scope="col">Remover</th>
                         </tr>
                     </thead>
                         <tbody id="tbl-dados-produtos">
-                        <tr>
-                        </tr>
+                            <!--Cria dinamicamente-->
                     </tbody>
                 </table>
         </div>
@@ -291,45 +293,34 @@
         <div class="table-responsive">
             <div class="card-body">
                 <p class="text-center">Valor total do pedido:R$0,00</p>
-                <table class="table table-striped">
+                <table id="dados-produtos-pedido" class="table table-striped">
                     <thead>
                         <tr class="info-card">
                             <th scope="col">Código</th>
-                            <th scope="col">Quantidade</th>
+                            <th scope="col">Descrição</th>
                             <th scope="col">Unidade</th>
-                            <th scope="col">Produto</th>
                             <th scope="col">Preço Unit. (R$)</th>
+                            <th scope="col">Quantidade</th>
                             <th scope="col">Total (R$)</th>
-                            <th scope="col">Opções</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <th scope="row">P-07826</th>
-                            <td>150</td>
-                            <td>FRD</td>
-                            <td>
-                                SACOLA IMP BRANCA OXI 50X60 FD 1000 SMART CASA ROHR
-                            </td>
-                            <td>R$132,60</td>
-                            <td>R$19.890,00</td>
-                            <td>R$12.540,00</td>
-                        </tr>
+                        <!--Será criada dinamicamente-->
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
-    <div class="col-12 text-end">
-        <button id="salvarDados" type="button" class="btn corelementos">Salvar</button>
-        <button type="submit" class="btn corelementos">Enviar Pedido</button>
+        <div class="col-12 text-end">
+            <button id="salvarDados" type="button" class="btn corelementos">Salvar</button>
+            <button type="submit" class="btn corelementos">Enviar Pedido</button>
+        </div>
     </div>
-</div>
 </div>
 
 <a class="back-to-top" href="#"><i class="fas fa-angle-up"></i></a>
 
-</div>
+<div>
     <script src="~/javascript/saveOnLocalStorage.js"></script>
     <script src="~/javascript/request.js"></script>
     <script src="~/javascript/button-listeners.js"></script>
