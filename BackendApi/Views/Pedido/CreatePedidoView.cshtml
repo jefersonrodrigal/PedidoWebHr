@@ -75,21 +75,6 @@
                     </select>
                 </div>
 
-                <div class="col">
-                    Necessidade Agendamento
-                    <select class="form-pedido"
-                            id="agendamentoSelect"
-                            style="width: 8rem">
-                        <option selected>Selecionar</option>
-                        <option value="1">Sim</option>
-                        <option value="2">Não</option>
-                    </select>
-                </div>
-            </div>
-
-            <div class="col-12">
-                <button id="salvarDados" type="button" class="btn corelementos">Salvar</button>
-                <button type="submit" class="btn corelementos">Enviar Pedido</button>
             </div>
         </form>
     </div>
@@ -111,6 +96,7 @@
                     </div>
                     <div class="col">
                         <button type="button" class="btn corelementos " id="btn-search-cliente">Buscar</button>
+                    <button type="button" class="btn corelementos " id="btn-remove-itens-td">Remover</button>
                     </div>
                 </div>
                 <table class="table table-striped">
@@ -135,48 +121,47 @@
         <h6 class="m-0 font-weight-bold titulo-card">Cliente</h6>
     </div>
     <div class="card-body">
-        <form action="">
             <div class="row mb-5">
                 <div class="col">
-                    Razão Social: <b class="titulo-card">MARIA GLAICE DE VASCONCELOS MARTINS</b>
+                    Razão Social: <b class="titulo-card linha-cliente" id="cliente-razao_social"></b>
                 </div>
                 <div class="col">
-                    Denominação: <b class="titulo-card">G&T REPRESENTACOES E EMBALAGENS</b>
+                    Denominação: <b class="titulo-card linha-cliente" id="cliente-denominacao"></b>
                 </div>
                 <div class="col">
-                    CNPJ/CPF: <b class="titulo-card">26.135.834/0001-06</b>
+                    CNPJ/CPF: <b class="titulo-card linha-cliente" id="cliente-cnpj"></b>
                 </div>
                 <div class="col">
-                    Cidade: <b class="titulo-card">PACATUBA</b>
+                    Cidade: <b class="titulo-card linha-cliente" id="cliente-cidade"></b>
                 </div>
             </div>
 
             <div class="row mb-5">
                 <div class="col">
-                    Bairro: <b class="titulo-card">CENTRO</b>
+                    Bairro: <b class="titulo-card linha-cliente" id="cliente-bairro"></b>
                 </div>
                 <div class="col">
-                    CEP: <b class="titulo-card">61.801-250</b>
+                    CEP: <b class="titulo-card linha-cliente" id="cliente-cep"></b>
                 </div>
                 <div class="col">
-                    Endereço/N°: <b class="titulo-card">RUA CORONEL JOSE LIBANIO,365</b>
+                Endereço/N°: <b class="titulo-card linha-cliente" id="cliente-endereco"></b>
                 </div>
                 <div class="col">
-                    Estado: <b class="titulo-card">CE</b>
+                    Estado: <b class="titulo-card linha-cliente" id="cliente-estado"></b>
                 </div>
             </div>
             <div class="row mb-5">
                 <div class="col">
-                    Insc.Est: <b class="titulo-card">065425723</b>
+                    Insc.Est: <b class="titulo-card linha-cliente" id="cliente-insc_est"></b>
                 </div>
                 <div class="col">
-                    Telefone: <b class="titulo-card">(85)3345-1474</b>
+                    Telefone: <b class="titulo-card linha-cliente" id="cliente-telefone"></b>
                 </div>
                 <div class="col">
-                    Email: <b class="titulo-card">santostchesco@gmail.com</b>
+                    Email: <b class="titulo-card linha-cliente" id="cliente-email"></b>
                 </div>
                 <div class="col">
-                    Fax: <b class="titulo-card"></b>
+                    Fax: <b class="titulo-card linha-cliente" id="cliente-fax"></b>
                 </div>
             </div>
             <div class="row mb-5">
@@ -215,6 +200,17 @@
                         <option value="2">Programada</option>
                     </select>
                 </div>
+
+            <div class="col">
+                Necessidade Agendamento
+                <select class="form-pedido"
+                        id="agendamentoSelect"
+                        style="width: 8rem">
+                    <option selected>Selecionar</option>
+                    <option value="1">Sim</option>
+                    <option value="2">Não</option>
+                </select>
+            </div>
                 <div class="col">
                     Data Prog. Fat.:
                     <label class="visually-hidden" for="specificSizeInputName">Data Programada Faturamento</label>
@@ -243,7 +239,6 @@
                     <textarea class="form-control" id="exampleFormControlTextarea1" rows="4"></textarea>
                 </div>
             </div>
-        </form>
     </div>
 </div>
 
@@ -256,13 +251,12 @@
     </div>
     <div class="table-responsive">
         <div class="card-body">
-            <form action="">
                 <div class="row mb-2">
                     <div class="col">
                         <label class="visually-hidden" for="specificSizeInputName">Produtos</label>
-                        <input type="text" class="form-control" id="specificSizeInputName" placeholder="Digite o Código do Produto" required />
+                        <input type="text" class="form-control" id="input-search-products" placeholder="Digite o Código do Produto" required />
                     </div>
-                    <div class="col"><button type="button" class="btn corelementos">Buscar</button></div>
+                    <div class="col"><button id="btn-search-products" type="button" class="btn corelementos">Buscar</button></div>
                 </div>
                 <table class="table table-striped">
                     <thead>
@@ -274,23 +268,11 @@
                             <th scope="col">Adicionar</th>
                         </tr>
                     </thead>
-                    <tbody>
+                        <tbody id="tbl-dados-produtos">
                         <tr>
-                            <th scope="row">P-07826</th>
-                            <td>SACOLA IMP BRANCA OXI 50X60 FD/1000 SMART CASA ROHR</td>
-                            <td>
-                                <label class="visually-hidden" for="specificSizeInputName">Produtos</label>
-                                <input type="text" class="form-control" id="specificSizeInputName" placeholder="Quantidade" required />
-                            </td>
-                            <td>
-                                <label class="visually-hidden" for="specificSizeInputName">Produtos</label>
-                                <input type="text" class="form-control" id="specificSizeInputName" placeholder="Preço Unit.:" required />
-                            </td>
-                            <td><button type="button" class="btn corelementos"><i class="fa fa-plus"></i></button></td>
                         </tr>
                     </tbody>
                 </table>
-            </form>
         </div>
     </div>
 
@@ -333,12 +315,19 @@
             </div>
         </div>
     </div>
+    <div class="col-12">
+        <button id="salvarDados" type="button" class="btn corelementos">Salvar</button>
+        <button type="submit" class="btn corelementos">Enviar Pedido</button>
+    </div>
 </div>
 </div>
+
 <a class="back-to-top" href="#"><i class="fas fa-angle-up"></i></a>
+
 </div>
     <script src="~/javascript/saveOnLocalStorage.js"></script>
     <script src="~/javascript/request.js"></script>
+    <script src="~/javascript/button-listeners.js"></script>
 </div>
 
 <div id="overlay" style="

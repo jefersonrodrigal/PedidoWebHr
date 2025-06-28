@@ -48,7 +48,7 @@ namespace BackendApi.ViewsControllers
                                                 NomCli = cliente.Nomcli,
                                                 CodCli = cliente.Codcli,
                                                 SitCli = cliente.Sitcli,
-                                                Endereço = cliente.Endcli,
+                                                Endereco = cliente.Endcli,
                                                 Contato = cliente.Foncli,
                                                 Cgccpf = cliente.Cgccpf
                                             }
@@ -93,7 +93,7 @@ namespace BackendApi.ViewsControllers
                                                     Contato2 = cliente.Foncl2,
                                                     Cgccpf = cliente.Cgccpf,
                                                     NomCli = cliente.Nomcli,
-                                                    Endereço = cliente.Endcli,
+                                                    Endereco = cliente.Endcli,
                                                     CepCli = cliente.Cepcli,
                                                     Cidade = cliente.Cidcli,
                                                     EmailCli = cliente.Emanfe,

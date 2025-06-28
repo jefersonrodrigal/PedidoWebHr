@@ -213,6 +213,7 @@ namespace BackendApi.Controllers
             return View("CreatePedidoView", model);
         }
 
+        [Authorize]
         [HttpGet]
         public IActionResult GetClientFormGeneratePerdido(string cliente)
         {
@@ -220,13 +221,38 @@ namespace BackendApi.Controllers
 
             ClienteModel dataClient = new ClienteModel()
             {
-                NomCli = query.Nomcli,
+                CodCli = query.Codcli,
+                NomFantCli = query.Apecli,
+                UfCli = query.Sigufs,
+                Contato = query.Foncli,
+                Contato2 = query.Foncl2,
                 Cgccpf = query.Cgccpf,
-                Endereço = query.Endcli,
-                Contato = query.Foncli
+                NomCli = query.Nomcli,
+                Endereco = query.Endcli,
+                CepCli = query.Cepcli,
+                Cidade = query.Cidcli,
+                EmailCli = query.Emanfe,
+                FaxCli =    query.Faxcli,
+                InscEstadual = query.Insest,
+                Bairro = query.Baicli
             };
 
             return Ok(dataClient);
+        }
+
+        [HttpGet]
+        public IActionResult GetProductFromFormToGenerateOrder(string produto)
+        {
+            var query = _context.E075pros.FirstOrDefault(x => x.Codpro == produto);
+
+            ProdutoModel product = new ProdutoModel()
+            {
+                CodPro = query.Codpro,
+                DescPro = query.Despro,
+                Unimed = query.Unimed,
+            };
+
+            return Ok(product);
         }
     }
 }
