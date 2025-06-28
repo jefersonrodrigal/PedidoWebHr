@@ -204,10 +204,12 @@ namespace BackendApi.Controllers
                 NomRep = x.Nomrep,
             }).FirstOrDefault(x => x.CodRep == Convert.ToInt32(User.FindFirstValue(ClaimTypes.UserData)));
 
+            var numped = _context.Usu_t009ppd.Max(x => x.UsuNumppd);
 
             CreatePedidoViewModel model = new CreatePedidoViewModel()
             {
-                Representante = result!
+                Representante = result!,
+                NumeroPedido = numped + 1,
             };
 
             return View("CreatePedidoView", model);
@@ -240,6 +242,7 @@ namespace BackendApi.Controllers
             return Ok(dataClient);
         }
 
+        [Authorize]
         [HttpGet]
         public IActionResult GetProductFromFormToGenerateOrder(string produto)
         {

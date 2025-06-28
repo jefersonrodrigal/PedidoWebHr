@@ -1,5 +1,6 @@
 ﻿
 document.addEventListener("DOMContentLoaded", () => {
+
     const buttons = document.querySelectorAll(".btn-info-cliente");
     buttons.forEach(function (botao) {
         botao.addEventListener("click", function () {
@@ -24,15 +25,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
         });
     });
-})
 
-document.addEventListener("DOMContentLoaded", () => {
-    const btn = document.getElementById("btn-search-cliente");
+    const btnSearchClients = document.getElementById("btn-search-cliente");
+    btnSearchClients.addEventListener('click', () => {
+        const tbody = document.getElementById("tbl-dados-clientes");
 
+        if (tbody.rows.length > 0) {
+            return; 
+        }
 
-    btn.addEventListener('click', () => {
         const cliente = document.getElementById("input-search-client").value.replace(/[^\d]/g, "");
-        const url = `https://localhost:7121/pedidos/lancamento-pedido/busca-cliente/${cliente}`
+        const url = `https://localhost:7121/pedidos/lancamento-pedido/busca-cliente/${cliente}`;
 
         fetch(url)
             .then(response => {
@@ -40,20 +43,19 @@ document.addEventListener("DOMContentLoaded", () => {
                 return response.json();
             })
             .then(cliente => {
-                console.log(cliente);
-                const tbody = document.getElementById("tbl-dados-clientes");
                 const linha = document.createElement("tr");
+                linha.classList.add("linha-cliente-tb")
                 linha.innerHTML = `
-                <th class="linha-cliente-tb" scope="row">${cliente.nom_cli}</th>
-                <td class="linha-cliente-tb">${formatarCnpj(cliente.cgccpf)}</td>
-                <td class="linha-cliente-tb">${cliente.endereco}</td>
-                <td class="linha-cliente-tb">${cliente.contato}</td>
-                <td class="linha-cliente-tb"><button type="button" class="btn corelementos"><i class="fa fa-plus"></i></button></td>
+                    <th scope="row">${cliente.nom_cli}</th>
+                    <td>${formatarCnpj(cliente.cgccpf)}</td>
+                    <td>${cliente.endereco}</td>
+                    <td>${cliente.contato}</td>
+                    <td><button type="button" class="btn corelementos"><i class="fa fa-plus"></i></button></td>
                 `;
                 tbody.appendChild(linha);
-               
+
+                // Atualiza os campos de cliente
                 document.getElementById('cliente-razao_social').textContent = cliente.nom_cli;
-              
                 document.getElementById('cliente-denominacao').textContent = cliente.nom_fant_cli;
                 document.getElementById('cliente-cnpj').textContent = cliente.cgccpf;
                 document.getElementById('cliente-cidade').textContent = cliente.cidade;
@@ -65,17 +67,16 @@ document.addEventListener("DOMContentLoaded", () => {
                 document.getElementById('cliente-telefone').textContent = cliente.contato;
                 document.getElementById('cliente-email').textContent = cliente.email_cli;
                 document.getElementById('cliente-fax').textContent = cliente.fax;
-                
 
                 const overlay = document.getElementById('overlay');
                 overlay.style.display = 'block';
-
                 setTimeout(() => {
                     overlay.style.display = 'none';
                 }, 1000);
             })
             .catch(erro => {
                 console.error("Erro ao carregar os dados:", erro);
+                btn.disabled = false; // só reabilita se houver erro
             });
 
         function formatarCnpj(cgccpf) {
@@ -84,12 +85,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 ? str.replace(/^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})$/, "$1.$2.$3/$4-$5")
                 : str.replace(/^(\d{3})(\d{3})(\d{3})(\d{2})$/, "$1.$2.$3-$4");
         }
-    })
-})
+    });
 
-document.addEventListener("DOMContentLoaded", () => {
-    const buttonSearchProducts = document.getElementById("btn-search-products")
-    buttonSearchProducts.addEventListener('click', () => {
+    const btnSearchProducts = document.getElementById("btn-search-products")
+    btnSearchProducts.addEventListener('click', () => {
         const product = document.getElementById('input-search-products').value
         const url = `https://localhost:7121/pedidos/lancamento-pedido/busca-produto/${encodeURIComponent(product)}`
 
@@ -111,7 +110,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     <label class="visually-hidden" for="specificSizeInputName">Produtos</label>
                     <input type="text" class="form-control" id="specificSizeInputName" placeholder="Preço Unit.:" required />
                 </td>
-                <td> <button type="button" class="btn corelementos"><i class="fa fa-plus"></i></button></td>`;
+                <td> <button type="button" class="btn corelementos"><i class="fa fa-minus"></i></button></td>`;
 
                 tbody.appendChild(linha);
 
@@ -122,7 +121,11 @@ document.addEventListener("DOMContentLoaded", () => {
                     overlay.style.display = 'none';
                 }, 1000);
 
+                const input = document.getElementById('input-search-products')
+                input.value = '';
+
             })
             .catch(error => console.log(error))
     });
+
 })
