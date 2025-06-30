@@ -92,47 +92,98 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    const btnSearchProducts = document.getElementById("btn-search-products")
+    const btnSearchProducts = document.getElementById("btn-search-products");
     btnSearchProducts.addEventListener('click', () => {
-        const product = document.getElementById('input-search-products').value
-        const url = `https://localhost:7121/pedidos/lancamento-pedido/busca-produto/${encodeURIComponent(product)}`
+        const productInput = document.getElementById('input-search-products');
+        const productName = productInput.value.trim();
+
+        if (!productName) return alert("Digite o nome ou código do produto.");
+
+        const url = `https://localhost:7121/pedidos/lancamento-pedido/busca-produto/${encodeURIComponent(productName)}`;
 
         fetch(url)
-            .then(data => data.json())
-            .then(product => {
-                console.log(product)
+            .then(response => {
+                if (!response.ok) throw new Error("Produto não encontrado.");
+                return response.json();
+            })
+            .then(prod => {
                 const tbody = document.getElementById("tbl-dados-produtos");
                 const linha = document.createElement("tr");
 
+                const priceId = `price-${prod.cod_pro}`;
+                const qtyId = `qty-${prod.cod_pro}`;
+                const totalId = `total-${prod.cod_pro}`;
+
                 linha.innerHTML = `
-                <th scope="row">${product.cod_pro}</th>
-                <td>${product.desc_pro}</td>
-                <td>${product.unimed}</td>
-                <td>${product.pre_uni}</td>
-                <td>
-                   <label class="visually-hidden" for="specificSizeInputName">Produtos</label>
-                   <input type="text" class="form-control" id="specificSizeInputName" placeholder="Quantidade" required />
-                </td>
-                <td>
-                    <label class="visually-hidden" for="specificSizeInputName">Produtos</label>
-                    <input type="text" class="form-control" id="specificSizeInputName" placeholder="Preço Unit.:" required />
-                </td>
-                <td> <button type="button" class="btn corelementos"><i class="fa fa-minus"></i></button></td>`;
+             <td>${prod.cod_pro}</td>
+             <td>${prod.desc_pro}</td>
+             <td>${prod.unimed}</td>
+             <td>
+                 <input type="text" class="form-control price-input" id="${priceId}" placeholder="R$ 0,00" required />
+             </td>
+             <td>
+                 <input type="number" class="form-control" id="${qtyId}" placeholder="Quantidade" min="0" step="1" required />
+             </td>
+             <td id="${totalId}">R$ 0,00</td>
+             <td>
+                 <button type="button" class="btn corelementos"><i class="fa fa-minus"></i></button>
+             </td>
+         `;
 
                 tbody.appendChild(linha);
 
                 const overlay = document.getElementById('overlay');
                 overlay.style.display = 'block';
+                setTimeout(() => overlay.style.display = 'none', 1000);
 
-                setTimeout(() => {
-                    overlay.style.display = 'none';
-                }, 1000);
+                productInput.value = '';
 
-                const input = document.getElementById('input-search-products')
-                input.value = '';
+                const inputPrice = document.getElementById(priceId);
+                const inputQty = document.getElementById(qtyId);
+                const totalCell = document.getElementById(totalId);
 
+                // Função para formatar valor em R$ ao digitar
+                const formatCurrency = (value) => {
+                    const cleanValue = value.replace(/\D/g, '');
+                    const numberValue = parseFloat(cleanValue) / 100;
+                    return numberValue.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+                };
+
+                // Atualiza o total conforme inputs
+                const atualizarTotal = () => {
+                    const precoFormatado = inputPrice.value.replace(/\D/g, '');
+                    const preco = parseFloat(precoFormatado) / 100 || 0;
+                    const quantidade = parseFloat(inputQty.value) || 0;
+                    const total = preco * quantidade;
+                    totalCell.textContent = total.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+                };
+
+                // Formata valor enquanto digita
+                inputPrice.addEventListener('input', (e) => {
+                    const cursorPos = e.target.selectionStart;
+                    const oldLength = e.target.value.length;
+
+                    e.target.value = formatCurrency(e.target.value);
+                    atualizarTotal();
+
+                    // Ajusta posição do cursor após formatação
+                    const newLength = e.target.value.length;
+                    e.target.setSelectionRange(cursorPos + (newLength - oldLength), cursorPos + (newLength - oldLength));
+                });
+
+                inputQty.addEventListener('input', atualizarTotal);
             })
-            .catch(error => console.log(error))
+            .catch(error => {
+                console.error("Erro ao buscar produto:", error);
+                /*
+                const errorModalBody = document.getElementById("errorModalBody");
+                errorModalBody.textContent = "Erro ao buscar produto: " + error.message;
+   
+                // Exibir o modal
+                const modal = new bootstrap.Modal(document.getElementById('errorModal'));
+                modal.show();
+                */
+            });
     });
 
 })

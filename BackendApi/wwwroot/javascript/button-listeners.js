@@ -21,9 +21,7 @@ document.querySelector("#dados-produtos").addEventListener("click", function (e)
     }
 });
 
-
 const btnInclude = document.getElementById("btn-include");
-
 btnInclude.addEventListener("click", function () {
     const tabelaOrigem = document.getElementById("dados-produtos").querySelector("tbody");
     const tabelaDestino = document.getElementById("dados-produtos-pedido").querySelector("tbody");
@@ -33,6 +31,15 @@ btnInclude.addEventListener("click", function () {
     linhas.forEach(linha => {
         const novaLinha = linha.cloneNode(true);
 
+        // Substituir inputs por texto
+        const inputs = novaLinha.querySelectorAll("input");
+        inputs.forEach(input => {
+            const valor = input.value;
+            const texto = document.createTextNode(valor);
+            input.parentNode.replaceChild(texto, input);
+        });
+
+        // Remove última célula se necessário
         const ultimaCelula = novaLinha.querySelector("td:last-child");
         if (ultimaCelula) {
             ultimaCelula.remove();
@@ -41,5 +48,6 @@ btnInclude.addEventListener("click", function () {
         tabelaDestino.appendChild(novaLinha);
     });
 
+    // Limpa a tabela de origem
     tabelaOrigem.innerHTML = "";
 });

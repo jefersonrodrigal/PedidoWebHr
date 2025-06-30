@@ -248,15 +248,20 @@ namespace BackendApi.Controllers
         {
             var query = _context.E075pros.FirstOrDefault(x => x.Codpro == produto && x.UsuPreuni != null);
 
-            ProdutoModel product = new ProdutoModel()
+            if (query != null)
             {
-                CodPro = query.Codpro,
-                DescPro = query.Despro,
-                Unimed = query.Unimed,
-                PreUni = query.UsuPreuni
-            };
-            Console.WriteLine(product.PreUni);
-            return Ok(product);
+                ProdutoModel product = new ProdutoModel()
+                {
+                    CodPro = query.Codpro,
+                    DescPro = query.Despro,
+                    Unimed = query.Unimed,
+                    PreUni = query.UsuPreuni
+                };
+                Console.WriteLine(product.PreUni);
+                return Ok(product);
+            }
+
+            return NotFound();
         }
     }
 }
