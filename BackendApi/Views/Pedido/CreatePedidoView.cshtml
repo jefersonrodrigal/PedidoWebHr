@@ -13,45 +13,48 @@
         <h6 class="m-0 font-weight-bold titulo-card">Representante</h6>
     </div>
     <div class="card-body">
-        <form action="">
-            <div class="row mb-5">
-                <div class="col-sm-5">
-                    Representante: <b class="titulo-card">@Model.Representante.NomRep</b>
-                </div>
-                <div class="col">
-                    Data: <b class="titulo-card">@Model.DataLancamento</b>
-                </div>
-                <div class="col">
-                    Status: <b class="titulo-card">@Model.StatusPedido.GetDisplayName()</b>
-                </div>
-                <div class="col">
-                    Pedido:
-                    <b class="text-white"
-                       style="
-                            background-color: #198754;
-                            border-radius: 0.9rem;
-                            padding: 0.24rem;
-                            ">@Model.NumeroPedido
-                    </b>
-                </div>
+        <div class="row mb-5">
+            <div class="col-sm-5">
+                Representante: <b class="titulo-card">@Model.Representante.NomRep</b>
+                <input id="name-representante" type="hidden" class="form-control" value="@Model.Representante.NomRep"  disabled/>
+                <input id="cod-representante" type="hidden" class="form-control" value="@Model.Representante.CodRep" disabled />
             </div>
-            <div class="row mb-5">
-                <div class="col">
-                    Faturamento:
-                    <select class="form-pedido"
-                            id="faturamentoSelect"
-                            style="width: 8rem">
+            <div class="col">
+                Data: <b class="titulo-card">@Model.DataLancamento</b>
+                <input id="data-lancamento" type="hidden" class="form-control" value="@Model.DataLancamento.ToString()" disabled />
+            </div>
+            <div class="col">
+                Status: <b class="titulo-card">@Model.StatusPedido.GetDisplayName()</b>
+                <input id="status-pedido" type="hidden" class="form-control" value="@Model.StatusPedido.GetDisplayName()" disabled />
+            </div>
+            <!-- <div class="col">
+                Pedido:
+                <b class="text-white"
+                    style="
+                        background-color: #198754;
+                        border-radius: 0.9rem;
+                        padding: 0.24rem;
+                        ">@Model.NumeroPedido
+                </b>
+            </div> -->
+        </div>
+        <div class="row mb-5">
+            <div class="col">
+                Faturamento:
+                <select class="form-pedido"
+                        id="faturamentoSelect"
+                        style="width: 8rem">
                         <option selected>Selecionar</option>
                         <option value="1">Aval</option>
                         <option value="2">Livre</option>
                         <option value="3">Promocional</option>
-                    </select>
-                </div>
-                <div class="col">
-                    Prazo de Pagamento:
-                    <select class="form-pedido"
-                            id="prazoPagamentoSelect"
-                            style="width: 8rem">
+                </select>
+            </div>
+            <div class="col">
+                Prazo de Pagamento:
+                <select class="form-pedido"
+                        id="prazoPagamentoSelect"
+                        style="width: 8rem">
                         <option selected>Selecionar</option>
                         <option value="1">Pagamento Antecipado</option>
                         <option value="2">15 DIAS</option>
@@ -64,20 +67,19 @@
                         <option value="3">028/035/042 DIAS</option>
                         <option value="3">035/042/049 DIAS</option>
                         <option value="3">021/028/035/042</option>
-                    </select>
-                </div>
-                <div class="col">
-                    Retirar Pedido na Fábrica:
-                    <select class="form-pedido"
-                            id="retiradaSelect"
-                            style="width: 8rem">
+                </select>
+            </div>
+            <div class="col">
+                Retirar Pedido na Fábrica:
+                <select class="form-pedido"
+                        id="retiradaSelect"
+                        style="width: 8rem">
                         <option selected>Selecionar</option>
                         <option value="1">Sim</option>
                         <option value="2">Não</option>
-                    </select>
-                </div>
+                </select>
             </div>
-        </form>
+        </div>
     </div>
 </div>
 
@@ -124,124 +126,125 @@
         <h6 class="m-0 font-weight-bold titulo-card">Cliente</h6>
     </div>
     <div class="card-body">
-            <div class="row mb-5">
-                <div class="col">
-                    Razão Social: <b class="titulo-card linha-cliente" id="cliente-razao_social"></b>
-                </div>
-                <div class="col">
-                    Denominação: <b class="titulo-card linha-cliente" id="cliente-denominacao"></b>
-                </div>
-                <div class="col">
-                    CNPJ/CPF: <b class="titulo-card linha-cliente" id="cliente-cnpj"></b>
-                </div>
-                <div class="col">
-                    Cidade: <b class="titulo-card linha-cliente" id="cliente-cidade"></b>
-                </div>
-            </div>
-
-            <div class="row mb-5">
-                <div class="col">
-                    Bairro: <b class="titulo-card linha-cliente" id="cliente-bairro"></b>
-                </div>
-                <div class="col">
-                    CEP: <b class="titulo-card linha-cliente" id="cliente-cep"></b>
-                </div>
-                <div class="col">
-                Endereço/N°: <b class="titulo-card linha-cliente" id="cliente-endereco"></b>
-                </div>
-                <div class="col">
-                    Estado: <b class="titulo-card linha-cliente" id="cliente-estado"></b>
-                </div>
-            </div>
-            <div class="row mb-5">
-                <div class="col">
-                    Insc.Est: <b class="titulo-card linha-cliente" id="cliente-insc_est"></b>
-                </div>
-                <div class="col">
-                    Telefone: <b class="titulo-card linha-cliente" id="cliente-telefone"></b>
-                </div>
-                <div class="col">
-                    Email: <b class="titulo-card linha-cliente" id="cliente-email"></b>
-                </div>
-                <div class="col">
-                    Fax: <b class="titulo-card linha-cliente" id="cliente-fax"></b>
-                </div>
-            </div>
-            <div class="row mb-5">
-                <div class="col">
-                    Desconto:
-                    <label class="visually-hidden" for="inputDesconto">Desconto</label>
-                    <input type="text"
-                           class="form-desconto"
-                           id="inputDesconto"
-                           placeholder="0,00%"
-                           style="width: 6rem" />
-                    <select class="form-pedido"
-                            id="seletorDesconto"
-                            style="width: 6rem" disabled>
-                        <option selected>Selecionar</option>
-                        <option value="1">Nota Fiscal</option>
-                        <option value="2">Boleto</option>
-                    </select>
-                </div>
-                <div class="col">
-                    N° Pedido Cliente:
-                    <label class="visually-hidden" for="specificSizeInputName">Desconto</label>
-                    <input type="text"
-                           class="form-desconto"
-                           id="specificSizeInputName"
-                           placeholder=""
-                           style="width: 7rem" />
-                </div>
-                <div class="col">
-                    Entrega:
-                    <select class="form-pedido"
-                            id="specificSizeSelect"
-                            style="width: 8rem">
-                        <option selected>Selecionar</option>
-                        <option value="1">Imediata</option>
-                        <option value="2">Programada</option>
-                    </select>
-                </div>
-
+        <div class="row mb-5">
             <div class="col">
-                Necessidade Agendamento
+                Razão Social: <b class="titulo-card linha-cliente" id="cliente-razao_social"></b>
+                <input id="input-cod-cli" type="hidden" class="form-control" value="" disabled />
+            </div>
+            <div class="col">
+                Denominação: <b class="titulo-card linha-cliente" id="cliente-denominacao"></b>
+            </div>
+            <div class="col">
+                CNPJ/CPF: <b class="titulo-card linha-cliente" id="cliente-cnpj"></b>
+            </div>
+            <div class="col">
+                Cidade: <b class="titulo-card linha-cliente" id="cliente-cidade"></b>
+            </div>
+        </div>
+        <div class="row mb-5">
+            <div class="col">
+                Bairro: <b class="titulo-card linha-cliente" id="cliente-bairro"></b>
+            </div>
+            <div class="col">
+                CEP: <b class="titulo-card linha-cliente" id="cliente-cep"></b>
+            </div>
+            <div class="col">
+                Endereço/N°: <b class="titulo-card linha-cliente" id="cliente-endereco"></b>
+            </div>
+            <div class="col">
+                Estado: <b class="titulo-card linha-cliente" id="cliente-estado"></b>
+            </div>
+        </div>
+        <div class="row mb-5">
+            <div class="col">
+                Insc.Est: <b class="titulo-card linha-cliente" id="cliente-insc_est"></b>
+            </div>
+            <div class="col">
+                Telefone: <b class="titulo-card linha-cliente" id="cliente-telefone"></b>
+            </div>
+            <div class="col">
+                Email: <b class="titulo-card linha-cliente" id="cliente-email"></b>
+            </div>
+            <div class="col">
+                Fax: <b class="titulo-card linha-cliente" id="cliente-fax"></b>
+            </div>
+        </div>
+        <div class="row mb-5">
+            <div class="col">
+                Desconto:
+                <label class="visually-hidden" for="inputDesconto">Desconto</label>
+                <input type="text"
+                        class="form-desconto"
+                        id="inputDesconto"
+                        placeholder="0,00%"
+                        style="width: 6rem" />
+                
                 <select class="form-pedido"
-                        id="agendamentoSelect"
-                        style="width: 8rem">
+                        id="seletorDesconto"
+                        style="width: 6rem" disabled>
                     <option selected>Selecionar</option>
-                    <option value="1">Sim</option>
-                    <option value="2">Não</option>
+                    <option value="1">Nota Fiscal</option>
+                    <option value="2">Boleto</option>
                 </select>
             </div>
-                <div class="col">
-                    Data Prog. Fat.:
-                    <label class="visually-hidden" for="specificSizeInputName">Data Programada Faturamento</label>
-                    <input type="date"
-                           class="form-desconto"
-                           id="specificSizeInputName"
-                           placeholder=""
-                           style="width: 11rem" />
-                </div>
+            <div class="col">
+                N° Pedido Cliente:
+                <label class="visually-hidden" for="specificSizeInputName">Desconto</label>
+                <input type="text"
+                        class="form-desconto"
+                        id="num-ped-cli"
+                        placeholder=""
+                        style="width: 7rem" />
             </div>
-            <div class="row mb-5">
-                <div class="col">
-                    Natureza da Venda:
-                    <select class="form-pedido"
-                            id="specificSizeSelect"
-                            style="width: 8rem">
-                        <option selected>Selecionar</option>
-                        <option value="1">Imediata</option>
-                        <option value="2">Programada</option>
-                    </select>
-                </div>
+            <div class="col">
+                Entrega:
+                <select class="form-pedido"
+                        id="ent-ped"
+                        style="width: 8rem">
+                    <option selected>Selecionar</option>
+                    <option value="1">Imediata</option>
+                    <option value="2">Programada</option>
+                </select>
             </div>
-            <div class="row mb-5">
-                <div class="col">
-                    Observação:
-                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="4"></textarea>
-                </div>
+
+        <div class="col">
+            Necessidade Agendamento
+            <select class="form-pedido"
+                    id="agendamentoSelect"
+                    style="width: 8rem">
+                <option selected>Selecionar</option>
+                <option value="1">Sim</option>
+                <option value="2">Não</option>
+            </select>
+        </div>
+            <div class="col">
+                Data Prog. Fat.:
+                <label class="visually-hidden" for="specificSizeInputName">Data Programada Faturamento</label>
+                <input type="date"
+                        class="form-desconto"
+                        id="data-prog-ft"
+                        placeholder=""
+                        style="width: 11rem" />
             </div>
+        </div>
+        <div class="row mb-5">
+            <div class="col">
+                Natureza da Venda:
+                <select class="form-pedido"
+                        id="nat-vend"
+                        style="width: 8rem">
+                    <option selected>Selecionar</option>
+                    <option value="1">Imediata</option>
+                    <option value="2">Programada</option>
+                </select>
+            </div>
+        </div>
+        <div class="row mb-5">
+            <div class="col">
+                Observação:
+                <textarea class="form-control" id="obs-ped" rows="4"></textarea>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -283,7 +286,6 @@
         </div>
     </div>
 
-    <!-- CARD DADOS DO PRODUTO-->
     <div class="card shadow mb-4">
         <div class="card-header py-3">
             <h6 class="m-0 font-weight-bold titulo-card">
@@ -313,10 +315,9 @@
     </div>
         <div class="col-12 text-end">
             <button id="salvarDados" type="button" class="btn corelementos">Salvar</button>
-            <button type="submit" class="btn corelementos">Enviar Pedido</button>
+            <button id="send-dados" type="button" class="btn corelementos">Enviar Pedido</button>
         </div>
     </div>
-</div>
 
 <a class="back-to-top" href="#"><i class="fas fa-angle-up"></i></a>
 

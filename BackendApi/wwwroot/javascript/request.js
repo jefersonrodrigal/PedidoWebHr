@@ -45,6 +45,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 return response.json();
             })
             .then(cliente => {
+                console.log(cliente)
                 const linha = document.createElement("tr");
                 linha.classList.add("linha-cliente-tb")
                 linha.innerHTML = `
@@ -58,6 +59,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 // Atualiza os campos de cliente
                 document.getElementById('cliente-razao_social').textContent = cliente.nom_cli;
+                document.getElementById('input-cod-cli').value = cliente.cod_cli
                 document.getElementById('cliente-denominacao').textContent = cliente.nom_fant_cli;
                 document.getElementById('cliente-cnpj').textContent = cliente.cgccpf;
                 document.getElementById('cliente-cidade').textContent = cliente.cidade;
