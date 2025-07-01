@@ -1,4 +1,6 @@
-﻿namespace BackendApi.Models
+﻿using BackendApi.Enums;
+
+namespace BackendApi.Models
 {
     public class PedidoModel
     {

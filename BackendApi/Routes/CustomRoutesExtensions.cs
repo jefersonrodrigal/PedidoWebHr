@@ -32,7 +32,6 @@
                 pattern: "pedidos/busca-pedido",
                 defaults: new {controller = "Pedido", action = "PegarUltimosPedidos" });
 
-
             endpoint.MapControllerRoute(
                 name: "createpedido",
                 pattern: "pedidos/lancamento-pedido",
@@ -47,6 +46,12 @@
                 name: "createpedidobuscaproduto",
                 pattern: "pedidos/lancamento-pedido/busca-produto/{produto}",
                 defaults: new { controller = "Pedido", action = "GetProductFromFormToGenerateOrder" });
+
+            endpoint.MapControllerRoute(
+                name: "CreatePedido",
+                pattern: "pedidos/lancamento-pedido/lancamento",
+                defaults: new { controller = "Pedido", action = "CreateOrder" });
+        
         }
 
         public static void ClienteRouters(this IEndpointRouteBuilder endpoint)
