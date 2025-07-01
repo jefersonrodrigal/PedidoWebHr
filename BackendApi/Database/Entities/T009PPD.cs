@@ -19,21 +19,13 @@
         public DateTime? UsuDatprv { get; set; }
 
         public short? UsuPedime { get; set; }
-
         public short? UsuTipfat { get; set; }
-
         public short? UsuNatope { get; set; }
-
         public decimal? UsuPerdsc { get; set; }
-
         public int? UsuNumped { get; set; }
-
         public int? UsuNumpe2 { get; set; }
-
         public short? UsuSitppd { get; set; }
-
         public string? UsuCiffob { get; set; }
-
         public string? UsuCodcrt { get; set; }
 
         public short? UsuCodfpg { get; set; }

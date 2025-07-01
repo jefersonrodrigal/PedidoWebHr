@@ -49,7 +49,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 const linha = document.createElement("tr");
                 linha.classList.add("linha-cliente-tb")
                 linha.innerHTML = `
-                    <th scope="row">${cliente.nom_cli}</th>
+                    <th scope="row">${cliente.nomCli}</th>
                     <td>${formatarCnpj(cliente.cgccpf)}</td>
                     <td>${cliente.endereco}</td>
                     <td>${cliente.contato}</td>
@@ -58,18 +58,18 @@ document.addEventListener("DOMContentLoaded", () => {
                 tbody.appendChild(linha);
 
                 // Atualiza os campos de cliente
-                document.getElementById('cliente-razao_social').textContent = cliente.nom_cli;
-                document.getElementById('input-cod-cli').value = cliente.cod_cli
-                document.getElementById('cliente-denominacao').textContent = cliente.nom_fant_cli;
+                document.getElementById('cliente-razao_social').textContent = cliente.nomCli;
+                document.getElementById('input-cod-cli').value = cliente.codCli
+                document.getElementById('cliente-denominacao').textContent = cliente.nomFantCli;
                 document.getElementById('cliente-cnpj').textContent = cliente.cgccpf;
                 document.getElementById('cliente-cidade').textContent = cliente.cidade;
                 document.getElementById('cliente-bairro').textContent = cliente.bairro;
-                document.getElementById('cliente-cep').textContent = cliente.cep_cli;
+                document.getElementById('cliente-cep').textContent = cliente.cepCli;
                 document.getElementById('cliente-endereco').textContent = cliente.endereco;
-                document.getElementById('cliente-estado').textContent = cliente.uf_cli;
-                document.getElementById('cliente-insc_est').textContent = cliente.insc_estadual;
+                document.getElementById('cliente-estado').textContent = cliente.ufCli;
+                document.getElementById('cliente-insc_est').textContent = cliente.inscEstadual;
                 document.getElementById('cliente-telefone').textContent = cliente.contato;
-                document.getElementById('cliente-email').textContent = cliente.email_cli;
+                document.getElementById('cliente-email').textContent = cliente.emailCli;
                 document.getElementById('cliente-fax').textContent = cliente.fax;
 
                 const overlay = document.getElementById('overlay');
@@ -112,14 +112,14 @@ document.addEventListener("DOMContentLoaded", () => {
                 const tbody = document.getElementById("tbl-dados-produtos");
                 const linha = document.createElement("tr");
 
-                const priceId = `price-${prod.cod_pro}`;
-                const qtyId = `qty-${prod.cod_pro}`;
-                const totalId = `total-${prod.cod_pro}`;
+                const priceId = `price-${prod.codPro}`;
+                const qtyId = `qty-${prod.codPro}`;
+                const totalId = `total-${prod.codPro}`;
 
                 linha.innerHTML = `
-             <td>${prod.cod_pro}</td>
-             <td>${prod.desc_pro}</td>
-             <td>${prod.unimed}</td>
+             <td>${prod.codPro}</td>
+             <td>${prod.desNfv}</td>
+             <td>${prod.uniMed}</td>
              <td>
                  <input type="text" class="form-control price-input" id="${priceId}" placeholder="R$ 0,00" required />
              </td>
@@ -188,4 +188,90 @@ document.addEventListener("DOMContentLoaded", () => {
             });
     });
 
+    const btnSendPedido = document.getElementById("send-dados");
+    btnSendPedido.addEventListener("click", () => {
+
+        // Cabeçalho
+        const datEmi = document.getElementById("data-lancamento").value;
+        const obsPed = document.getElementById('obs-ped').value;
+        const codCli = parseInt(document.getElementById('input-cod-cli').value);
+        const codRep = parseInt(document.getElementById("cod-representante").value);
+        const codCpg = parseInt(document.getElementById("prazoPagamentoSelect").value);
+        const pedCli = document.getElementById('num-ped-cli').value;
+        const datPrv = document.getElementById('data-prog-ft').value;
+        const pedIme = parseInt(document.getElementById('ent-ped').value);
+        const tipFat = parseInt(document.getElementById("faturamentoSelect").value);
+        const natOpe = parseInt(document.getElementById('nat-vend').value);
+        const perDsc = parseFloat(document.getElementById('inputDesconto').value);
+        const sitPpd = document.getElementById("status-pedido").value;
+        const tipDis = parseInt(document.getElementById('seletorDesconto').value);
+        const retMer = document.getElementById('retiradaSelect').value;
+        const necAge = document.getElementById('agendamentoSelect').value;
+        
+        // Dados Produto
+        const tabelaDestino = document.getElementById("dados-produtos-pedido").querySelector("tbody");
+        const linhasDestino = tabelaDestino.querySelectorAll("tr");
+
+        const products = [];
+
+        linhasDestino.forEach(linha => {
+            const colunas = linha.querySelectorAll("td");
+            const obj = {};
+
+            if (colunas.length >= 4) {
+                obj.codPro = colunas[0].textContent.trim();
+                obj.qtdPed = parseFloat(colunas[4].textContent.trim());
+                obj.desNfv = colunas[1].textContent.trim();
+                obj.uniMed = colunas[2].textContent.trim();
+                obj.preUni = parseFloat(colunas[3].textContent.trim().slice(3));
+                obj.vlrTot = parseFloat(colunas[5].textContent.trim().slice(3));
+
+                products.push(obj);
+            }
+        });
+
+        const dadosPedido = {
+            datEmi,
+            obsPed,
+            codCli,
+            codRep,
+            codCpg,
+            pedCli,
+            datPrv,
+            pedIme,
+            tipFat,
+            natOpe,
+            perDsc,
+            sitPpd,
+            tipDis,
+            retMer,
+            necAge,
+            products
+        }
+
+        async function sendData(data) {
+            try {
+                const response = await fetch("https://localhost:7121/pedidos/lancamento-pedido/lancamento", {
+                    method: 'POST',
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(data)
+                });
+
+                const content = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(content.message || "Erro ao enviar dados");
+                }
+
+                console.log('Sucesso', content);
+            } catch (error) {
+                console.log('Erro na requisição:', error.message);
+            }
+        }
+
+        sendData(dadosPedido)
+
+    })
+
+   
 })

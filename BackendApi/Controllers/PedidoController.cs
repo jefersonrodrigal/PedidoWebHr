@@ -1,12 +1,15 @@
 ﻿using BackendApi.Database.Context;
+using BackendApi.Database.Entities;
 using BackendApi.Extensions;
 using BackendApi.Models;
 using BackendApi.ViewModels;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 using System.Security.Claims;
+using System.Text.Json;
 using System.Text.RegularExpressions;
 
 namespace BackendApi.Controllers
@@ -250,24 +253,77 @@ namespace BackendApi.Controllers
 
             if (query != null)
             {
-                ProdutoModel product = new ProdutoModel()
+                ProductModel product = new ProductModel()
                 {
-                    CodPro = query.Codpro,
-                    DescPro = query.Despro,
+                    Codpro = query.Codpro,
+                    Desnfv = query.Desnfv,
                     Unimed = query.Unimed,
-                    PreUni = query.UsuPreuni
+                    Codagc = query.Codagc,
+                    Codfam = query.Codfam,
+                    Finrec = query.UsuFinrec,
+                   
                 };
-                Console.WriteLine(product.PreUni);
+                
                 return Ok(product);
             }
 
             return NotFound();
         }
 
-        
+        [Authorize]
         [HttpPost]
-        public IActionResult CreateOrder()
+        public IActionResult CreateOrder([FromBody] DataPedidoViewModel data)
         {
+            var numPpd = _context.Usu_t009ppd.Max(x => x.UsuNumppd);
+            bool resp = DateTime.TryParse(data.DatPrv, out DateTime datPrv);
+            bool res = DateTime.TryParse(data.DatEmi, out DateTime datEmi);
+            string retMer = data.RetMer == "1" ? "s" : "n";
+            short sitPpd = (short)(data.SitPpd == "Não Enviado" ? 1 : 2);
+
+            T009PPD modelppd = new T009PPD()
+            {
+                UsuNumppd = numPpd + 1,
+                UsuObsped = data.ObsPed,
+                UsuCodcli = data.CodCli,
+                UsuCodrep = data.CodRep,
+                UsuCodcpg = data.CodCpg,
+                UsuPedcli = data.PedCli,
+                UsuDatprv = datPrv,
+                UsuPedime = data.PedIme,
+                UsuTipfat = data.TipFat,
+                UsuNatope = data.NatOpe,
+                UsuPerdsc = data.PerDsc,
+                UsuSitppd = sitPpd,
+                UsuTipdis = data.TiPdis,
+                UsuRetmer = retMer,
+                UsuDatemi = datEmi,
+                UsuNecage = data.NecAge,
+
+            };
+
+            _context.Usu_t009ppd.Add(modelppd);
+
+            short seqIpd = 1;
+            foreach (var item in data.Products)
+            {
+                T009PPI product = new T009PPI()
+                {
+                    UsuNumppd = numPpd,
+                    UsuCodpro = item.Codpro,
+                    UsuUnimed = item.Unimed,
+                    UsuDesnfv = item.Desnfv,
+                    UsuVlrtot = item.Vlrtot,
+                    UsuPreuni = item.Preuni,
+                    UsuQtdped = item.Qtdped,
+                    UsuSeqipd = seqIpd
+                    
+                };
+                seqIpd++;
+
+                _context.Usu_t009ppi.Add(product);
+                _context.SaveChanges();
+            }
+
             return Ok();
         }
     }

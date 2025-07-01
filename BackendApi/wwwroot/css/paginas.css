@@ -324,3 +324,7 @@ html {
 #button-logout{
     box-shadow:none;
 }
+
+.pedido-sucesso {
+    text-align: center;
+}

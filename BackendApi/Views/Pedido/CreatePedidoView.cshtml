@@ -315,11 +315,36 @@
     </div>
         <div class="col-12 text-end">
             <button id="salvarDados" type="button" class="btn corelementos">Salvar</button>
-            <button id="send-dados" type="button" class="btn corelementos">Enviar Pedido</button>
+            <button id="send-dados" type="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop" class="btn corelementos">Enviar Pedido</button>
         </div>
     </div>
 
 <a class="back-to-top" href="#"><i class="fas fa-angle-up"></i></a>
+
+<!-- Modal Confirmação Pedido Enviado -->
+<div class="modal fade" id="staticBackdrop" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="container">
+                    <div class="row-fluid">
+                        <div class="span12 pedido-sucesso">
+                            <img src="~/img/gif_pedido.gif" alt="Pedido Enviado com Sucesso" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <p class="text-center">Pedido Enviado com Sucesso</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 <div>
     <script src="~/javascript/saveOnLocalStorage.js"></script>
