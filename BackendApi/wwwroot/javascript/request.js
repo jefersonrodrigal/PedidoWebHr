@@ -106,20 +106,22 @@ document.addEventListener("DOMContentLoaded", () => {
         fetch(url)
             .then(response => {
                 if (!response.ok) throw new Error("Produto não encontrado.");
+                
                 return response.json();
             })
             .then(prod => {
+                console.log(prod)
                 const tbody = document.getElementById("tbl-dados-produtos");
                 const linha = document.createElement("tr");
 
-                const priceId = `price-${prod.codPro}`;
-                const qtyId = `qty-${prod.codPro}`;
-                const totalId = `total-${prod.codPro}`;
+                const priceId = `price-${prod.codpro}`;
+                const qtyId = `qty-${prod.codpro}`;
+                const totalId = `total-${prod.codpro}`;
 
                 linha.innerHTML = `
-             <td>${prod.codPro}</td>
-             <td>${prod.desNfv}</td>
-             <td>${prod.uniMed}</td>
+             <td>${prod.codpro}</td>
+             <td>${prod.desnfv}</td>
+             <td>${prod.unimed}</td>
              <td>
                  <input type="text" class="form-control price-input" id="${priceId}" placeholder="R$ 0,00" required />
              </td>

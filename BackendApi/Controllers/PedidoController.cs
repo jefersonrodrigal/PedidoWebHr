@@ -4,12 +4,10 @@ using BackendApi.Extensions;
 using BackendApi.Models;
 using BackendApi.ViewModels;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 using System.Security.Claims;
-using System.Text.Json;
 using System.Text.RegularExpressions;
 
 namespace BackendApi.Controllers
@@ -198,14 +196,14 @@ namespace BackendApi.Controllers
 
         [Authorize]
         [HttpGet]
-        public ActionResult RenderPageLancamentoPedido()
+        public async Task<ActionResult> RenderPageLancamentoPedido()
         {
 
-            var result = _context.E090rep.Select(x => new RepresentanteModel
+            var result = await _context.E090rep.Select(x => new RepresentanteModel
             {
                 CodRep = x.Codrep,
                 NomRep = x.Nomrep,
-            }).FirstOrDefault(x => x.CodRep == Convert.ToInt32(User.FindFirstValue(ClaimTypes.UserData)));
+            }).FirstOrDefaultAsync(x => x.CodRep == Convert.ToInt32(User.FindFirstValue(ClaimTypes.UserData)));
 
             var numped = _context.Usu_t009ppd.Max(x => x.UsuNumppd);
 
@@ -220,9 +218,9 @@ namespace BackendApi.Controllers
 
         [Authorize]
         [HttpGet]
-        public IActionResult GetClientFormGeneratePerdido(string cliente)
+        public async Task<IActionResult> GetClientFormGeneratePerdido(string cliente)
         {
-            var query = _context.E085cli.FirstOrDefault(x => x.Cgccpf == Convert.ToInt64(cliente));
+            var query = await _context.E085cli.FirstOrDefaultAsync(x => x.Cgccpf == Convert.ToInt64(cliente));
 
             ClienteModel dataClient = new ClienteModel()
             {
@@ -247,9 +245,9 @@ namespace BackendApi.Controllers
 
         [Authorize]
         [HttpGet]
-        public IActionResult GetProductFromFormToGenerateOrder(string produto)
+        public async Task<IActionResult> GetProductFromFormToGenerateOrder(string produto)
         {
-            var query = _context.E075pros.FirstOrDefault(x => x.Codpro == produto && x.UsuPreuni != null);
+            var query = await _context.E075pros.FirstOrDefaultAsync(x => x.Codpro == produto && x.UsuPreuni != null);
 
             if (query != null)
             {
@@ -272,59 +270,68 @@ namespace BackendApi.Controllers
 
         [Authorize]
         [HttpPost]
-        public IActionResult CreateOrder([FromBody] DataPedidoViewModel data)
+        public async Task<IActionResult> CreateOrder([FromBody] DataPedidoViewModel data)
         {
-            var numPpd = _context.Usu_t009ppd.Max(x => x.UsuNumppd);
-            bool resp = DateTime.TryParse(data.DatPrv, out DateTime datPrv);
-            bool res = DateTime.TryParse(data.DatEmi, out DateTime datEmi);
-            string retMer = data.RetMer == "1" ? "s" : "n";
-            short sitPpd = (short)(data.SitPpd == "Não Enviado" ? 1 : 2);
-
-            T009PPD modelppd = new T009PPD()
+            try
             {
-                UsuNumppd = numPpd + 1,
-                UsuObsped = data.ObsPed,
-                UsuCodcli = data.CodCli,
-                UsuCodrep = data.CodRep,
-                UsuCodcpg = data.CodCpg,
-                UsuPedcli = data.PedCli,
-                UsuDatprv = datPrv,
-                UsuPedime = data.PedIme,
-                UsuTipfat = data.TipFat,
-                UsuNatope = data.NatOpe,
-                UsuPerdsc = data.PerDsc,
-                UsuSitppd = sitPpd,
-                UsuTipdis = data.TiPdis,
-                UsuRetmer = retMer,
-                UsuDatemi = datEmi,
-                UsuNecage = data.NecAge,
+                var numPpd = await _context.Usu_t009ppd.MaxAsync(x => x.UsuNumppd);
+                bool resp = DateTime.TryParse(data.DatPrv, out DateTime datPrv);
+                bool res = DateTime.TryParse(data.DatEmi, out DateTime datEmi);
+                string retMer = data.RetMer == "1" ? "s" : "n";
+                short sitPpd = (short)(data.SitPpd == "Não Enviado" ? 1 : 2);
 
-            };
-
-            _context.Usu_t009ppd.Add(modelppd);
-
-            short seqIpd = 1;
-            foreach (var item in data.Products)
-            {
-                T009PPI product = new T009PPI()
+                T009PPD modelppd = new T009PPD()
                 {
-                    UsuNumppd = numPpd,
-                    UsuCodpro = item.Codpro,
-                    UsuUnimed = item.Unimed,
-                    UsuDesnfv = item.Desnfv,
-                    UsuVlrtot = item.Vlrtot,
-                    UsuPreuni = item.Preuni,
-                    UsuQtdped = item.Qtdped,
-                    UsuSeqipd = seqIpd
-                    
+                    UsuNumppd = numPpd + 1,
+                    UsuObsped = data.ObsPed,
+                    UsuCodcli = data.CodCli,
+                    UsuCodrep = data.CodRep,
+                    UsuCodcpg = data.CodCpg,
+                    UsuPedcli = data.PedCli,
+                    UsuDatprv = datPrv,
+                    UsuPedime = data.PedIme,
+                    UsuTipfat = data.TipFat,
+                    UsuNatope = data.NatOpe,
+                    UsuPerdsc = data.PerDsc,
+                    UsuSitppd = sitPpd,
+                    UsuTipdis = data.TiPdis,
+                    UsuRetmer = retMer,
+                    UsuDatemi = datEmi,
+                    UsuNecage = data.NecAge,
+
                 };
-                seqIpd++;
 
-                _context.Usu_t009ppi.Add(product);
-                _context.SaveChanges();
+                _context.Usu_t009ppd.Add(modelppd);
+
+                short seqIpd = 1;
+                foreach (var item in data.Products)
+                {
+                    T009PPI product = new T009PPI()
+                    {
+                        UsuNumppd = numPpd + 1,
+                        UsuCodpro = item.Codpro,
+                        UsuUnimed = item.Unimed,
+                        UsuDesnfv = item.Desnfv,
+                        UsuVlrtot = item.Vlrtot,
+                        UsuPreuni = item.Preuni,
+                        UsuQtdped = item.Qtdped,
+                        UsuSeqipd = seqIpd
+
+                    };
+                    seqIpd++;
+
+                    _context.Usu_t009ppi.Add(product);
+
+                }
+                await _context.SaveChangesAsync();
+                
+                return StatusCode(201);
             }
-
-            return Ok();
+            catch(Exception error)
+            {
+                return BadRequest(error.Message);
+            }
         }
+
     }
 }
