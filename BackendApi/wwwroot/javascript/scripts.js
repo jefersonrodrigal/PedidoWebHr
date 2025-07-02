@@ -67,3 +67,10 @@ campoAnterior.addEventListener('input', function () {
         meuSeletor.disabled = true;
     }
 });
+
+// Formatacao de campo de desconto
+document.getElementById('inputDesconto').addEventListener('input', function (e) {
+    let valor = e.target.value.replace(/\D/g, '');
+    valor = (parseFloat(valor) / 100).toFixed(2) + '%';
+    e.target.value = valor.replace('.', ',');
+});

@@ -485,3 +485,6 @@ $RECYCLE.BIN/
 
 # Personal Files
 .github
+
+# Directory application log
+Logs/*

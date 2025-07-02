@@ -11,10 +11,12 @@ namespace BackendApi.ViewsControllers
     public class AccountController : Controller
     {
         private readonly ApplicationContext _context;
+        private readonly ILogger<AccountController> _logger;
 
-        public AccountController(ApplicationContext context)
+        public AccountController(ApplicationContext context, ILogger<AccountController> logger)
         {
             _context = context;
+            _logger = logger;
         }
 
         [HttpGet]
@@ -26,9 +28,10 @@ namespace BackendApi.ViewsControllers
         [HttpPost]
         public async Task<ActionResult> Login([FromForm] LoginViewModel user, int page=1, int pageSize=5)
         {
+            
+            
             if(ModelState.IsValid)
             {
-
                 var repres = await _context.E090rep.FirstOrDefaultAsync(x => x.Aperep == user.Username && x.Senrep == user.Password);
 
                 if (repres != null)

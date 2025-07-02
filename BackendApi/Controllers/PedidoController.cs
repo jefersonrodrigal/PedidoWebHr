@@ -12,14 +12,20 @@ using System.Text.RegularExpressions;
 
 namespace BackendApi.Controllers
 {
-    public class PedidoController(ApplicationContext context, IMemoryCache cache) : Controller
+    public class PedidoController : Controller
     {
-        private readonly ApplicationContext _context = context;
-        private readonly IMemoryCache _cache = cache;
+        private readonly ApplicationContext _context;
+        private readonly ILogger<PedidoController> _logger;
+
+        public PedidoController(ApplicationContext context, IMemoryCache cache, ILogger<PedidoController> logger)
+        {
+            _context = context;
+            _logger = logger;
+        }
 
         [Authorize]
         [HttpGet]
-        public async Task<IActionResult> PedidoRepresentanteAsync(string user, int page=1, int pageSize=2)
+        public async Task<IActionResult> OrderBySellerAsync(string user, int page=1, int pageSize=2)
         {
             try
             {
@@ -76,19 +82,15 @@ namespace BackendApi.Controllers
                         PageSize = totalPages
                     };
 
-                    if (!_cache.TryGetValue("ApplicationCache", out PainelViewModel? valor))
-                    {
-                        valor = viewModel;
-                        _cache.Set("ApplicationCache", valor, TimeSpan.FromSeconds(60));
-                    }
-
                     return View("Painel", viewModel);
                 }
+                _logger.LogInformation($"Representante {user} não encontrado no sistema");
                 return NotFound("Representante não encontrado");
 
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex.Message);
                 return BadRequest(ex.Message);
             }
             
@@ -96,7 +98,7 @@ namespace BackendApi.Controllers
 
         [Authorize]
         [HttpPost]
-        public async Task<IActionResult> PegarUltimosPedidos(BuscaPedidoViewModel request)
+        public async Task<IActionResult> GetLastOrders(BuscaPedidoViewModel request)
         {
             if(request.Cliente != null)
             {
@@ -190,13 +192,13 @@ namespace BackendApi.Controllers
                 }
 
             }
-
+            _logger.LogInformation($"{request.Cliente} Invalido");
             return BadRequest("Dado Invalido para pesquisa");
         }
 
         [Authorize]
         [HttpGet]
-        public async Task<ActionResult> RenderPageLancamentoPedido()
+        public async Task<ActionResult> RenderPageCreateOrder()
         {
 
             var result = await _context.E090rep.Select(x => new RepresentanteModel
@@ -218,29 +220,34 @@ namespace BackendApi.Controllers
 
         [Authorize]
         [HttpGet]
-        public async Task<IActionResult> GetClientFormGeneratePerdido(string cliente)
+        public async Task<IActionResult> GetClientFormGenerateOrder(string cliente)
         {
             var query = await _context.E085cli.FirstOrDefaultAsync(x => x.Cgccpf == Convert.ToInt64(cliente));
 
-            ClienteModel dataClient = new ClienteModel()
+            if(query != null)
             {
-                CodCli = query.Codcli,
-                NomFantCli = query.Apecli,
-                UfCli = query.Sigufs,
-                Contato = query.Foncli,
-                Contato2 = query.Foncl2,
-                Cgccpf = query.Cgccpf,
-                NomCli = query.Nomcli,
-                Endereco = query.Endcli,
-                CepCli = query.Cepcli,
-                Cidade = query.Cidcli,
-                EmailCli = query.Emanfe,
-                FaxCli =    query.Faxcli,
-                InscEstadual = query.Insest,
-                Bairro = query.Baicli
-            };
-
-            return Ok(dataClient);
+                ClienteModel dataClient = new ClienteModel()
+                {
+                    CodCli = query.Codcli,
+                    NomFantCli = query.Apecli,
+                    UfCli = query.Sigufs,
+                    Contato = query.Foncli,
+                    Contato2 = query.Foncl2,
+                    Cgccpf = query.Cgccpf,
+                    NomCli = query.Nomcli,
+                    Endereco = query.Endcli,
+                    CepCli = query.Cepcli,
+                    Cidade = query.Cidcli,
+                    EmailCli = query.Emanfe,
+                    FaxCli = query.Faxcli,
+                    InscEstadual = query.Insest,
+                    Bairro = query.Baicli
+                };
+                
+                return Ok(dataClient);
+            }
+            return NotFound("Cliente não encontrado");
+            
         }
 
         [Authorize]
@@ -264,8 +271,8 @@ namespace BackendApi.Controllers
                 
                 return Ok(product);
             }
-
-            return NotFound();
+            _logger.LogInformation($"Produto {produto} pesquisado não encontrado na base");
+            return NotFound("Produto não encontrado");
         }
 
         [Authorize]
@@ -275,8 +282,8 @@ namespace BackendApi.Controllers
             try
             {
                 var numPpd = await _context.Usu_t009ppd.MaxAsync(x => x.UsuNumppd);
-                bool resp = DateTime.TryParse(data.DatPrv, out DateTime datPrv);
-                bool res = DateTime.TryParse(data.DatEmi, out DateTime datEmi);
+                DateTime.TryParse(data.DatPrv, out DateTime datPrv);
+                DateTime.TryParse(data.DatEmi, out DateTime datEmi);
                 string retMer = data.RetMer == "1" ? "s" : "n";
                 short sitPpd = (short)(data.SitPpd == "Não Enviado" ? 1 : 2);
 
@@ -306,6 +313,10 @@ namespace BackendApi.Controllers
                 short seqIpd = 1;
                 foreach (var item in data.Products)
                 {
+                    var props = _context.E075pros.Where(x => x.Codpro == item.Codpro)
+                                                  .Select(x => new { x.Codagc, x.Codfam, x.UsuFinrec })
+                                                  .FirstOrDefault();
+
                     T009PPI product = new T009PPI()
                     {
                         UsuNumppd = numPpd + 1,
@@ -315,20 +326,25 @@ namespace BackendApi.Controllers
                         UsuVlrtot = item.Vlrtot,
                         UsuPreuni = item.Preuni,
                         UsuQtdped = item.Qtdped,
-                        UsuSeqipd = seqIpd
-
+                        UsuSeqipd = seqIpd,
+                        UsuCodagc = props.Codagc,
+                        UsuCodfam = props.Codfam,
+                        UsuFinrec = props.UsuFinrec
                     };
                     seqIpd++;
 
                     _context.Usu_t009ppi.Add(product);
 
                 }
+                
                 await _context.SaveChangesAsync();
+                _logger.LogInformation($"Pedido numero {numPpd + 1} enviado");
                 
                 return StatusCode(201);
             }
             catch(Exception error)
             {
+                _logger.LogError(error.Message);
                 return BadRequest(error.Message);
             }
         }

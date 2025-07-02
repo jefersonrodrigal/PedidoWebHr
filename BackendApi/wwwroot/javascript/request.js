@@ -131,8 +131,7 @@ document.addEventListener("DOMContentLoaded", () => {
              <td id="${totalId}">R$ 0,00</td>
              <td>
                  <button type="button" class="btn corelementos"><i class="fa fa-minus"></i></button>
-             </td>
-         `;
+             </td>`;
 
                 tbody.appendChild(linha);
 

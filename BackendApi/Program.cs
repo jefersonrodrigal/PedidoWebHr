@@ -5,6 +5,9 @@ using BackendApi.Routes;
 // using BackendApi.Database.Entityes;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
+using Serilog.Events;
+using Serilog.Filters;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
@@ -38,8 +41,8 @@ builder.Services.AddControllersWithViews()
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
     {
-        options.LoginPath = "/Account/Login";
-        options.AccessDeniedPath = "/";
+        options.LoginPath = "/";
+        // options.AccessDeniedPath = "/";
         options.Cookie.HttpOnly = true;
         options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
         options.ExpireTimeSpan = TimeSpan.FromMinutes(2);
@@ -51,6 +54,22 @@ builder.Services.AddAuthorization();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+Log.Logger = new LoggerConfiguration()
+    .MinimumLevel.Debug()
+    .WriteTo.File("Logs/geral.txt", rollingInterval: RollingInterval.Day)
+    .WriteTo.Logger(lca => lca
+        .Filter.ByIncludingOnly(Matching.FromSource("BackendApi.Controllers.AccountController"))
+        .WriteTo.File("Logs/account.txt", rollingInterval: RollingInterval.Day))
+    .WriteTo.Logger(lcc => lcc
+        .Filter.ByIncludingOnly(Matching.FromSource("BackendApi.Controllers.ClienteController"))
+        .WriteTo.File("Logs/cliente.txt", rollingInterval: RollingInterval.Day))
+    .WriteTo.Logger(lcp => lcp
+        .Filter.ByIncludingOnly(Matching.FromSource("BackendApi.Controllers.PedidoController"))
+        .WriteTo.File("Logs/pedido.txt", rollingInterval: RollingInterval.Day))
+    .CreateLogger();
+
+builder.Host.UseSerilog();
 
 var app = builder.Build();
 

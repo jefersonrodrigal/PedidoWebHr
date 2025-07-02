@@ -25,22 +25,22 @@
             endpoint.MapControllerRoute(
                 name: "pedidos",
                 pattern: "pedidos/representante/{user}",
-                defaults: new {controller= "Pedido", action= "PedidoRepresentante" });
+                defaults: new {controller= "Pedido", action= "OrderBySeller" });
 
             endpoint.MapControllerRoute(
                 name: "buscapedido",
                 pattern: "pedidos/busca-pedido",
-                defaults: new {controller = "Pedido", action = "PegarUltimosPedidos" });
+                defaults: new {controller = "Pedido", action = "GetLastOrders" });
 
             endpoint.MapControllerRoute(
                 name: "createpedido",
                 pattern: "pedidos/lancamento-pedido",
-                defaults: new { controller = "Pedido", action = "RenderPageLancamentoPedido" });
+                defaults: new { controller = "Pedido", action = "RenderPageCreateOrder" });
 
             endpoint.MapControllerRoute(
                 name: "createpedidobuscacliente",
                 pattern: "pedidos/lancamento-pedido/busca-cliente/{cliente}",
-                defaults: new { controller = "Pedido", action = "GetClientFormGeneratePerdido" });
+                defaults: new { controller = "Pedido", action = "GetClientFormGenerateOrder" });
 
             endpoint.MapControllerRoute(
                 name: "createpedidobuscaproduto",
