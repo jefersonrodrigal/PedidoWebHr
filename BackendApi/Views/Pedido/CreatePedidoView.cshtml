@@ -95,7 +95,7 @@
             <div class="row mb-2">
                 <div class="col">
                     <label class="visually-hidden" for="specificSizeInputName">Cliente</label>
-                    <input type="text" class="form-control" id="input-search-client" placeholder="Digite o Nome ou CPF" required />
+                    <input type="text" class="form-control" id="input-search-client" placeholder="Digite o CPF ou CNPJ" required />
                 </div>
                 <div class="col">
                     <button type="button" class="btn corelementos" id="btn-search-cliente">Buscar</button>
@@ -129,7 +129,7 @@
         <div class="row mb-5">
             <div class="col">
                 Razão Social: <b class="titulo-card linha-cliente" id="cliente-razao_social"></b>
-                <input id="input-cod-cli" type="hidden" class="form-control" value="" disabled />
+                <input required id="input-cod-cli" type="hidden" class="form-control" value="" disabled />
             </div>
             <div class="col">
                 Denominação: <b class="titulo-card linha-cliente" id="cliente-denominacao"></b>
@@ -315,7 +315,7 @@
     </div>
         <div class="col-12 text-end">
             <button id="salvarDados" type="button" class="btn corelementos">Salvar</button>
-            <button id="send-dados" type="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop" class="btn corelementos">Enviar Pedido</button>
+            <button id="send-dados" type="button" class="btn corelementos">Enviar Pedido</button>
         </div>
     </div>
 

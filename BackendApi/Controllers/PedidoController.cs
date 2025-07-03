@@ -327,9 +327,9 @@ namespace BackendApi.Controllers
                         UsuPreuni = item.Preuni,
                         UsuQtdped = item.Qtdped,
                         UsuSeqipd = seqIpd,
-                        UsuCodagc = props.Codagc,
-                        UsuCodfam = props.Codfam,
-                        UsuFinrec = props.UsuFinrec
+                        UsuCodagc = props.Codagc != null ? props.Codagc : "",
+                        UsuCodfam = props.Codfam != null ? props.Codfam : "",
+                        UsuFinrec = props.UsuFinrec != null ? props.UsuFinrec : 0
                     };
                     seqIpd++;
 

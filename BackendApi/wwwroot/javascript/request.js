@@ -39,6 +39,16 @@ document.addEventListener("DOMContentLoaded", () => {
         const cliente = document.getElementById("input-search-client").value.replace(/[^\d]/g, "");
         const url = `https://localhost:7121/pedidos/lancamento-pedido/busca-cliente/${cliente}`;
 
+        if (cliente === "") {
+            Swal.fire({
+                title: 'Alerta!',
+                text: 'Digite o CPF ou CNPJ do cliente para busca',
+                icon: 'warning',
+                confirmButtonText: 'Ok'
+            }); 
+            return;
+        }
+
         fetch(url)
             .then(response => {
                 if (!response.ok) throw new Error("Erro ao buscar os dados da API");
@@ -99,7 +109,12 @@ document.addEventListener("DOMContentLoaded", () => {
         const productInput = document.getElementById('input-search-products');
         const productName = productInput.value.trim();
 
-        if (!productName) return alert("Digite o nome ou código do produto.");
+        if (!productName) return Swal.fire({
+            title: 'Alerta!',
+            text: 'Digite o código do produto para buscar',
+            icon: 'warning',
+            confirmButtonText: 'Ok'
+        }); 
 
         const url = `https://localhost:7121/pedidos/lancamento-pedido/busca-produto/${encodeURIComponent(productName)}`;
 
@@ -190,7 +205,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     const btnSendPedido = document.getElementById("send-dados");
-    btnSendPedido.addEventListener("click", () => {
+    btnSendPedido.addEventListener("click", (event) => {
 
         // Cabeçalho
         const datEmi = document.getElementById("data-lancamento").value;
@@ -270,9 +285,22 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         }
 
+        
+        if (products.length === 0) {
+            Swal.fire({
+                title: 'Alerta!',
+                text: 'Necessario haver produtos para enviar o pedido',
+                icon: 'warning',
+                confirmButtonText: 'Ok'
+            }); 
+            
+            return;
+        }
+
+        const modal = new bootstrap.Modal(document.getElementById('staticBackdrop'));
         sendData(dadosPedido)
+        modal.show();
 
     })
 
-   
 })
