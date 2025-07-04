@@ -74,3 +74,67 @@ document.getElementById('inputDesconto').addEventListener('input', function (e) 
     valor = (parseFloat(valor) / 100).toFixed(2) + '%';
     e.target.value = valor.replace('.', ',');
 });
+
+
+// Formata cnpj e CPF 
+function formatarCpfCnpj(valor) {
+    // Remove tudo que não é número
+    valor = valor.replace(/\D/g, '');
+
+    if (valor.length <= 14) {
+        // Formata como CNPJ: 00.000.000/0000-00
+        valor = valor.replace(/^(\d{2})(\d)/, '$1.$2');
+        valor = valor.replace(/^(\d{2})\.(\d{3})(\d)/, '$1.$2.$3');
+        valor = valor.replace(/\.(\d{3})(\d)/, '.$1/$2');
+        valor = valor.replace(/(\d{4})(\d)/, '$1-$2');
+    } else {
+        // Formata como CPF: 000.000.000-00
+        valor = valor.replace(/(\d{3})(\d)/, '$1.$2');
+        valor = valor.replace(/(\d{3})(\d)/, '$1.$2');
+        valor = valor.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+    }
+
+    return valor;
+}
+
+document.querySelector('#input-search-client').addEventListener('input', function (e) {
+    e.target.value = formatarCpfCnpj(e.target.value);
+});
+
+const input = document.getElementById('input-search-products');
+
+input.addEventListener('input', function (e) {
+    let valor = e.target.value;
+
+    // Verifica se já tem um prefixo com traço
+    const match = valor.match(/^([A-Za-z]+)-(\d*)$/);
+    let prefixo = '';
+    let numeros = '';
+
+    if (match) {
+        prefixo = match[1];
+        numeros = match[2].replace(/\D/g, '');
+    } else {
+        // Se não tiver traço, assume o início como prefixo
+        const partes = valor.split('-');
+        prefixo = partes[0].replace(/[^A-Za-z]/g, '');
+        numeros = partes[1] ? partes[1].replace(/\D/g, '') : '';
+    }
+
+    // Formata com o prefixo atual
+    e.target.value = prefixo ? `${prefixo}-${numeros}` : numeros;
+});
+
+input.addEventListener('keydown', function (e) {
+    // Se pressionar backspace com cursor na primeira posição ou logo após o prefixo, limpa tudo
+    const pos = input.selectionStart;
+    if (e.key === 'Backspace' && pos <= 2) {
+        e.preventDefault();
+        input.value = '';
+    }
+});
+
+
+
+
+
