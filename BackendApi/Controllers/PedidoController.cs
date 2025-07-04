@@ -338,7 +338,7 @@ namespace BackendApi.Controllers
                 }
                 
                 await _context.SaveChangesAsync();
-                _logger.LogInformation($"Pedido numero {numPpd + 1} enviado");
+                _logger.LogInformation($"Pedido numero {numPpd + 1} enviado - status: 201");
                 
                 return StatusCode(201);
             }
@@ -349,5 +349,11 @@ namespace BackendApi.Controllers
             }
         }
 
+        [Authorize]
+        [HttpGet]
+        public IActionResult GetReportCommission(string user)
+        {
+            return View("Commission");
+        }
     }
 }

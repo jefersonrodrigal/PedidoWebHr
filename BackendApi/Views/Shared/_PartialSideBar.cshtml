@@ -13,16 +13,16 @@
             <i class="fa fa-caret-down"></i>
         </button>
         <div class="dropdown-container">
-            <a href="#" id="pedido_itens">Pré-Pedido</a>
+            <!--<a href="#" id="pedido_itens">Pré-Pedido</a>-->
             <a href="@Url.RouteUrl("createpedido")" id="pedido_itens">Lançar Pedido</a>
-            <a href="#" id = "pedido_itens" > Listar Pedidos</a>
+            <!--<a href="#" id ="pedido_itens" > Listar Pedidos</a>-->
         </div>
         <a href="@Url.RouteUrl("clientes", new { user = User.FindFirstValue(ClaimTypes.Name)})"
            class="list-group-item list-group-item-action corelementos p-3 fas fa-address-book text-gray-200">
             Clientes
         </a>
 
-        <a class="list-group-item list-group-item-action corelementos p-3" href="#!">
+        <a href="@Url.RouteUrl("relcomissao", new { user = User.FindFirstValue(ClaimTypes.Name)})" class="list-group-item list-group-item-action corelementos p-3">
             <i class="fas fa-file-alt text-gray-200"></i> Relatório Comissões
         </a>
 

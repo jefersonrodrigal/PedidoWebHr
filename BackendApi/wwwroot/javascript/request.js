@@ -44,7 +44,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 title: 'Alerta!',
                 text: 'Digite o CPF ou CNPJ do cliente para busca',
                 icon: 'warning',
-                confirmButtonText: 'Ok'
+                confirmButtonText: 'Ok',
+                customClass: {
+                    confirmButton: 'btn corelementos'
+                }                
             }); 
             return;
         }
@@ -113,7 +116,10 @@ document.addEventListener("DOMContentLoaded", () => {
             title: 'Alerta!',
             text: 'Digite o código do produto para buscar',
             icon: 'warning',
-            confirmButtonText: 'Ok'
+            confirmButtonText: 'Ok',
+            customClass: {
+                confirmButton: 'btn corelementos'
+            }  
         }); 
 
         const url = `https://localhost:7121/pedidos/lancamento-pedido/busca-produto/${encodeURIComponent(productName)}`;
@@ -291,7 +297,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 title: 'Alerta!',
                 text: 'Necessario haver produtos para enviar o pedido',
                 icon: 'warning',
-                confirmButtonText: 'Ok'
+                confirmButtonText: 'Ok',
+                customClass: {
+                    confirmButton: 'btn corelementos'
+                }  
             }); 
             
             return;

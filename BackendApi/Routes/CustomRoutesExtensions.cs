@@ -51,7 +51,11 @@
                 name: "CreatePedido",
                 pattern: "pedidos/lancamento-pedido/lancamento",
                 defaults: new { controller = "Pedido", action = "CreateOrder" });
-        
+
+            endpoint.MapControllerRoute(
+              name: "relcomissao",
+              pattern: "pedidos/comissao-vendas/relatorio/{user}",
+              defaults: new { controller = "Pedido", action = "GetReportCommission" });
         }
 
         public static void ClienteRouters(this IEndpointRouteBuilder endpoint)
