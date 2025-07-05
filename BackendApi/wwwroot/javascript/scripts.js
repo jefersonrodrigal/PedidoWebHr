@@ -117,7 +117,7 @@ input.addEventListener('input', function (e) {
     } else {
         // Se não tiver traço, assume o início como prefixo
         const partes = valor.split('-');
-        prefixo = partes[0].replace(/[^A-Za-z]/g, '');
+        prefixo = partes[0].replace(/[^A-Za-z]/g, '').toUpperCase();
         numeros = partes[1] ? partes[1].replace(/\D/g, '') : '';
     }
 
