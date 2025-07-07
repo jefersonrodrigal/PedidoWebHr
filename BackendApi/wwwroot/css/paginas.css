@@ -11,6 +11,10 @@ body {
   background-color: #fcfcfc;
 }
 
+.titulo-card {
+    color: #232225;
+}
+
 .titulo-card{
   color: #232225;
 }
@@ -327,4 +331,22 @@ html {
 
 .pedido-sucesso {
     text-align: center;
+}
+.drop-menu-item {
+    margin-top: 0.05rem;
+    margin-right: 0.5rem;
+}
+
+.drop-menu-item button {
+    padding: 0;
+    border: none;
+    background-color: none;
+    color: #858796;
+    text-decoration: none;
+    box-shadow: none;
+}
+
+.drop-menu-item button:hover {
+    background-color: #fcfcfc;
+    color: #212529;
 }

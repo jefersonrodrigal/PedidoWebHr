@@ -13,11 +13,20 @@
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav ms-auto mt-2 mt-lg-0 align-items-center">
-                <li class="nav-item active">
+                <li class="nav-item active mt-1">
                     <a class="nav-link" href="#">
                         <i class="fas fa-user-circle text-gray-200"></i> @User.FindFirstValue(ClaimTypes.Name)
                     </a>
                 </li>
+                <div class="dropdown drop-menu-item">
+                    <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        HIPERROLL EMBALAGENS
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#">HIPERROLL EMBALAGENS</a></li>
+                        <li><a class="dropdown-item" href="#">Embala Papel</a></li>
+                    </ul>
+                </div>
                 <li class="nav-item active">
                     <form asp-controller="Account" asp-action="Logout" method="post" class="d-inline">
                         @Html.AntiForgeryToken()

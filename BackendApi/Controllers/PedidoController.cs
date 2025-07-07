@@ -254,6 +254,13 @@ namespace BackendApi.Controllers
         [HttpGet]
         public async Task<IActionResult> GetProductFromFormToGenerateOrder(string produto)
         {
+            /*
+                List<string> codori = new List<string>()
+                {
+                    "PSC"
+                };
+            */
+
             var query = await _context.E075pros.FirstOrDefaultAsync(x => x.Codpro == produto && x.UsuPreuni != null);
 
             if (query != null)
@@ -305,6 +312,7 @@ namespace BackendApi.Controllers
                     UsuRetmer = retMer,
                     UsuDatemi = datEmi,
                     UsuNecage = data.NecAge,
+                    UsuCodemp = 99
 
                 };
 
@@ -329,7 +337,8 @@ namespace BackendApi.Controllers
                         UsuSeqipd = seqIpd,
                         UsuCodagc = props.Codagc != null ? props.Codagc : "",
                         UsuCodfam = props.Codfam != null ? props.Codfam : "",
-                        UsuFinrec = props.UsuFinrec != null ? props.UsuFinrec : 0
+                        UsuFinrec = props.UsuFinrec != null ? props.UsuFinrec : 0,
+                        UsuCodemp = 99
                     };
                     seqIpd++;
 

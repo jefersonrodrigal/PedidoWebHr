@@ -4,7 +4,8 @@
     <div class="sidebar-heading corelementos"><a href="pedidos.html" style="text-decoration: none; color: inherit;"><dt> Pedido.Net</dt></a></div>
     <div class="list-group list-group-flush">
         <a href="@Url.RouteUrl("pedidos", new { user = User.FindFirstValue(ClaimTypes.Name) })"
-           class="list-group-item list-group-item-action corelementos p-3 fas fas fa-list-alt text-gray-200">
+           class="list-group-item list-group-item-action corelementos p-3 text-gray-200">
+            <i class="fas fa-search"></i>
             Consulta Pedidos
         </a>
 
@@ -18,7 +19,8 @@
             <!--<a href="#" id ="pedido_itens" > Listar Pedidos</a>-->
         </div>
         <a href="@Url.RouteUrl("clientes", new { user = User.FindFirstValue(ClaimTypes.Name)})"
-           class="list-group-item list-group-item-action corelementos p-3 fas fa-address-book text-gray-200">
+           class="list-group-item list-group-item-action corelementos p-3 text-gray-200">
+            <i class="fas fa-address-book "></i>
             Clientes
         </a>
 

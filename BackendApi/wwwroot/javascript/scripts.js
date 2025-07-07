@@ -134,6 +134,18 @@ input.addEventListener('keydown', function (e) {
     }
 });
 
+$(function () {
+    $('#send-dados').on('click', function () {
+
+        $('.sucesso-modal').modal('show');
+
+        setTimeout(function () {
+            $('.sucesso-modal').modal('hide');
+            location.reload();
+        }, 3000);
+    });
+});
+
 
 
 
