@@ -12,7 +12,6 @@ btnRemoveClient.addEventListener("click", () => {
 })
 
 document.querySelector("#dados-produtos").addEventListener("click", function (e) {
-    console.log("Encontrei a tabela")
     if (e.target.closest(".corelementos")) {
         const linha = e.target.closest("tr");
         if (linha) {

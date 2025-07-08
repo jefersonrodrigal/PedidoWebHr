@@ -58,7 +58,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 return response.json();
             })
             .then(cliente => {
-                console.log(cliente)
                 const linha = document.createElement("tr");
                 linha.classList.add("linha-cliente-tb")
                 linha.innerHTML = `
@@ -127,7 +126,7 @@ document.addEventListener("DOMContentLoaded", () => {
         fetch(url)
             .then(response => {
                 if (!response.ok) throw new Error("Produto não encontrado.");
-                
+
                 return response.json();
             })
             .then(prod => {
@@ -198,20 +197,21 @@ document.addEventListener("DOMContentLoaded", () => {
                 inputQty.addEventListener('input', atualizarTotal);
             })
             .catch(error => {
-                console.error("Erro ao buscar produto:", error);
-                /*
-                const errorModalBody = document.getElementById("errorModalBody");
-                errorModalBody.textContent = "Erro ao buscar produto: " + error.message;
-   
-                // Exibir o modal
-                const modal = new bootstrap.Modal(document.getElementById('errorModal'));
-                modal.show();
-                */
+                Swal.fire({
+                    title: 'Alerta!',
+                    text: `${error}`,
+                    icon: 'error',
+                    confirmButtonText: 'Ok',
+                    customClass: {
+                        confirmButton: 'btn corelementos'
+                    }
+                })
             });
     });
 
     const btnSendPedido = document.getElementById("send-dados");
-    btnSendPedido.addEventListener("click", (event) => {
+    btnSendPedido.addEventListener("click", async () => {
+        const modal = new bootstrap.Modal(document.getElementById('staticBackdrop'));
 
         // Cabeçalho
         const datEmi = document.getElementById("data-lancamento").value;
@@ -291,8 +291,20 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         }
 
-        
-        if (products.length === 0) {
+
+        if (products.length > 0) {
+            await sendData(dadosPedido);
+            modal.show();
+            setTimeout(() => {
+                modal.hide();
+            }, 3000);
+
+            setTimeout(() => {
+                location.reload();
+            }, 5000)
+            
+        }
+        else {
             Swal.fire({
                 title: 'Alerta!',
                 text: 'Necessario haver produtos para enviar o pedido',
@@ -300,15 +312,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 confirmButtonText: 'Ok',
                 customClass: {
                     confirmButton: 'btn corelementos'
-                }  
-            }); 
-            
+                }
+            });
             return;
         }
-
-        const modal = new bootstrap.Modal(document.getElementById('staticBackdrop'));
-        sendData(dadosPedido)
-        modal.show();
 
     })
 

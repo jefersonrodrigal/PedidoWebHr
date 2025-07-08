@@ -102,7 +102,6 @@ document.querySelector('#input-search-client').addEventListener('input', functio
 });
 
 const input = document.getElementById('input-search-products');
-
 input.addEventListener('input', function (e) {
     let valor = e.target.value;
 
@@ -134,17 +133,6 @@ input.addEventListener('keydown', function (e) {
     }
 });
 
-$(function () {
-    $('#send-dados').on('click', function () {
-
-        $('.sucesso-modal').modal('show');
-
-        setTimeout(function () {
-            $('.sucesso-modal').modal('hide');
-            location.reload();
-        }, 3000);
-    });
-});
 
 
 

@@ -4,11 +4,11 @@
 <form asp-route="buscapedido" method="post" class="row gx-3 gy-2 align-items-center">
     <div class="col-sm-3">
         <label asp-for="Cliente" class="visually-hidden">Busca Cliente</label>
-        <input asp-for="Cliente" class="form-control" placeholder="CNPJ ou Nome do Cliente" />
+        <input asp-for="Cliente" class="form-control" id="search-clients-main" placeholder="CNPJ ou Nome do Cliente" />
     </div>
 
     <div class="col-auto">
-        <button type="submit" class="btn corelementos" >Buscar</button>
+        <button type="submit" id="submit-search-clients" class="btn corelementos">Buscar</button>
     </div>
 </form>
 <br />
