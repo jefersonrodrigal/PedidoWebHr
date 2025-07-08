@@ -364,5 +364,12 @@ namespace BackendApi.Controllers
         {
             return View("Commission");
         }
+
+        [HttpGet]
+        public IActionResult GetValidationFromErp(Guid guid, string numped, string codemp)
+        {
+            _logger.LogInformation($"Pedido {numped} gerado para empresa {codemp}");
+            return Ok();
+        }
     }
 }

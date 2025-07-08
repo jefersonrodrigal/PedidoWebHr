@@ -56,6 +56,11 @@
               name: "relcomissao",
               pattern: "pedidos/comissao-vendas/relatorio/{user}",
               defaults: new { controller = "Pedido", action = "GetReportCommission" });
+
+            endpoint.MapControllerRoute(
+              name: "validacao",
+              pattern: "pedidos/lancamento-pedido/lancamento/{guid:guid}/{numped}/{codemp}",
+              defaults: new { controller = "Pedido", action = "GetValidationFromErp" });
         }
 
         public static void ClienteRouters(this IEndpointRouteBuilder endpoint)
