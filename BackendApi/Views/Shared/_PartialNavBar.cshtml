@@ -19,12 +19,12 @@
                     </a>
                 </li>
                 <div class="dropdown drop-menu-item">
-                    <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" id="dropdownButton">
                         HIPERROLL EMBALAGENS
                     </button>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#">HIPERROLL EMBALAGENS</a></li>
-                        <li><a class="dropdown-item" href="#">Embala Papel</a></li>
+                        <li><a class="dropdown-item" href="#" onclick="selectOption('HIPERROLL EMBALAGENS')">HIPERROLL EMBALAGENS</a></li>
+                        <li><a class="dropdown-item" href="#" onclick="selectOption('EMBALA PAPEL')">EMBALA PAPEL</a></li>
                     </ul>
                 </div>
                 <li class="nav-item active">
@@ -43,3 +43,9 @@
         </div>
     </div>
 </nav>
+
+<script>
+    function selectOption(optionText) {
+        document.getElementById('dropdownButton').textContent = optionText;
+    }
+</script>

@@ -6,7 +6,6 @@ using BackendApi.Routes;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
-using Serilog.Events;
 using Serilog.Filters;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -44,8 +43,11 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
         options.LoginPath = "/";
         // options.AccessDeniedPath = "/";
         options.Cookie.HttpOnly = true;
+        options.Cookie.SameSite = SameSiteMode.Strict;
         options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
-        options.ExpireTimeSpan = TimeSpan.FromMinutes(2);
+        options.Cookie.Name = "AppCookie";
+        options.Cookie.IsEssential = true;
+        options.ExpireTimeSpan = TimeSpan.FromMinutes(20);
         options.SlidingExpiration = true;
 
     });

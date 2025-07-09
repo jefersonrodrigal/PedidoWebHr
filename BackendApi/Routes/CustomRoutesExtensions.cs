@@ -53,14 +53,19 @@
                 defaults: new { controller = "Pedido", action = "CreateOrder" });
 
             endpoint.MapControllerRoute(
-              name: "relcomissao",
-              pattern: "pedidos/comissao-vendas/relatorio/{user}",
-              defaults: new { controller = "Pedido", action = "GetReportCommission" });
+                name: "CreatePedido",
+                pattern: "pedidos/lancamento-pedido/lancamento/ultimo",
+                defaults: new { controller = "Pedido", action = "RepetLastOrder" });
 
             endpoint.MapControllerRoute(
-              name: "validacao",
-              pattern: "pedidos/lancamento-pedido/lancamento/{guid:guid}/{numped}/{codemp}",
-              defaults: new { controller = "Pedido", action = "GetValidationFromErp" });
+                name: "relcomissao",
+                pattern: "pedidos/comissao-vendas/relatorio/{user}",
+                defaults: new { controller = "Pedido", action = "GetReportCommission" });
+
+            endpoint.MapControllerRoute(
+                name: "validacao",
+                pattern: "pedidos/lancamento-pedido/lancamento/{guid:guid}/{numped}/{codemp}/{status}/{sid?}",
+                defaults: new { controller = "Pedido", action = "GetValidationFromErp" });
         }
 
         public static void ClienteRouters(this IEndpointRouteBuilder endpoint)

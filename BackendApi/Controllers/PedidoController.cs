@@ -254,14 +254,8 @@ namespace BackendApi.Controllers
         [HttpGet]
         public async Task<IActionResult> GetProductFromFormToGenerateOrder(string produto)
         {
-            /*
-                List<string> codori = new List<string>()
-                {
-                    "PSC"
-                };
-            */
 
-            var query = await _context.E075pros.FirstOrDefaultAsync(x => x.Codpro == produto && x.UsuPreuni != null);
+            var query = await _context.E075pros.FirstOrDefaultAsync(x => x.Codpro == produto && x.UsuPreuni != null && x.Sitpro == "A" && x.Codori == "PSC");
 
             if (query != null)
             {
@@ -347,7 +341,7 @@ namespace BackendApi.Controllers
                 }
                 
                 await _context.SaveChangesAsync();
-                _logger.LogInformation($"Pedido numero {numPpd + 1} enviado - status: 201");
+                _logger.LogInformation($"Pre Pedido numero {numPpd + 1} enviado - status: 201");
                 
                 return StatusCode(201);
             }
@@ -358,6 +352,12 @@ namespace BackendApi.Controllers
             }
         }
 
+        [HttpPost]
+        public async Task<IActionResult> RepetLastOrder([FromBody] string numped)
+        {
+            return Ok(numped);
+        }
+
         [Authorize]
         [HttpGet]
         public IActionResult GetReportCommission(string user)
@@ -366,10 +366,21 @@ namespace BackendApi.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetValidationFromErp(Guid guid, string numped, string codemp)
+        public IActionResult GetValidationFromErp(Guid guid, string numped, string codemp, string status, string? sid=null)
         {
-            _logger.LogInformation($"Pedido {numped} gerado para empresa {codemp}");
-            return Ok();
+
+            if(status == "200")
+            {
+                _logger.LogInformation($"RESPOSTA REGRA ERP: Pedido {numped} gerado para empresa {codemp}");
+                return Ok();
+            }
+            else
+            {
+                _logger.LogInformation($"RESPOSTA REGRA ERP: Pedido não gerado para empresa {codemp} RETSID={sid}");
+                return Ok();
+            }
+
         }
+
     }
 }

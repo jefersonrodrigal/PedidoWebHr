@@ -22,7 +22,7 @@
         @{
             await Html.RenderPartialAsync("_SubTitle.cshtml");
         }
-        <div class="table-responsive">
+            <div class="table-responsive">
             <div class="card-body">
                 <table class="table table-striped cor" id="tbl1">
                     <thead>
@@ -69,6 +69,10 @@
     }
 
     <a class="back-to-top" href="#"><i class="fas fa-angle-up"></i></a>
+
+    @{
+        await Html.RenderPartialAsync("_Pagination");
+    }
     
     <script src="~/javascript/searchbar.js"></script>
     <script src="~/javascript/request.js"></script>

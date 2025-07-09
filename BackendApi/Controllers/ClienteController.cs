@@ -24,7 +24,7 @@ namespace BackendApi.ViewsControllers
 
         [Authorize]
         [HttpGet]
-        public async Task<IActionResult> GetClientesByRepresentanteAsync(string user)
+        public async Task<IActionResult> GetClientesByRepresentanteAsync(string user, int page = 1, int pageSize = 5)
         {
             var representante = await _context.E090rep.Where(x => x.Aperep == user)
                                                .Select(x => new RepresentanteModel
@@ -37,34 +37,36 @@ namespace BackendApi.ViewsControllers
 
             if(representante != null)
             {
+
                 var clientes = await _context.E085hcls.AsNoTracking()
-                                      .Where(x => x.CodRep == representante.CodRep && x.CodEmp == 99)
-                                      .Join(_context.E085cli
-                                            .OrderByDescending(x => x.Datcad),
-                                            hist => hist.CodCli,
-                                            cliente => cliente.Codcli,
-                                            (hist, cliente) => new ClienteModel
-                                            {
-                                                NomCli = cliente.Nomcli,
-                                                CodCli = cliente.Codcli,
-                                                SitCli = cliente.Sitcli,
-                                                Endereco = cliente.Endcli,
-                                                Contato = cliente.Foncli,
-                                                Cgccpf = cliente.Cgccpf
-                                            }
-                                      ).ToListAsync();
+                    .Where(x => x.CodRep == representante.CodRep && x.CodEmp == 99)
+                    .Join(_context.E085cli.OrderByDescending(x => x.Datcad)
+                    .Where(x => x.Sitcli == "A"),
+                          hist => hist.CodCli,
+                          cliente => cliente.Codcli,
+                          (hist, cliente) => new ClienteModel
+                          {
+                              NomCli = cliente.Nomcli,
+                              CodCli = cliente.Codcli,
+                              SitCli = cliente.Sitcli,
+                              Endereco = cliente.Endcli,
+                              Contato = cliente.Foncli,
+                              Cgccpf = cliente.Cgccpf
+                          })
+                    .Skip((page - 1) * pageSize) // pula os registros das páginas anteriores
+                    .Take(pageSize) // pega apenas os registros da página atual
+                    .ToListAsync();
+
+
+
 
                 ClienteViewModel model = new ClienteViewModel()
                 {
                     Representante = representante!,
-                    Clientes = clientes
+                    Clientes = clientes,
+                    PageSize = pageSize,
+                    CurrentPage = page,
                 };
-
-                if (!_cache.TryGetValue("ApplicationCache", out ClienteViewModel? valor))
-                {
-                    valor = model;
-                    _cache.Set("ApplicationCache", valor, TimeSpan.FromMinutes(3));
-                }
 
                 return View("Cliente", model);
             }
@@ -75,8 +77,6 @@ namespace BackendApi.ViewsControllers
 
         [Authorize]
         [HttpGet]
-
-        [Authorize]
         public async Task<IActionResult> GetinfoClientesAsync(long codcli)
         {
             var cliente = await _context.E085hcls.AsNoTracking()

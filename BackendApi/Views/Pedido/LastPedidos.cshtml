@@ -16,7 +16,7 @@
     <div class="card shadow mb-4">
         <div class="card-header py-3">
             <div class="col-12 text-end">
-                <button id="retry" type="button" class="btn corelementos"><i class='fas fa-retweet'></i></button>
+                <button id="testedeenvio" type="button" class="btn corelementos"><i class='fas fa-retweet'></i></button>
             </div>
         </div>
         <div class="table-responsive">
@@ -33,6 +33,7 @@
                 <tbody>
                     <tr>
                         <th scope="row">@pedido.NumPpd</th>
+                        <td><input hidden type="text" id="input-numppd-last" value=@pedido.NumPpd/></td>
                         <td>@pedido.NumNfv</td>
                         <td>@pedido.NomCli</td>
                         <td>@pedido.DatEmi?.ToString("dd/MM/yyyy")</td>

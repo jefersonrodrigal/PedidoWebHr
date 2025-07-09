@@ -65,7 +65,6 @@ document.addEventListener("DOMContentLoaded", () => {
                     <td>${formatarCnpj(cliente.cgccpf)}</td>
                     <td>${cliente.endereco}</td>
                     <td>${cliente.contato}</td>
-                    <td><button type="button" class="btn corelementos"><i class="fa fa-plus"></i></button></td>
                 `;
                 tbody.appendChild(linha);
 
@@ -130,7 +129,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 return response.json();
             })
             .then(prod => {
-                console.log(prod)
                 const tbody = document.getElementById("tbl-dados-produtos");
                 const linha = document.createElement("tr");
 
@@ -176,7 +174,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 const atualizarTotal = () => {
                     const precoFormatado = inputPrice.value.replace(/\D/g, '');
                     const preco = parseFloat(precoFormatado) / 100 || 0;
-                    const quantidade = parseFloat(inputQty.value) || 0;
+                    const quantidade = parseInt(inputQty.value) || 0;
                     const total = preco * quantidade;
                     totalCell.textContent = total.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
                 };
@@ -245,8 +243,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 obj.qtdPed = parseFloat(colunas[4].textContent.trim());
                 obj.desNfv = colunas[1].textContent.trim();
                 obj.uniMed = colunas[2].textContent.trim();
-                obj.preUni = parseFloat(colunas[3].textContent.trim().slice(3));
-                obj.vlrTot = parseFloat(colunas[5].textContent.trim().slice(3));
+                obj.preUni = parseFloat(colunas[3].textContent.trim().slice(3).replace(',', '.'));
+                obj.vlrTot = parseFloat(colunas[5].textContent.trim().slice(3).replace(',', '.'));
 
                 products.push(obj);
             }
@@ -318,5 +316,4 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
     })
-
 })
