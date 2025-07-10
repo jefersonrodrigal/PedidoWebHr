@@ -22,6 +22,11 @@ namespace BackendApi.Services
         {
             try
             {
+                if(from == "")
+                {
+                    from = _smtpSettings.DefaultAddress;
+                }
+
                 MailMessage mail = new MailMessage();
                 mail.From = new MailAddress(from);
                 mail.To.Add(to);

@@ -4,9 +4,6 @@ using BackendApi.Interfaces;
 using BackendApi.Routes;
 using BackendApi.Services;
 using BackendApi.Settings;
-
-
-
 // using BackendApi.Database.Entityes;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
@@ -26,6 +23,10 @@ builder.Services.AddDbContext<ApplicationContext>(options =>
 builder.Services.AddCustomCorsPolicy();
 
 builder.Services.AddMemoryCache();
+
+builder.Services.Configure<SmtpSettings>(builder.Configuration.GetSection("SmtpSettings:Gmail"));
+builder.Services.AddScoped<ISendEmailService, SendMailService>();
+
 
 builder.Services.AddControllersWithViews()
     .AddJsonOptions(options =>
@@ -61,9 +62,6 @@ builder.Services.AddAuthorization();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
-builder.Services.Configure<SmtpSettings>(builder.Configuration.GetSection("SmtpSettings"));
-builder.Services.AddTransient<ISendEmailService, SendMailService>();
 
 Log.Logger = new LoggerConfiguration()
     .MinimumLevel.Debug()

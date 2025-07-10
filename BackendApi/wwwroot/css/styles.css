@@ -10831,9 +10831,11 @@ textarea.form-control-lg {
 }
 
 #sidebar-wrapper {
-  min-height: 100vh;
-  margin-left: -15rem;
-  transition: margin 0.25s ease-out;
+    min-height: 100vh;
+    margin-left: -15rem;
+    transition: margin 0.25s ease-out;
+    position: fixed;
+    z-index: 1;
 }
 
 #sidebar-wrapper .sidebar-heading {
@@ -10847,6 +10849,7 @@ textarea.form-control-lg {
 
 #page-content-wrapper {
   min-width: 100vw;
+  margin-left: 15rem;
 }
 
 body.sb-sidenav-toggled #wrapper #sidebar-wrapper {
@@ -10854,14 +10857,41 @@ body.sb-sidenav-toggled #wrapper #sidebar-wrapper {
 }
 
 @media (min-width: 768px) {
-  #sidebar-wrapper {
-    margin-left: 0;
-  }
-  #page-content-wrapper {
-    min-width: 0;
-    width: 100%;
-  }
-  body.sb-sidenav-toggled #wrapper #sidebar-wrapper {
-    margin-left: -15rem;
-  }
+    #sidebar-wrapper {
+        margin-left: 0;
+    }
+
+    #page-content-wrapper {
+        min-width: 0;
+        width: 100%;
+    }
+
+    .sb-sidenav-toggled #page-content-wrapper {
+        margin-left: -0.09rem;
+        transition: margin 0.25s ease-out;
+    }
+
+    body.sb-sidenav-toggled #wrapper #sidebar-wrapper {
+        margin-left: -15rem;
+    }
+}
+
+@media (min-width: 300px) {
+    #sidebar-wrapper {
+        margin-left: 0;
+    }
+
+    #page-content-wrapper {
+        min-width: 0;
+        width: 100%;
+    }
+
+    .sb-sidenav-toggled #page-content-wrapper {
+        margin-left: -0.09rem;
+        transition: margin 0.25s ease-out;
+    }
+
+    body.sb-sidenav-toggled #wrapper #sidebar-wrapper {
+        margin-left: -15rem;
+    }
 }

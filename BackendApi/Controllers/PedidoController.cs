@@ -370,7 +370,7 @@ namespace BackendApi.Controllers
             if(status == "200")
             {
                 var from = "";
-                var to = "";
+                var to = "jeferson.almeida@hiperroll.com.br";
                 var subject = $"RESPOSTA REGRA 107 - ERP: Pedido {numped} gerado para empresa {codemp}"; ;
                 var body = $"O pedido {numped} foi gerado com sucesso e encontra-se com status de 'Não Fechado'.";
 
@@ -381,7 +381,7 @@ namespace BackendApi.Controllers
             else
             {
                 var from = "";
-                var to = "";
+                var to = "jeferson.almeida@hiperroll.com.br";
                 var subject = $"RESPOSTA REGRA 107 - ERP: Pedido não gerado para empresa {codemp}";
                 var body = $"Problema na geração do pedido para empresa {codemp} - verifique: RETSID={sid}";
 
