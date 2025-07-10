@@ -1,6 +1,7 @@
 ﻿using BackendApi.Database.Context;
 using BackendApi.Database.Entities;
 using BackendApi.Extensions;
+using BackendApi.Interfaces;
 using BackendApi.Models;
 using BackendApi.ViewModels;
 using Microsoft.AspNetCore.Authorization;
@@ -9,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 using System.Security.Claims;
 using System.Text.RegularExpressions;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace BackendApi.Controllers
 {
@@ -16,11 +18,13 @@ namespace BackendApi.Controllers
     {
         private readonly ApplicationContext _context;
         private readonly ILogger<PedidoController> _logger;
+        private readonly ISendEmailService _sendMail;
 
-        public PedidoController(ApplicationContext context, IMemoryCache cache, ILogger<PedidoController> logger)
+        public PedidoController(ApplicationContext context, IMemoryCache cache, ILogger<PedidoController> logger, ISendEmailService sendMail)
         {
             _context = context;
             _logger = logger;
+            _sendMail = sendMail;
         }
 
         [Authorize]
@@ -342,7 +346,7 @@ namespace BackendApi.Controllers
                 
                 await _context.SaveChangesAsync();
                 _logger.LogInformation($"Pre Pedido numero {numPpd + 1} enviado - status: 201");
-                
+
                 return StatusCode(201);
             }
             catch(Exception error)
@@ -350,12 +354,6 @@ namespace BackendApi.Controllers
                 _logger.LogError(error.Message);
                 return BadRequest(error.Message);
             }
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> RepetLastOrder([FromBody] string numped)
-        {
-            return Ok(numped);
         }
 
         [Authorize]
@@ -371,12 +369,24 @@ namespace BackendApi.Controllers
 
             if(status == "200")
             {
-                _logger.LogInformation($"RESPOSTA REGRA ERP: Pedido {numped} gerado para empresa {codemp}");
+                var from = "";
+                var to = "";
+                var subject = $"RESPOSTA REGRA 107 - ERP: Pedido {numped} gerado para empresa {codemp}"; ;
+                var body = $"O pedido {numped} foi gerado com sucesso e encontra-se com status de 'Não Fechado'.";
+
+                _sendMail.SendMail(from, to, subject, body);
+                
                 return Ok();
             }
             else
             {
-                _logger.LogInformation($"RESPOSTA REGRA ERP: Pedido não gerado para empresa {codemp} RETSID={sid}");
+                var from = "";
+                var to = "";
+                var subject = $"RESPOSTA REGRA 107 - ERP: Pedido não gerado para empresa {codemp}";
+                var body = $"Problema na geração do pedido para empresa {codemp} - verifique: RETSID={sid}";
+
+                _sendMail.SendMail(from, to, subject, body);
+
                 return Ok();
             }
 

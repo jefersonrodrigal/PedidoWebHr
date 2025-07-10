@@ -1,6 +1,11 @@
 using BackendApi.Cors;
 using BackendApi.Database.Context;
+using BackendApi.Interfaces;
 using BackendApi.Routes;
+using BackendApi.Services;
+using BackendApi.Settings;
+
+
 
 // using BackendApi.Database.Entityes;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -57,6 +62,9 @@ builder.Services.AddAuthorization();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.Configure<SmtpSettings>(builder.Configuration.GetSection("SmtpSettings"));
+builder.Services.AddTransient<ISendEmailService, SendMailService>();
+
 Log.Logger = new LoggerConfiguration()
     .MinimumLevel.Debug()
     .WriteTo.File("Logs/geral.txt", rollingInterval: RollingInterval.Day)
@@ -69,7 +77,11 @@ Log.Logger = new LoggerConfiguration()
     .WriteTo.Logger(lcp => lcp
         .Filter.ByIncludingOnly(Matching.FromSource("BackendApi.Controllers.PedidoController"))
         .WriteTo.File("Logs/pedido.txt", rollingInterval: RollingInterval.Day))
+    .WriteTo.Logger(lcp => lcp
+        .Filter.ByIncludingOnly(Matching.FromSource("BackendApi.Services.SendMailService"))
+        .WriteTo.File("Logs/envioemail.txt", rollingInterval: RollingInterval.Day))
     .CreateLogger();
+    
 
 builder.Host.UseSerilog();
 

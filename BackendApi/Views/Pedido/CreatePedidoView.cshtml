@@ -169,32 +169,41 @@
             </div>
         </div>
         <div class="row mb-5">
-            <div class="col">
-                Desconto:
-                <label class="visually-hidden" for="inputDesconto">Desconto</label>
-                <input type="text"
-                       class="form-desconto"
-                       id="inputDesconto"
-                       placeholder="0,00%"
-                       style="width: 6rem" />
-                
-                <select class="form-pedido"
-                        id="seletorDesconto"
-                        style="width: 6rem" disabled>
-                    <option selected>Selecionar</option>
-                    <option value="1">Nota Fiscal</option>
-                    <option value="2">Boleto</option>
-                </select>
+            <div class="row mb-5">
+                <div class="col d-flex justify-content-between align-items-center">
+                    <!-- Desconto -->
+                    <div class="d-flex align-items-center gap-2">
+                        <span>Desconto:</span>
+                        <input type="text"
+                               class="form-desconto"
+                               id="inputDesconto"
+                               placeholder="0,00%"
+                               style="width: 8rem;" />
+                    </div>
+
+                    <!-- Tipo Desconto -->
+                    <div class="d-flex align-items-center gap-2">
+                        <span>Tipo Desconto:</span>
+                        <select class="form-pedido"
+                                id="seletorDesconto"
+                                style="width: 10rem;" disabled>
+                            <option selected>Selecionar</option>
+                            <option value="1">Nota Fiscal</option>
+                            <option value="2">Boleto</option>
+                        </select>
+                    </div>
+
+                    <!-- N° Pedido Cliente -->
+                    <div class="d-flex align-items-center gap-2">
+                        <span>N° Pedido Cliente:</span>
+                        <input type="text"
+                               class="form-desconto"
+                               id="num-ped-cli"
+                               style="width: 7rem;" />
+                    </div>
+                </div>
             </div>
-            <div class="col">
-                N° Pedido Cliente:
-                <label class="visually-hidden" for="specificSizeInputName">Desconto</label>
-                <input type="text"
-                        class="form-desconto"
-                        id="num-ped-cli"
-                        placeholder=""
-                        style="width: 7rem" />
-            </div>
+
             <div class="col">
                 Entrega:
                 <select class="form-pedido"
@@ -205,17 +214,18 @@
                     <option value="2">Programada</option>
                 </select>
             </div>
-
-        <div class="col">
-            Necessidade Agendamento
-            <select class="form-pedido"
-                    id="agendamentoSelect"
-                    style="width: 8rem">
-                <option selected>Selecionar</option>
-                <option value="1">Sim</option>
-                <option value="2">Não</option>
-            </select>
-        </div>
+            <div class="col">
+                <div class="d-flex align-items-center gap-2">
+                    <span style="white-space: nowrap;">Necessidade Agendamento:</span>
+                    <select class="form-pedido"
+                            id="agendamentoSelect"
+                            style="width: 8rem">
+                        <option selected>Selecionar</option>
+                        <option value="1">Sim</option>
+                        <option value="2">Não</option>
+                    </select>
+                </div>
+            </div>
             <div class="col">
                 Data Prog. Fat.:
                 <label class="visually-hidden" for="specificSizeInputName">Data Programada Faturamento</label>
