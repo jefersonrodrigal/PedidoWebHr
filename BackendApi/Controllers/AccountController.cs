@@ -1,10 +1,8 @@
 ﻿using BackendApi.Database.Context;
+using BackendApi.Interfaces;
 using BackendApi.ViewModels;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Security.Claims;
 
 namespace BackendApi.ViewsControllers
 {
@@ -12,11 +10,13 @@ namespace BackendApi.ViewsControllers
     {
         private readonly ApplicationContext _context;
         private readonly ILogger<AccountController> _logger;
+        private readonly IAuthenticationService _authService;
 
-        public AccountController(ApplicationContext context, ILogger<AccountController> logger)
+        public AccountController(ApplicationContext context, ILogger<AccountController> logger, IAuthenticationService authService)
         {
             _context = context;
             _logger = logger;
+            _authService = authService;
         }
 
         [HttpGet]
@@ -26,9 +26,8 @@ namespace BackendApi.ViewsControllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> Login([FromForm] LoginViewModel user, int page=1, int pageSize=5)
+        public async Task<ActionResult> Login([FromForm] UserViewModel user, int page=1, int pageSize=5)
         {
-            
             
             if(ModelState.IsValid)
             {
@@ -36,21 +35,21 @@ namespace BackendApi.ViewsControllers
 
                 if (repres != null)
                 {
-                    var claims = new List<Claim>
+                    user.Role = "Representante";
+                    user.CodUsu = repres.Codrep;
+
+                    var token = _authService.TokenGenerate(user);
+
+                    var cookie = new CookieOptions
                     {
-                        new Claim(ClaimTypes.Name, user.Username!),
-                        new Claim(ClaimTypes.Role, "Representante"),
-                        new Claim(ClaimTypes.NameIdentifier, repres.Nomrep),
-                        new Claim(ClaimTypes.UserData, Convert.ToString(repres.Codrep))
+                        HttpOnly = true,
+                        Secure = true,
+                        SameSite = SameSiteMode.Strict,
+                        Expires = DateTime.UtcNow.AddMinutes(30)
                     };
 
-                    var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-                    var principal = new ClaimsPrincipal(identity);
-
-                    await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
-
+                    Response.Cookies.Append("jwtToken", token, cookie);
                     var url = Url.RouteUrl("pedidos", new { user = repres.Aperep }) ?? "/erro";
-
                     return Redirect(url);
                 }
             }
@@ -59,9 +58,9 @@ namespace BackendApi.ViewsControllers
         }
 
         [HttpPost("/logout")]
-        public async Task<IActionResult> Logout()
+        public IActionResult Logout()
         {
-            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            Response.Cookies.Delete("jwtToken");
             return Redirect("/");
         }
     }

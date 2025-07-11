@@ -5,10 +5,13 @@ using BackendApi.Routes;
 using BackendApi.Services;
 using BackendApi.Settings;
 // using BackendApi.Database.Entityes;
-using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Serilog;
 using Serilog.Filters;
+using System.IdentityModel.Tokens.Jwt;
+using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
@@ -27,7 +30,6 @@ builder.Services.AddMemoryCache();
 builder.Services.Configure<SmtpSettings>(builder.Configuration.GetSection("SmtpSettings:Gmail"));
 builder.Services.AddScoped<ISendEmailService, SendMailService>();
 
-
 builder.Services.AddControllersWithViews()
     .AddJsonOptions(options =>
 {
@@ -43,20 +45,40 @@ builder.Services.AddControllersWithViews()
     options.ViewLocationFormats.Add("/Views/{1}/{0}.cshtml");
 });
 
-builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-    .AddCookie(options =>
+// Serviço de Autenticação por JWT
+builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
     {
-        options.LoginPath = "/";
-        // options.AccessDeniedPath = "/";
-        options.Cookie.HttpOnly = true;
-        options.Cookie.SameSite = SameSiteMode.Strict;
-        options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
-        options.Cookie.Name = "AppCookie";
-        options.Cookie.IsEssential = true;
-        options.ExpireTimeSpan = TimeSpan.FromMinutes(20);
-        options.SlidingExpiration = true;
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+        ValidIssuer = builder.Configuration["Jwt:Issuer"],
+        ValidAudience = builder.Configuration["Jwt:Audience"],
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
 
-    });
+    };
+    options.MapInboundClaims = false;
+    options.Events = new JwtBearerEvents
+    {
+        OnMessageReceived = context =>
+        {
+            if (context.Request.Cookies.ContainsKey("jwtToken"))
+            {
+                context.Token = context.Request.Cookies["jwtToken"];
+            }
+            return Task.CompletedTask;
+        }
+    };
+
+
+});
 
 builder.Services.AddAuthorization();
 
@@ -75,6 +97,9 @@ Log.Logger = new LoggerConfiguration()
     .WriteTo.Logger(lcp => lcp
         .Filter.ByIncludingOnly(Matching.FromSource("BackendApi.Controllers.PedidoController"))
         .WriteTo.File("Logs/pedido.txt", rollingInterval: RollingInterval.Day))
+    .WriteTo.Logger(lcp => lcp
+        .Filter.ByIncludingOnly(Matching.FromSource("BackendApi.Controllers.AccountController"))
+        .WriteTo.File("Logs/login.txt", rollingInterval: RollingInterval.Day))
     .WriteTo.Logger(lcp => lcp
         .Filter.ByIncludingOnly(Matching.FromSource("BackendApi.Services.SendMailService"))
         .WriteTo.File("Logs/envioemail.txt", rollingInterval: RollingInterval.Day))
