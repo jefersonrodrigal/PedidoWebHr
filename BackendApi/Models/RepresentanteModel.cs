@@ -4,6 +4,7 @@
     {
         public int CodRep {  get; set; }
         public string? NomRep { get; set; }
+        public int? CodEmp { get; set; }
 
     }
 }

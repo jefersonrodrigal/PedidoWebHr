@@ -14,17 +14,15 @@ namespace BackendApi.ViewsControllers
     public class ClienteController : Controller
     {
         private readonly ApplicationContext _context;
-        private readonly IMemoryCache _cache;
 
         public ClienteController(ApplicationContext context, IMemoryCache cache)
         {
             _context = context;
-            _cache = cache;
         }
 
         [Authorize]
         [HttpGet]
-        public async Task<IActionResult> GetClientesByRepresentanteAsync(string user, int page = 1, int pageSize = 5)
+        public async Task<IActionResult> GetClientesByRepresentanteAsync(string user)
         {
             var representante = await _context.E090rep.Where(x => x.Aperep == user)
                                                .Select(x => new RepresentanteModel
@@ -53,8 +51,6 @@ namespace BackendApi.ViewsControllers
                               Contato = cliente.Foncli,
                               Cgccpf = cliente.Cgccpf
                           })
-                    .Skip((page - 1) * pageSize) // pula os registros das páginas anteriores
-                    .Take(pageSize) // pega apenas os registros da página atual
                     .ToListAsync();
 
 
@@ -64,8 +60,6 @@ namespace BackendApi.ViewsControllers
                 {
                     Representante = representante!,
                     Clientes = clientes,
-                    PageSize = pageSize,
-                    CurrentPage = page,
                 };
 
                 return View("Cliente", model);

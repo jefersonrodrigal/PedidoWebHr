@@ -2,7 +2,7 @@
 {
     public class UserDataModel
     {
-        public int CodUsu {  get; set; }
-        public int CodEmp { get; set; }
+        public int? CodUsu {  get; set; } 
+        public int? CodEmp { get; set; }
     }
 }

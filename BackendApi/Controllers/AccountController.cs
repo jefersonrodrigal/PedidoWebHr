@@ -1,8 +1,10 @@
 ﻿using BackendApi.Database.Context;
 using BackendApi.Interfaces;
+using BackendApi.Models;
 using BackendApi.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json;
 
 namespace BackendApi.ViewsControllers
 {
@@ -35,10 +37,16 @@ namespace BackendApi.ViewsControllers
 
                 if (repres != null)
                 {
-                    user.Role = "Representante";
-                    user.CodUsu = repres.Codrep;
+                    UserAuthModel authUser = new UserAuthModel()
+                    {
+                        Username = user.Username,
+                        CodUsu = Convert.ToString(repres.Codrep),
+                        Codemp = user.Segment == "Plastico" ? "99" : "98",
+                        Segment = user.Segment,
+                        Role = "Representante"
+                    };
 
-                    var token = _authService.TokenGenerate(user);
+                    var token = _authService.TokenGenerate(authUser);
 
                     var cookie = new CookieOptions
                     {
@@ -47,13 +55,16 @@ namespace BackendApi.ViewsControllers
                         SameSite = SameSiteMode.Strict,
                         Expires = DateTime.UtcNow.AddMinutes(30)
                     };
-
+                   
                     Response.Cookies.Append("jwtToken", token, cookie);
-                    var url = Url.RouteUrl("pedidos", new { user = repres.Aperep }) ?? "/erro";
+
+                    var url = Url.RouteUrl("pedidos", new { user = user.Username}) ?? "/erro";
+                    _logger.LogInformation($"Login realizado com sucesso {user.Username}");
                     return Redirect(url);
                 }
             }
-
+            
+            _logger.LogInformation($"Usuario ou senha invalidos - {user.Username}");
             return BadRequest("Usuario ou senha invalidos");
         }
 

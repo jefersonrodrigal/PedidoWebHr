@@ -1,5 +1,6 @@
 ﻿using BackendApi.Interfaces;
 using BackendApi.Models;
+using BackendApi.ViewModels;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -17,14 +18,8 @@ namespace BackendApi.Services
             _configuration = configuration;
         }
 
-        public string TokenGenerate(UserModel user)
+        public string TokenGenerate(UserAuthModel user)
         {
-
-            var userData = JsonSerializer.Serialize( new 
-            { 
-                CodUsu = user.CodUsu.ToString(),
-                CodEmp = user.CodEmp.ToString(),
-            });
 
             var claims = new List<Claim>
             {
@@ -32,7 +27,10 @@ namespace BackendApi.Services
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 new Claim(JwtRegisteredClaimNames.Name, user.Username),
                 new Claim(ClaimTypes.Role, user.Role),
-                new Claim(ClaimTypes.UserData, userData)
+                new Claim("codemp", user.Codemp),
+                new Claim("Segment", user.Segment),
+                new Claim("codusu", user.CodUsu),
+
             };
             
             if (string.IsNullOrEmpty(_configuration["Jwt:Key"]))

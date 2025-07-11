@@ -20,13 +20,12 @@
                     </a>
                 </li>
                 <div class="dropdown drop-menu-item">
-                    <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" id="dropdownButton">
-                        HIPERROLL EMBALAGENS
+                    @{
+                        var text = Convert.ToInt32(User.FindFirst("codemp")!.Value) == 99 ? "PLASTICO" : "PAPEL";
+                    }
+                    <button class="btn" type="button" aria-expanded="false">
+                        @text
                     </button>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#" onclick="selectOption('HIPERROLL EMBALAGENS')">HIPERROLL EMBALAGENS</a></li>
-                        <li><a class="dropdown-item" href="#" onclick="selectOption('EMBALA PAPEL')">EMBALA PAPEL</a></li>
-                    </ul>
                 </div>
                 <li class="nav-item active">
                     <form asp-controller="Account" asp-action="Logout" method="post" class="d-inline">
@@ -44,9 +43,3 @@
         </div>
     </div>
 </nav>
-
-<script>
-    function selectOption(optionText) {
-        document.getElementById('dropdownButton').textContent = optionText;
-    }
-</script>

@@ -7,11 +7,10 @@ using BackendApi.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Caching.Memory;
-using Microsoft.IdentityModel.JsonWebTokens;
 using System.Security.Claims;
+using System.Text.Json;
 using System.Text.RegularExpressions;
-using static System.Runtime.InteropServices.JavaScript.JSType;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace BackendApi.Controllers
 {
@@ -21,7 +20,7 @@ namespace BackendApi.Controllers
         private readonly ILogger<PedidoController> _logger;
         private readonly ISendEmailService _sendMail;
 
-        public PedidoController(ApplicationContext context, IMemoryCache cache, ILogger<PedidoController> logger, ISendEmailService sendMail)
+        public PedidoController(ApplicationContext context, ILogger<PedidoController> logger, ISendEmailService sendMail)
         {
             _context = context;
             _logger = logger;
@@ -34,12 +33,20 @@ namespace BackendApi.Controllers
         {
             try
             {
+
+                DataModel data = new DataModel
+                {
+                    Codemp = Convert.ToInt32(User.FindFirst("codemp")!.Value),
+                    Codrep = Convert.ToInt32(User.FindFirst("codusu")!.Value),
+                };
+
                  var representante = await _context.E090rep
-                .Where(x => x.Aperep == user)
+                .Where(x => x.Codrep == data.Codrep)
                 .Select(x => new RepresentanteModel
                 {
                     CodRep = x.Codrep,
-                    NomRep = x.Nomrep
+                    NomRep = x.Nomrep,
+                    CodEmp = data.Codemp
                 })
                 .FirstOrDefaultAsync();
 
@@ -49,7 +56,7 @@ namespace BackendApi.Controllers
                                 .AsNoTracking()
                                 .Join(_context.Usu_t009ppi, pedido => pedido.UsuNumppd, produto => produto.UsuNumppd, (pedido, produto) => new { pedido, produto })
                                 .Join(_context.E085cli, pp => pp.pedido.UsuCodcli, cliente => cliente.Codcli, (pp, cliente) => new { pp.pedido, pp.produto, cliente })
-                                .Where(p => p.pedido.UsuCodrep == representante.CodRep)
+                                .Where(p => p.pedido.UsuCodrep == representante.CodRep && p.pedido.UsuCodemp == representante.CodEmp)
                                 .GroupBy(p => p.produto.UsuNumppd)
                                 .OrderByDescending(g => g.First().pedido.UsuDatemi)
                                 .Select(g => new PedidoModel
@@ -79,17 +86,20 @@ namespace BackendApi.Controllers
                         .Take(pageSize)
                         .ToListAsync();
 
+                    ViewData["Empresa"] = data.Codemp;
+
                     var viewModel = new PainelViewModel
                     {
                         Representante = representante,
                         Produtos = produtos,
                         PaginaAtual = page,
-                        PageSize = totalPages
+                        PageSize = totalPages,
+                        Empresa = data.Codemp
                     };
 
                     return View("Painel", viewModel);
                 }
-                _logger.LogInformation($"Representante {user} não encontrado no sistema");
+                _logger.LogInformation($"Representante não encontrado no sistema");
                 return NotFound("Representante não encontrado");
 
             }
@@ -107,6 +117,7 @@ namespace BackendApi.Controllers
         {
             if(request.Cliente != null)
             {
+
                 if (request.Cliente.IsCpf() || request.Cliente.IsCnpj())
                 {
                     var data = Regex.Replace(request.Cliente, @"[^a-zA-Z0-9]", "");
@@ -205,19 +216,23 @@ namespace BackendApi.Controllers
         [HttpGet]
         public async Task<ActionResult> RenderPageCreateOrder()
         {
+            DataModel data = new DataModel
+            {
+                Codemp = Convert.ToInt32(User.FindFirst("codemp")!.Value),
+                Codrep = Convert.ToInt32(User.FindFirst("codusu")!.Value),
+            };
 
             var result = await _context.E090rep.Select(x => new RepresentanteModel
             {
                 CodRep = x.Codrep,
                 NomRep = x.Nomrep,
-            }).FirstOrDefaultAsync(x => x.CodRep == Convert.ToInt32(User.FindFirstValue(ClaimTypes.UserData)));
+            })
+                .FirstOrDefaultAsync(x => x.CodRep == Convert.ToInt32(data.Codrep));
 
-            var numped = _context.Usu_t009ppd.Max(x => x.UsuNumppd);
 
             CreatePedidoViewModel model = new CreatePedidoViewModel()
             {
                 Representante = result!,
-                NumeroPedido = numped + 1,
             };
 
             return View("CreatePedidoView", model);
@@ -260,65 +275,104 @@ namespace BackendApi.Controllers
         public async Task<IActionResult> GetProductFromFormToGenerateOrder(string produto)
         {
 
-            var query = await _context.E075pros.FirstOrDefaultAsync(x => x.Codpro == produto && x.UsuPreuni != null && x.Sitpro == "A" && x.Codori == "PSC");
-
-            if (query != null)
+            DataModel data = new DataModel
             {
-                ProductModel product = new ProductModel()
+                Codemp = Convert.ToInt32(User.FindFirst("codemp")!.Value),
+                Codrep = Convert.ToInt32(User.FindFirst("codusu")!.Value),
+            };
+
+            if (data.Codemp == 99)
+            {
+                var query = await _context.E075pros.FirstOrDefaultAsync(x => x.Codpro == produto && x.UsuPreuni != null && x.Sitpro == "A" && x.Codori == "PSC");
+
+                if (query != null)
                 {
-                    Codpro = query.Codpro,
-                    Desnfv = query.Desnfv,
-                    Unimed = query.Unimed,
-                    Codagc = query.Codagc,
-                    Codfam = query.Codfam,
-                    Finrec = query.UsuFinrec,
-                   
-                };
-                
-                return Ok(product);
+                    ProductModel product = new ProductModel()
+                    {
+                        Codpro = query.Codpro,
+                        Desnfv = query.Desnfv,
+                        Unimed = query.Unimed,
+                        Codagc = query.Codagc,
+                        Codfam = query.Codfam,
+                        Finrec = query.UsuFinrec,
+
+                    };
+
+                    return Ok(product);
+                }
             }
+            else
+            {
+                var query = await _context.E075pros.FirstOrDefaultAsync(x => x.Codpro == produto && x.UsuPreuni != null && x.Sitpro == "A" && x.Codori == "PAP");
+
+                if (query != null)
+                {
+                    ProductModel product = new ProductModel()
+                    {
+                        Codpro = query.Codpro,
+                        Desnfv = query.Desnfv,
+                        Unimed = query.Unimed,
+                        Codagc = query.Codagc,
+                        Codfam = query.Codfam,
+                        Finrec = query.UsuFinrec,
+
+                    };
+
+                    return Ok(product);
+                }
+            }
+
             _logger.LogInformation($"Produto {produto} pesquisado não encontrado na base");
             return NotFound("Produto não encontrado");
+
         }
 
         [Authorize]
         [HttpPost]
-        public async Task<IActionResult> CreateOrder([FromBody] DataPedidoViewModel data)
+        public async Task<IActionResult> CreateOrder([FromBody] DataPedidoViewModel pedido)
         {
+            DataModel data = new DataModel
+            {
+                Codemp = Convert.ToInt32(User.FindFirst("codemp")!.Value),
+                Codrep = Convert.ToInt32(User.FindFirst("codusu")!.Value),
+            };
+
             try
             {
                 var numPpd = await _context.Usu_t009ppd.MaxAsync(x => x.UsuNumppd);
-                DateTime.TryParse(data.DatPrv, out DateTime datPrv);
-                DateTime.TryParse(data.DatEmi, out DateTime datEmi);
-                string retMer = data.RetMer == "1" ? "s" : "n";
-                short sitPpd = (short)(data.SitPpd == "Não Enviado" ? 1 : 2);
+                DateTime.TryParse(pedido.DatPrv, out DateTime datPrv);
+                DateTime.TryParse(pedido.DatEmi, out DateTime datEmi);
+                string retMer = pedido.RetMer == "1" ? "s" : "n";
+                short sitPpd = (short)(pedido.SitPpd == "Não Enviado" ? 1 : 2);
+                short codemp = (short)data.Codemp;
+
 
                 T009PPD modelppd = new T009PPD()
                 {
                     UsuNumppd = numPpd + 1,
-                    UsuObsped = data.ObsPed,
-                    UsuCodcli = data.CodCli,
-                    UsuCodrep = data.CodRep,
-                    UsuCodcpg = data.CodCpg,
-                    UsuPedcli = data.PedCli,
+                    UsuObsped = pedido.ObsPed,
+                    UsuCodcli = pedido.CodCli,
+                    UsuCodrep = pedido.CodRep,
+                    UsuCodcpg = pedido.CodCpg,
+                    UsuPedcli = pedido.PedCli,
                     UsuDatprv = datPrv,
-                    UsuPedime = data.PedIme,
-                    UsuTipfat = data.TipFat,
-                    UsuNatope = data.NatOpe,
-                    UsuPerdsc = data.PerDsc,
+                    UsuPedime = pedido.PedIme,
+                    UsuTipfat = pedido.TipFat,
+                    UsuNatope = pedido.NatOpe,
+                    UsuPerdsc = pedido.PerDsc,
                     UsuSitppd = sitPpd,
-                    UsuTipdis = data.TiPdis,
+                    UsuTipdis = pedido.TiPdis,
                     UsuRetmer = retMer,
                     UsuDatemi = datEmi,
-                    UsuNecage = data.NecAge,
-                    UsuCodemp = 99
+                    UsuNecage = pedido.NecAge,
+                    UsuCodemp = codemp,
 
                 };
 
                 _context.Usu_t009ppd.Add(modelppd);
 
                 short seqIpd = 1;
-                foreach (var item in data.Products)
+                foreach (var item in pedido.Products)
                 {
                     var props = _context.E075pros.Where(x => x.Codpro == item.Codpro)
                                                   .Select(x => new { x.Codagc, x.Codfam, x.UsuFinrec })
@@ -337,7 +391,7 @@ namespace BackendApi.Controllers
                         UsuCodagc = props.Codagc != null ? props.Codagc : "",
                         UsuCodfam = props.Codfam != null ? props.Codfam : "",
                         UsuFinrec = props.UsuFinrec != null ? props.UsuFinrec : 0,
-                        UsuCodemp = 99
+                        UsuCodemp = codemp
                     };
                     seqIpd++;
 

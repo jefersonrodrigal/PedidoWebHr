@@ -1,9 +1,10 @@
 ﻿using BackendApi.Models;
+using BackendApi.ViewModels;
 
 namespace BackendApi.Interfaces
 {
     public interface IAuthenticationService
     {
-        string TokenGenerate(UserModel user);
+        string TokenGenerate(UserAuthModel user);
     }
 }

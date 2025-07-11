@@ -1,5 +1,5 @@
 ﻿@using BackendApi.ViewModels
-@model LoginViewModel
+@model UserViewModel
 
 <!doctype html>
 <html lang="pt-br">
@@ -29,6 +29,13 @@
                             <label asp-for="Password"></label>
                             <input asp-for="Password" class="form-control" placeholder="Senha" type="password" required />
                             <span asp-validation-for="Password" class="text-danger"></span>
+                        </div>
+                        <div class="textfield">
+                                <label asp-for="Segment">Selecione a Empresa</label>
+                                <select asp-for="Segment" id="empresa">
+                                <option value="Plastico">Plástico</option>
+                                <option value="Papel">Papel</option>
+                            </select>
                         </div>
 
                         <button type="submit" class="btn-login" data-button>Login</button>

@@ -6,11 +6,11 @@ using BackendApi.Services;
 using BackendApi.Settings;
 // using BackendApi.Database.Entityes;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Serilog;
 using Serilog.Filters;
-using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -98,7 +98,7 @@ Log.Logger = new LoggerConfiguration()
         .Filter.ByIncludingOnly(Matching.FromSource("BackendApi.Controllers.PedidoController"))
         .WriteTo.File("Logs/pedido.txt", rollingInterval: RollingInterval.Day))
     .WriteTo.Logger(lcp => lcp
-        .Filter.ByIncludingOnly(Matching.FromSource("BackendApi.Controllers.AccountController"))
+        .Filter.ByIncludingOnly(Matching.FromSource("BackendApi.ViewsControllers.AccountController"))
         .WriteTo.File("Logs/login.txt", rollingInterval: RollingInterval.Day))
     .WriteTo.Logger(lcp => lcp
         .Filter.ByIncludingOnly(Matching.FromSource("BackendApi.Services.SendMailService"))
