@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Serilog;
+using Serilog.Events;
 using Serilog.Filters;
 using System.Text;
 using System.Text.Json;
@@ -87,7 +88,11 @@ builder.Services.AddSwaggerGen();
 
 Log.Logger = new LoggerConfiguration()
     .MinimumLevel.Debug()
-    .WriteTo.File("Logs/geral.txt", rollingInterval: RollingInterval.Day)
+     .MinimumLevel.Debug()
+    .WriteTo.Console(
+        restrictedToMinimumLevel: LogEventLevel.Information, 
+        outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u1}] {Message:lj}{NewLine}"
+    )
     .WriteTo.Logger(lca => lca
         .Filter.ByIncludingOnly(Matching.FromSource("BackendApi.Controllers.AccountController"))
         .WriteTo.File("Logs/account.txt", rollingInterval: RollingInterval.Day))
@@ -102,7 +107,7 @@ Log.Logger = new LoggerConfiguration()
         .WriteTo.File("Logs/login.txt", rollingInterval: RollingInterval.Day))
     .WriteTo.Logger(lcp => lcp
         .Filter.ByIncludingOnly(Matching.FromSource("BackendApi.Services.SendMailService"))
-        .WriteTo.File("Logs/envioemail.txt", rollingInterval: RollingInterval.Day))
+        .WriteTo.File("Logs/envioemail.txt", rollingInterval: RollingInterval.Day))  
     .CreateLogger();
     
 

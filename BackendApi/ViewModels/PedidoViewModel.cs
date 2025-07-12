@@ -6,5 +6,6 @@ namespace BackendApi.ViewModels
     {
         public string? NomCli {  get; set; }
         public IEnumerable<PedidoModel> Pedidos { get; set; } = new List<PedidoModel>();
+        public CreateLastOrderViewModel Numppd {  get; set; } = new CreateLastOrderViewModel();
     }
 }

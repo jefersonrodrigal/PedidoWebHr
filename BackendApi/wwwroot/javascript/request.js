@@ -233,21 +233,23 @@ document.addEventListener("DOMContentLoaded", () => {
         const linhasDestino = tabelaDestino.querySelectorAll("tr");
 
         const products = [];
-
         linhasDestino.forEach(linha => {
             const colunas = linha.querySelectorAll("td");
+            
             const obj = {};
 
-            if (colunas.length >= 4) {
+            if (colunas.length >= 6) {
                 obj.codPro = colunas[0].textContent.trim();
-                obj.qtdPed = parseFloat(colunas[4].textContent.trim());
                 obj.desNfv = colunas[1].textContent.trim();
                 obj.uniMed = colunas[2].textContent.trim();
                 obj.preUni = parseFloat(colunas[3].textContent.trim().slice(3).replace(',', '.'));
+                obj.qtdPed = parseFloat(colunas[4].textContent.trim());
                 obj.vlrTot = parseFloat(colunas[5].textContent.trim().slice(3).replace(',', '.'));
-
                 products.push(obj);
+                console.log(obj.codPro);
             }
+
+            
         });
 
         const dadosPedido = {

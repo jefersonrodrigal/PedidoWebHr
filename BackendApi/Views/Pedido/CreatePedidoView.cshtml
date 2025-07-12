@@ -8,354 +8,262 @@
 <div class="align-items-center justify-content-between mb-4 mt-5">
     <h1 class="h3 mb-0 text-gray-800 text-center">Lançar Pedidos</h1>
 </div>
-<div class="card shadow mb-4">
-    <div class="card-header py-3">
-        <h6 class="m-0 font-weight-bold titulo-card">Representante</h6>
-    </div>
-    <div class="card-body">
-        <div class="row mb-5">
-            <div class="col-sm-5">
-                Representante: <b class="titulo-card">@Model.Representante.NomRep</b>
-                <input id="name-representante" type="hidden" class="form-control" value="@Model.Representante.NomRep"  disabled/>
-                <input id="cod-representante" type="hidden" class="form-control" value="@Model.Representante.CodRep" disabled />
-            </div>
-            <div class="col">
-                Data: <b class="titulo-card">@Model.DataLancamento</b>
-                <input id="data-lancamento" type="hidden" class="form-control" value="@Model.DataLancamento.ToString()" disabled />
-            </div>
-            <div class="col">
-                Status: <b class="titulo-card">@Model.StatusPedido.GetDisplayName()</b>
-                <input id="status-pedido" type="hidden" class="form-control" value="@Model.StatusPedido.GetDisplayName()" disabled />
-            </div>
-            <!-- <div class="col">
-                Pedido:
-                <b class="text-white"
-                    style="
-                        background-color: #198754;
-                        border-radius: 0.9rem;
-                        padding: 0.24rem;
-                        ">@Model.NumeroPedido
-                </b>
-            </div> -->
+<form asp-route="" method="post">
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold titulo-card">Representante</h6>
         </div>
-        <div class="row mb-5">
-            <div class="col">
-                Faturamento:
-                <select class="form-pedido"
-                        id="faturamentoSelect"
-                        style="width: 8rem">
-                        <option selected>Selecionar</option>
-                        <option value="1">Aval</option>
-                        <option value="2">Livre</option>
-                        <option value="3">Promocional</option>
-                </select>
-            </div>
-            <div class="col">
-                Prazo de Pagamento:
-                <select class="form-pedido"
-                        id="prazoPagamentoSelect"
-                        style="width: 8rem">
-                        <option selected>Selecionar</option>
-                        <option value="1">Pagamento Antecipado</option>
-                        <option value="2">15 DIAS</option>
-                        <option value="3">28 DIAS</option>
-                        <option value="3">35 DIAS</option>
-                        <option value="3">45 DIAS</option>
-                        <option value="3">021/028/035 DIAS</option>
-                        <option value="3">028/035/042/049 DIAS</option>
-                        <option value="3">INFORMAR CONDIÇÃO</option>
-                        <option value="3">028/035/042 DIAS</option>
-                        <option value="3">035/042/049 DIAS</option>
-                        <option value="3">021/028/035/042</option>
-                </select>
-            </div>
-            <div class="col">
-                Retirar Pedido na Fábrica:
-                <select class="form-pedido"
-                        id="retiradaSelect"
-                        style="width: 8rem">
-                        <option selected>Selecionar</option>
-                        <option value="1">Sim</option>
-                        <option value="2">Não</option>
-                </select>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- CARD CONSULTAS DO CLIENTE-->
-<div class="card shadow mb-4">
-    <div class="card-header py-3">
-        <h6 class="m-0 font-weight-bold titulo-card">
-            Consulta Clientes
-        </h6>
-    </div>
-    <div class="table-responsive">
-    <div class="card-body">
-            <div class="row mb-2">
-                <div class="col">
-                    <label class="visually-hidden" for="specificSizeInputName">Cliente</label>
-                    <input type="text" class="form-control" id="input-search-client" placeholder="Digite o CPF ou CNPJ" required />
-                </div>
-                <div class="col">
-                    <button type="button" class="btn corelementos" id="btn-search-cliente">Buscar</button>
-                    <button type="button" class="btn corelementos " id="btn-remove-itens-td">Remover</button>
-                </div>
-            </div>
-            <table class="table table-striped">
-                <thead>
-                    <tr class="info-card">
-                        <th scope="col">Nome</th>
-                        <th scope="col">CNPJ/CPF</th>
-                        <th scope="col">Endereço</th>
-                        <th scope="col">Telefone</th>
-                    </tr>
-                </thead>
-                <tbody id="tbl-dados-clientes">
-                    <!--Cria dinamicamente-->
-                </tbody>
-            </table>
-        </div>
-    </div>
-</div>
-
-<!-- CARD DADOS DO CLIENTE-->
-<div class="card shadow mb-4">
-    <div class="card-header py-3">
-        <h6 class="m-0 font-weight-bold titulo-card">Cliente</h6>
-    </div>
-    <div class="card-body">
-        <div class="row mb-5">
-            <div class="col">
-                Razão Social: <b class="titulo-card linha-cliente" id="cliente-razao_social"></b>
-                <input required id="input-cod-cli" type="hidden" class="form-control" value="" disabled />
-            </div>
-            <div class="col">
-                Denominação: <b class="titulo-card linha-cliente" id="cliente-denominacao"></b>
-            </div>
-            <div class="col">
-                CNPJ/CPF: <b class="titulo-card linha-cliente" id="cliente-cnpj"></b>
-            </div>
-            <div class="col">
-                Cidade: <b class="titulo-card linha-cliente" id="cliente-cidade"></b>
-            </div>
-        </div>
-        <div class="row mb-5">
-            <div class="col">
-                Bairro: <b class="titulo-card linha-cliente" id="cliente-bairro"></b>
-            </div>
-            <div class="col">
-                CEP: <b class="titulo-card linha-cliente" id="cliente-cep"></b>
-            </div>
-            <div class="col">
-                Endereço/N°: <b class="titulo-card linha-cliente" id="cliente-endereco"></b>
-            </div>
-            <div class="col">
-                Estado: <b class="titulo-card linha-cliente" id="cliente-estado"></b>
-            </div>
-        </div>
-        <div class="row mb-5">
-            <div class="col">
-                Insc.Est: <b class="titulo-card linha-cliente" id="cliente-insc_est"></b>
-            </div>
-            <div class="col">
-                Telefone: <b class="titulo-card linha-cliente" id="cliente-telefone"></b>
-            </div>
-            <div class="col">
-                Email: <b class="titulo-card linha-cliente" id="cliente-email"></b>
-            </div>
-            <div class="col">
-                Fax: <b class="titulo-card linha-cliente" id="cliente-fax"></b>
-            </div>
-        </div>
-        <div class="row mb-5">
+        <div class="card-body">
             <div class="row mb-5">
-                <div class="col d-flex justify-content-between align-items-center">
-                    <!-- Desconto -->
-                    <div class="d-flex align-items-center gap-2">
-                        <span>Desconto:</span>
-                        <input type="text"
-                               class="form-desconto"
-                               id="inputDesconto"
-                               placeholder="0,00%"
-                               style="width: 8rem;" />
-                    </div>
-
-                    <!-- Tipo Desconto -->
-                    <div class="d-flex align-items-center gap-2">
-                        <span>Tipo Desconto:</span>
-                        <select class="form-pedido"
-                                id="seletorDesconto"
-                                style="width: 10rem;" disabled>
-                            <option selected>Selecionar</option>
-                            <option value="1">Nota Fiscal</option>
-                            <option value="2">Boleto</option>
-                        </select>
-                    </div>
-
-                    <!-- N° Pedido Cliente -->
-                    <div class="d-flex align-items-center gap-2">
-                        <span>N° Pedido Cliente:</span>
-                        <input type="text"
-                               class="form-desconto"
-                               id="num-ped-cli"
-                               style="width: 7rem;" />
-                    </div>
+                <div class="col-sm-5">
+                    Representante: <b class="titulo-card">@Model.Representante.NomRep</b>
+                    <input id="name-representante" type="hidden" class="form-control" value="@Model.Representante.NomRep"  disabled/>
+                    <input id="cod-representante" type="hidden" class="form-control" value="@Model.Representante.CodRep" disabled />
+                </div>
+                <div class="col">
+                    Data: <b class="titulo-card">@Model.DataLancamento</b>
+                    <input id="data-lancamento" type="hidden" class="form-control" value="@Model.DataLancamento.ToString()" disabled />
+                </div>
+                <div class="col">
+                    Status: <b class="titulo-card">@Model.StatusPedido.GetDisplayName()</b>
+                    <input id="status-pedido" type="hidden" class="form-control" value="@Model.StatusPedido.GetDisplayName()" disabled />
                 </div>
             </div>
-
-            <div class="col">
-                Entrega:
-                <select class="form-pedido"
-                        id="ent-ped"
-                        style="width: 8rem">
-                    <option selected>Selecionar</option>
-                    <option value="1">Imediata</option>
-                    <option value="2">Programada</option>
-                </select>
-            </div>
-            <div class="col">
-                <div class="d-flex align-items-center gap-2">
-                    <span style="white-space: nowrap;">Necessidade Agendamento:</span>
+            <div class="row mb-5">
+                <div class="col">
+                    Faturamento:
                     <select class="form-pedido"
-                            id="agendamentoSelect"
+                            id="faturamentoSelect"
                             style="width: 8rem">
-                        <option selected>Selecionar</option>
-                        <option value="1">Sim</option>
-                        <option value="2">Não</option>
+                            <option selected>Selecionar</option>
+                            <option value="1">Aval</option>
+                            <option value="2">Livre</option>
+                            <option value="3">Promocional</option>
+                    </select>
+                </div>
+                <div class="col">
+                    Prazo de Pagamento:
+                    <select class="form-pedido"
+                            id="prazoPagamentoSelect"
+                            style="width: 8rem">
+                            <option selected>Selecionar</option>
+                            <option value="1">Pagamento Antecipado</option>
+                            <option value="2">15 DIAS</option>
+                            <option value="3">28 DIAS</option>
+                            <option value="3">35 DIAS</option>
+                            <option value="3">45 DIAS</option>
+                            <option value="3">021/028/035 DIAS</option>
+                            <option value="3">028/035/042/049 DIAS</option>
+                            <option value="3">INFORMAR CONDIÇÃO</option>
+                            <option value="3">028/035/042 DIAS</option>
+                            <option value="3">035/042/049 DIAS</option>
+                            <option value="3">021/028/035/042</option>
+                    </select>
+                </div>
+                <div class="col">
+                    Retirar Pedido na Fábrica:
+                    <select class="form-pedido"
+                            id="retiradaSelect"
+                            style="width: 8rem">
+                            <option selected>Selecionar</option>
+                            <option value="1">Sim</option>
+                            <option value="2">Não</option>
                     </select>
                 </div>
             </div>
-            <div class="col">
-                Data Prog. Fat.:
-                <label class="visually-hidden" for="specificSizeInputName">Data Programada Faturamento</label>
-                <input type="date"
-                        class="form-desconto"
-                        id="data-prog-ft"
-                        placeholder=""
-                        style="width: 11rem" />
-            </div>
-        </div>
-        <div class="row mb-5">
-            <div class="col">
-                Natureza da Venda:
-                <select class="form-pedido"
-                        id="nat-vend"
-                        style="width: 8rem">
-                    <option selected>Selecionar</option>
-                    <option value="1">Imediata</option>
-                    <option value="2">Programada</option>
-                </select>
-            </div>
-        </div>
-        <div class="row mb-5">
-            <div class="col">
-                Observação:
-                <textarea class="form-control" id="obs-ped" rows="4" maxlength="250"></textarea>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- CARD CONTULTAS DO PRODUTO-->
-<div class="card shadow mb-4">
-    <div class="card-header py-3">
-        <h6 class="m-0 font-weight-bold titulo-card">
-            Consulta Produtos
-        </h6>
-    </div>
-    <div class="table-responsive">
-        <div class="card-body">
-                <div class="row mb-2">
-                    <div class="col">
-                        <label class="visually-hidden" for="specificSizeInputName">Produtos</label>
-                        <input type="text" class="form-control" id="input-search-products" placeholder="Digite o Código do Produto" required />
-                    </div>
-                    <div class="col">
-                        <button id="btn-search-products" type="button" class="btn corelementos">Buscar</button>
-                        <button id="btn-include" type="button" class="btn corelementos">Incluir no Pedido</button>
-                   </div>
-                </div>
-                <table id="dados-produtos" class="table table-striped">
-                    <thead>
-                        <tr class="info-card">
-                            <th scope="col">Código</th>
-                            <th scope="col">Descrição</th>
-                            <th scope="col">Unidade</th>
-                            <th scope="col">Preço Unit</th>
-                            <th scope="col">Quantidade</th>
-                            <th scope="col">Total</th>
-                            <th scope="col">Remover</th>
-                        </tr>
-                    </thead>
-                        <tbody id="tbl-dados-produtos">
-                            <!--Cria dinamicamente-->
-                    </tbody>
-                </table>
         </div>
     </div>
 
+    @{
+        if(Model.Cliente == null)
+        {
+            await Html.RenderPartialAsync("_CardConsultaClientes");
+        }
+    }
+
+    <!-- CARD DADOS DO CLIENTE-->
     <div class="card shadow mb-4">
         <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold titulo-card">
-                Produtos do Pedido
-            </h6>
+            <h6 class="m-0 font-weight-bold titulo-card">Cliente</h6>
         </div>
-        <div class="table-responsive">
-            <div class="card-body">
-                <p class="text-center">Valor total do pedido:R$0,00</p>
-                <table id="dados-produtos-pedido" class="table table-striped">
-                    <thead>
-                        <tr class="info-card">
-                            <th scope="col">Código</th>
-                            <th scope="col">Descrição</th>
-                            <th scope="col">Unidade</th>
-                            <th scope="col">Preço Unit. (R$)</th>
-                            <th scope="col">Quantidade</th>
-                            <th scope="col">Total</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <!--Será criada dinamicamente-->
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-        <div class="col-12 text-end">
-            <button id="send-dados" type="button" class="btn corelementos">Enviar Pedido</button>
-        </div>
-    </div>
+        <div class="card-body">
+            @{
+                if(Model.Cliente != null)
+                {
+                    await Html.RenderPartialAsync("_InfoClients");
+                }
+                else
+                {
+                    await Html.RenderPartialAsync("_CardInfoClientes");
+                }
+            }
 
-<a class="back-to-top" href="#"><i class="fas fa-angle-up"></i></a>
+            <div class="row mb-5">
+                <div class="row mb-5">
+                    <div class="col d-flex justify-content-between align-items-center">
+                        <!-- Desconto -->
+                        <div class="d-flex align-items-center gap-2">
+                            <span>Desconto:</span>
+                            <input type="text"
+                                    class="form-desconto"
+                                    id="inputDesconto"
+                                    placeholder="0,00%"
+                                    style="width: 8rem;" />
+                        </div>
 
-<!-- Modal Confirmação Pedido Enviado -->
-<div class="modal fade sucesso-modal" id="staticBackdrop" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-scrollable ">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div class="container">
-                    <div class="row-fluid">
-                        <div class="span12 text-center">
-                            <img src="~/img/gif_pedido.gif" alt="Pedido Enviado com Sucesso" />
+                        <!-- Tipo Desconto -->
+                        <div class="d-flex align-items-center gap-2">
+                            <span>Tipo Desconto:</span>
+                            <select class="form-pedido"
+                                    id="seletorDesconto"
+                                    style="width: 10rem;" disabled>
+                                <option selected>Selecionar</option>
+                                <option value="1">Nota Fiscal</option>
+                                <option value="2">Boleto</option>
+                            </select>
+                        </div>
+
+                        <!-- N° Pedido Cliente -->
+                        <div class="d-flex align-items-center gap-2">
+                            <span>N° Pedido Cliente:</span>
+                            <input type="text"
+                                    class="form-desconto"
+                                    id="num-ped-cli"
+                                    style="width: 7rem;" />
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-sm-12">
-                            <p class="text-center">Pedido Enviado com Sucesso</p>
+                </div>
+
+                <div class="col">
+                    Entrega:
+                    <select class="form-pedido"
+                            id="ent-ped"
+                            style="width: 8rem">
+                        <option selected>Selecionar</option>
+                        <option value="1">Imediata</option>
+                        <option value="2">Programada</option>
+                    </select>
+                </div>
+                <div class="col">
+                    <div class="d-flex align-items-center gap-2">
+                        <span style="white-space: nowrap;">Necessidade Agendamento:</span>
+                        <select class="form-pedido"
+                                id="agendamentoSelect"
+                                style="width: 8rem">
+                            <option selected>Selecionar</option>
+                            <option value="1">Sim</option>
+                            <option value="2">Não</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col">
+                    Data Prog. Fat.:
+                    <label class="visually-hidden" for="specificSizeInputName">Data Programada Faturamento</label>
+                    <input type="date"
+                            class="form-desconto"
+                            id="data-prog-ft"
+                            placeholder=""
+                            style="width: 11rem" />
+                </div>
+            </div>
+            <div class="row mb-5">
+                <div class="col">
+                    Natureza da Venda:
+                    <select class="form-pedido"
+                            id="nat-vend"
+                            style="width: 8rem">
+                        <option selected>Selecionar</option>
+                        <option value="1">Imediata</option>
+                        <option value="2">Programada</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row mb-5">
+                <div class="col">
+                    Observação:
+                    <textarea class="form-control" id="obs-ped" rows="4" maxlength="250"></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CARD CONTULTAS DO PRODUTO-->
+    <div class="card shadow mb-4">
+   
+        @{
+            if (Model.Produtos == null)
+            {
+                await Html.RenderPartialAsync("_TabelaConsultaProdutos");
+            }
+        }
+
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold titulo-card">
+                    Produtos do Pedido
+                </h6>
+            </div>
+            <div class="table-responsive">
+                <div class="card-body">
+                    <p class="text-center">Valor total do pedido:R$0,00</p>
+                    <table id="dados-produtos-pedido" class="table table-striped">
+                        <thead>
+                            <tr class="info-card">
+                                <th scope="col">Código</th>
+                                <th scope="col">Descrição</th>
+                                <th scope="col">Unidade</th>
+                                <th scope="col">Preço Unit. (R$)</th>
+                                <th scope="col">Quantidade</th>
+                                <th scope="col">Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!--Será criada dinamicamente-->
+                            @{
+                                if (Model.Produtos != null)
+                                {
+                                    await Html.RenderPartialAsync("_TabelaProdutos");
+                                }
+
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+            <div class="col-12 text-end">
+                <button id="send-dados" type="button" class="btn corelementos">Enviar Pedido</button>
+            </div>
+        </div>
+
+    <a class="back-to-top" href="#"><i class="fas fa-angle-up"></i></a>
+
+    <!-- Modal Confirmação Pedido Enviado -->
+    <div class="modal fade sucesso-modal" id="staticBackdrop" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable ">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="container">
+                        <div class="row-fluid">
+                            <div class="span12 text-center">
+                                <img src="~/img/gif_pedido.gif" alt="Pedido Enviado com Sucesso" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <p class="text-center">Pedido Enviado com Sucesso</p>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
-
+</form>
 <div>
-    <script src="~/javascript/saveOnLocalStorage.js"></script>
     <script src="~/javascript/request.js"></script>
     <script src="~/javascript/button-listeners.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>

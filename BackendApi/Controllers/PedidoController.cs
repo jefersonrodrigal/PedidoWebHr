@@ -7,10 +7,9 @@ using BackendApi.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Security.Claims;
-using System.Text.Json;
 using System.Text.RegularExpressions;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
+
 
 namespace BackendApi.Controllers
 {
@@ -214,7 +213,7 @@ namespace BackendApi.Controllers
 
         [Authorize]
         [HttpGet]
-        public async Task<ActionResult> RenderPageCreateOrder()
+        public async Task<ActionResult> RenderPageCreateOrder(string numppd="")
         {
             DataModel data = new DataModel
             {
@@ -226,16 +225,64 @@ namespace BackendApi.Controllers
             {
                 CodRep = x.Codrep,
                 NomRep = x.Nomrep,
-            })
-                .FirstOrDefaultAsync(x => x.CodRep == Convert.ToInt32(data.Codrep));
+            }).FirstOrDefaultAsync(x => x.CodRep == Convert.ToInt32(data.Codrep));
 
 
-            CreatePedidoViewModel model = new CreatePedidoViewModel()
+            if(numppd == "")
             {
-                Representante = result!,
-            };
+                CreatePedidoViewModel model = new CreatePedidoViewModel()
+                {
+                    Representante = result!,
+                };
+                return View("CreatePedidoView", model);
+            }
+            else
+            {
 
-            return View("CreatePedidoView", model);
+                var itens = await _context.Usu_t009ppi.Where(x => x.UsuNumppd == Convert.ToInt32(numppd))
+                                                .Select(x => new ProdutoModel
+                                                {
+                                                    CodPro = x.UsuCodpro,
+                                                    DescPro = x.UsuDesnfv,
+                                                    Unimed = x.UsuUnimed,
+                                                    Quantidade = x.UsuQtdped,
+                                                    PreUni = x.UsuPreuni,
+                                                }).ToListAsync();
+
+                var codcli = await _context.Usu_t009ppd.Where(x => x.UsuNumppd == Convert.ToInt32(numppd))
+                                                        .Select(x => x.UsuCodcli)
+                                                        .FirstOrDefaultAsync();
+
+                var cliente = await _context.E085cli.Where(x => x.Codcli == codcli)
+                                                    .Select(x => new ClienteModel
+                                                    {
+                                                        CodCli = x.Codcli,
+                                                        NomFantCli = x.Apecli,
+                                                        UfCli = x.Sigufs,
+                                                        Contato = x.Foncli,
+                                                        Contato2 = x.Foncl2,
+                                                        Cgccpf = x.Cgccpf,
+                                                        NomCli = x.Nomcli,
+                                                        Endereco = x.Endcli,
+                                                        CepCli = x.Cepcli,
+                                                        Cidade = x.Cidcli,
+                                                        EmailCli = x.Emanfe,
+                                                        FaxCli = x.Faxcli,
+                                                        InscEstadual = x.Insest,
+                                                        Bairro = x.Baicli
+
+                                                    }).FirstOrDefaultAsync();
+
+
+                CreatePedidoViewModel model = new CreatePedidoViewModel()
+                {
+                    Representante = result!,
+                    Produtos = itens,
+                    Cliente = cliente
+                };
+
+                return View("CreatePedidoView", model);
+            }
         }
 
         [Authorize]
@@ -409,6 +456,14 @@ namespace BackendApi.Controllers
                 _logger.LogError(error.Message);
                 return BadRequest(error.Message);
             }
+        }
+
+        [Authorize]
+        [HttpPost]
+        public IActionResult CreateFromLastOrder([FromForm]CreateLastOrderViewModel lastppd)
+        {
+
+            return RedirectToAction("RenderPageCreateOrder", lastppd);
         }
 
         [Authorize]

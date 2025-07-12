@@ -1,0 +1,43 @@
+﻿<div class="row mb-5">
+    <div class="col">
+        Razão Social: <b class="titulo-card linha-cliente" id="cliente-razao_social">@Model.Cliente.NomCli</b>
+        <input required id="input-cod-cli" type="hidden" class="form-control" value=@Model.Cliente.CodCli disabled />
+    </div>
+    <div class="col">
+        Denominação: <b class="titulo-card linha-cliente" id="cliente-denominacao">@Model.Cliente.NomFantCli</b>
+    </div>
+    <div class="col">
+        CNPJ/CPF: <b class="titulo-card linha-cliente" id="cliente-cnpj">@Model.Cliente.Cgccpf</b>
+    </div>
+    <div class="col">
+        Cidade: <b class="titulo-card linha-cliente" id="cliente-cidade">@Model.Cliente.Cidade</b>
+    </div>
+</div>
+<div class="row mb-5">
+    <div class="col">
+        Bairro: <b class="titulo-card linha-cliente" id="cliente-bairro">@Model.Cliente.Bairro</b>
+    </div>
+    <div class="col">
+        CEP: <b class="titulo-card linha-cliente" id="cliente-cep">@Model.Cliente.CepCli</b>
+    </div>
+    <div class="col">
+        Endereço/N°: <b class="titulo-card linha-cliente" id="cliente-endereco">@Model.Cliente.Endereco</b>
+    </div>
+    <div class="col">
+        Estado: <b class="titulo-card linha-cliente" id="cliente-estado">@Model.Cliente.UfCli</b>
+    </div>
+</div>
+<div class="row mb-5">
+    <div class="col">
+        Insc.Est: <b class="titulo-card linha-cliente" id="cliente-insc_est">@Model.Cliente.InscEstadual</b>
+    </div>
+    <div class="col">
+        Telefone: <b class="titulo-card linha-cliente" id="cliente-telefone">@Model.Cliente.Contato</b>
+    </div>
+    <div class="col">
+        Email: <b class="titulo-card linha-cliente" id="cliente-email">@Model.Cliente.EmailCli</b>
+    </div>
+    <div class="col">
+        Fax: <b class="titulo-card linha-cliente" id="cliente-fax">@Model.Cliente.FaxCli</b>
+    </div>
+</div>

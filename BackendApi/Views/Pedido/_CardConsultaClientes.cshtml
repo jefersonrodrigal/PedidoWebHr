@@ -1,0 +1,35 @@
+﻿<!-- CARD CONSULTAS DO CLIENTE-->
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold titulo-card">
+            Consulta Clientes
+        </h6>
+    </div>
+    <div class="table-responsive">
+        <div class="card-body">
+            <div class="row mb-2">
+                <div class="col">
+                    <label class="visually-hidden" for="specificSizeInputName">Cliente</label>
+                    <input type="text" class="form-control" id="input-search-client" placeholder="Digite o CPF ou CNPJ" required />
+                </div>
+                <div class="col">
+                    <button type="button" class="btn corelementos" id="btn-search-cliente">Buscar</button>
+                    <button type="button" class="btn corelementos " id="btn-remove-itens-td">Remover</button>
+                </div>
+            </div>
+            <table class="table table-striped">
+                <thead>
+                    <tr class="info-card">
+                        <th scope="col">Nome</th>
+                        <th scope="col">CNPJ/CPF</th>
+                        <th scope="col">Endereço</th>
+                        <th scope="col">Telefone</th>
+                    </tr>
+                </thead>
+                <tbody id="tbl-dados-clientes">
+                    <!--Cria dinamicamente-->
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

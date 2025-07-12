@@ -1,0 +1,35 @@
+﻿<div class="card-header py-3">
+    <h6 class="m-0 font-weight-bold titulo-card">
+        Consulta Produtos
+    </h6>
+</div>
+<div class="table-responsive">
+    <div class="card-body">
+        <div class="row mb-2">
+            <div class="col">
+                <label class="visually-hidden" for="specificSizeInputName">Produtos</label>
+                <input type="text" class="form-control" id="input-search-products" placeholder="Digite o Código do Produto" required />
+            </div>
+            <div class="col">
+                <button id="btn-search-products" type="button" class="btn corelementos">Buscar</button>
+                <button id="btn-include" type="button" class="btn corelementos">Incluir no Pedido</button>
+            </div>
+        </div>
+        <table id="dados-produtos" class="table table-striped">
+            <thead>
+                <tr class="info-card">
+                    <th scope="col">Código</th>
+                    <th scope="col">Descrição</th>
+                    <th scope="col">Unidade</th>
+                    <th scope="col">Preço Unit</th>
+                    <th scope="col">Quantidade</th>
+                    <th scope="col">Total</th>
+                    <th scope="col">Remover</th>
+                </tr>
+            </thead>
+            <tbody id="tbl-dados-produtos">
+                <!--Cria dinamicamente-->
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -1,0 +1,15 @@
+﻿@foreach(var item in Model.Produtos)
+{
+    <tr>
+        <th scope="row">@item.CodPro</th>
+        <td>@item.DescPro</td>
+        <td>@item.Unimed</td>
+        <td>@string.Format(new System.Globalization.CultureInfo("pt-BR"), "{0:C}", item.PreUni)</td>
+        <td>@Convert.ToInt32(item.Quantidade)</td>
+        @{
+            var tot = item.Quantidade * item.PreUni;
+        }
+        <td>@string.Format(new System.Globalization.CultureInfo("pt-BR"), "{0:C}", tot)</td>
+    </tr>
+}
+<script src="~/javascript/request.js"></script>

@@ -15,9 +15,12 @@
 {
     <div class="card shadow mb-4">
         <div class="card-header py-3">
-            <div class="col-12 text-end">
-                <button id="testedeenvio" type="button" class="btn corelementos"><i class='fas fa-retweet'></i></button>
-            </div>
+            <form asp-route="createfromlastorder" method="post">
+                <div class="col-12 text-end">
+                    <button id="testedeenvio" type="submit" class="btn corelementos"><i class='fas fa-retweet'></i></button>
+                    <input asp-for=Numppd hidden type="text" value=@pedido.NumPpd />
+                </div>
+            </form>
         </div>
         <div class="table-responsive">
             <table class="table table-borderless">
