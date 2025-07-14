@@ -6,9 +6,12 @@ using BackendApi.Models;
 using BackendApi.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
 using Microsoft.EntityFrameworkCore;
+using System.Globalization;
 using System.Text.RegularExpressions;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 
 namespace BackendApi.Controllers
@@ -247,6 +250,7 @@ namespace BackendApi.Controllers
                                                     Unimed = x.UsuUnimed,
                                                     Quantidade = x.UsuQtdped,
                                                     PreUni = x.UsuPreuni,
+                                                    NumPpd = x.UsuNumppd
                                                 }).ToListAsync();
 
                 var codcli = await _context.Usu_t009ppd.Where(x => x.UsuNumppd == Convert.ToInt32(numppd))
@@ -278,7 +282,8 @@ namespace BackendApi.Controllers
                 {
                     Representante = result!,
                     Produtos = itens,
-                    Cliente = cliente
+                    Cliente = cliente,
+                    NumPpd = numppd,
                 };
 
                 return View("CreatePedidoView", model);
@@ -464,6 +469,93 @@ namespace BackendApi.Controllers
         {
 
             return RedirectToAction("RenderPageCreateOrder", lastppd);
+        }
+
+        [Authorize]
+        [HttpPost]
+        public async Task <IActionResult> CreateLastOrder([FromForm] DataCreateLastPedido pedido)
+        {
+            try
+            {
+                DataModel data = new DataModel
+                {
+                    Codemp = Convert.ToInt32(User.FindFirst("codemp")!.Value),
+                    Codrep = Convert.ToInt32(User.FindFirst("codusu")!.Value),
+                };
+
+                var numPpd = await _context.Usu_t009ppd.MaxAsync(x => x.UsuNumppd);
+                numPpd++;
+                var pedidoPpd = Convert.ToInt64(pedido.NumPpd);
+                string retMer = pedido.RetMer == 1 ? "s" : "n";
+                short sitPpd = (short)(pedido.SitPpd == "Não Enviado" ? 1 : 2);
+                short codemp = (short)data.Codemp;
+                string valor = pedido.PerDsc.Replace("%", "").Trim();
+                decimal perDsc = decimal.Parse(valor, new CultureInfo("pt-BR"));
+                string necAge = pedido.NecAge == 1 ? "s" : "n";
+
+
+                T009PPD modelppd = new T009PPD()
+                {
+                    UsuNumppd = numPpd,
+                    UsuObsped = pedido.ObsPed,
+                    UsuCodcli = pedido.CodCli,
+                    UsuCodrep = data.Codrep,
+                    UsuCodcpg = pedido.CodCpg,
+                    UsuPedcli = pedido.PedCli,
+                    UsuDatprv = pedido.DatPrv,
+                    UsuPedime = (short)pedido.PedIme,
+                    UsuTipfat = (short)pedido.TipFat,
+                    UsuNatope = (short)pedido.NatOpe,
+                    UsuPerdsc = perDsc,
+                    UsuSitppd = sitPpd,
+                    UsuTipdis = (short)pedido.TipDis,
+                    UsuRetmer = retMer,
+                    UsuDatemi = pedido.DatEmi,
+                    UsuNecage = necAge,
+                    UsuCodemp = codemp,
+
+                };
+
+                _context.Usu_t009ppd.Add(modelppd);
+
+                var products = await _context.Usu_t009ppi.Where(x => x.UsuNumppd == pedidoPpd && x.UsuCodemp == data.Codemp)
+                                                         .ToListAsync();
+
+                foreach (var product in products)
+                {
+                    T009PPI modelProducts = new T009PPI()
+                    {
+                        UsuNumppd = numPpd,
+                        UsuSeqipd = product.UsuSeqipd,
+                        UsuCodpro = product.UsuCodpro,
+                        UsuQtdped = product.UsuQtdped,
+                        UsuPreuni = product.UsuPreuni,
+                        UsuVlrtot = product.UsuVlrtot,
+                        UsuCodagc = product.UsuCodagc,
+                        UsuCodfam = product.UsuCodfam,
+                        UsuFinrec = product.UsuFinrec,
+                        UsuDesnfv = product.UsuDesnfv,
+                        UsuUnimed = product.UsuUnimed,
+                        UsuCodemp = (short)data.Codemp
+                    };
+
+                    _context.Usu_t009ppi.Add(modelProducts);
+                }
+
+                await _context.SaveChangesAsync();
+                
+                _logger.LogInformation($"[PRE PEDIDO REPLICADO {pedido.NumPpd}] - Pre pedido numero {numPpd} gravado na base.");
+                
+                return RedirectToAction("RenderPageCreateOrder");
+            }
+            catch (Exception ex)
+            {
+
+                _logger.LogError($"{ex}");
+                return BadRequest();
+            }
+
+            
         }
 
         [Authorize]

@@ -58,6 +58,11 @@
                 defaults: new { controller = "Pedido", action = "CreateFromLastOrder" });
 
             endpoint.MapControllerRoute(
+                name:"createlastorder",
+                pattern: "pedidos/lancamento-pedido/lancamento/ultimo/criar",
+                defaults: new {controller = "Pedido", action = "CreateLastOrder" });
+
+            endpoint.MapControllerRoute(
                 name: "relcomissao",
                 pattern: "pedidos/comissao-vendas/relatorio/{user}",
                 defaults: new { controller = "Pedido", action = "GetReportCommission" });
