@@ -521,6 +521,12 @@ namespace BackendApi.Controllers
                 var products = await _context.Usu_t009ppi.Where(x => x.UsuNumppd == pedidoPpd && x.UsuCodemp == data.Codemp)
                                                          .ToListAsync();
 
+                if (products.Count == 0)
+                {
+                    throw new Exception($"Pedido não pode ser replicado - Não foi possivel encontrar produtos - Verifique - " +
+                                        $"Pedido origem {pedidoPpd} e empresa {data.Codemp}");
+                }
+
                 foreach (var product in products)
                 {
                     T009PPI modelProducts = new T009PPI()
@@ -551,7 +557,7 @@ namespace BackendApi.Controllers
             catch (Exception ex)
             {
 
-                _logger.LogError($"{ex}");
+                _logger.LogError($"{ex.Message}");
                 return BadRequest();
             }
 
