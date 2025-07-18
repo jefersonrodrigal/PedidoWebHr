@@ -34,7 +34,7 @@
 
             endpoint.MapControllerRoute(
                 name: "createpedido",
-                pattern: "pedidos/lancamento-pedido/{numppd?}",
+                pattern: "pedidos/lancamento-pedido/{numppd?}/{codcli?}",
                 defaults: new { controller = "Pedido", action = "RenderPageCreateOrder" });
 
             endpoint.MapControllerRoute(
@@ -61,6 +61,11 @@
                 name:"createlastorder",
                 pattern: "pedidos/lancamento-pedido/lancamento/ultimo/criar",
                 defaults: new {controller = "Pedido", action = "CreateLastOrder" });
+
+            endpoint.MapControllerRoute(
+                name: "createfromclient",
+                pattern: "pedidos/lancamento-pedido/lancamento/cliente/criar",
+                defaults: new { controller = "Pedido", action = "CreateFromClient" });
 
             endpoint.MapControllerRoute(
                 name: "relcomissao",

@@ -9,7 +9,7 @@ namespace BackendApi.ViewModels
         public DateTime DataLancamento { get; } = DateTime.Now;
         public Status StatusPedido { get; set; } = Status.NaoEnviado;
         public string NumPpd {  get; set; } = string.Empty;
-        public int CodCli {  get; set; } = 0;
+        public long CodCli {  get; set; } = 0;
         public List<ProdutoModel>? Produtos { get; set; } = null;
         public ClienteModel? Cliente { get; set; } = null;
     }

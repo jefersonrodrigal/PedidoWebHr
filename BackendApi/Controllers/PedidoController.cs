@@ -6,12 +6,10 @@ using BackendApi.Models;
 using BackendApi.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
 using Microsoft.EntityFrameworkCore;
 using System.Globalization;
 using System.Text.RegularExpressions;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
-using static System.Runtime.InteropServices.JavaScript.JSType;
+
 
 
 namespace BackendApi.Controllers
@@ -216,7 +214,7 @@ namespace BackendApi.Controllers
 
         [Authorize]
         [HttpGet]
-        public async Task<ActionResult> RenderPageCreateOrder(string numppd="")
+        public async Task<ActionResult> RenderPageCreateOrder(string numppd="", long requestCodCli=0)
         {
             DataModel data = new DataModel
             {
@@ -237,6 +235,34 @@ namespace BackendApi.Controllers
                 {
                     Representante = result!,
                 };
+                return View("CreatePedidoView", model);
+            }
+            if(requestCodCli != 0)
+            {
+                var client = await _context.E085cli.Where(x => x.Codcli == requestCodCli)
+                                                   .Select(x => new ClienteModel
+                                                   {
+                                                       CodCli = x.Codcli,
+                                                       NomFantCli = x.Apecli,
+                                                       UfCli = x.Sigufs,
+                                                       Contato = x.Foncli,
+                                                       Contato2 = x.Foncl2,
+                                                       Cgccpf = x.Cgccpf,
+                                                       NomCli = x.Nomcli,
+                                                       Endereco = x.Endcli,
+                                                       CepCli = x.Cepcli,
+                                                       Cidade = x.Cidcli,
+                                                       EmailCli = x.Emanfe,
+                                                       FaxCli = x.Faxcli,
+                                                       InscEstadual = x.Insest,
+                                                       Bairro = x.Baicli
+                                                   }).FirstOrDefaultAsync();
+
+                CreatePedidoViewModel model = new CreatePedidoViewModel
+                {
+                    Cliente = client
+                };
+
                 return View("CreatePedidoView", model);
             }
             else
@@ -469,6 +495,13 @@ namespace BackendApi.Controllers
         {
 
             return RedirectToAction("RenderPageCreateOrder", lastppd);
+        }
+
+        [Authorize]
+        [HttpPost]
+        public IActionResult CreateFromClient([FromForm] long codcli)
+        {
+            return RedirectToAction("RenderPageCreateOrder", codcli);
         }
 
         [Authorize]

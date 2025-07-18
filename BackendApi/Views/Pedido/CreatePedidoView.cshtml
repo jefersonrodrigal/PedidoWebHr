@@ -81,7 +81,11 @@
     @{
         if(Model.Cliente == null)
         {
-            await Html.RenderPartialAsync("_CardConsultaClientes");
+            await Html.PartialAsync("_CardConsultaClientes");
+        }
+        else
+        {
+            await Html.PartialAsync("_CardConsultaClientes");
         }
     }
 
@@ -92,13 +96,13 @@
         </div>
         <div class="card-body">
             @{
-                if(Model.Cliente != null)
+                if(Model.Cliente == null)
                 {
-                    await Html.RenderPartialAsync("_InfoClients");
+                    await Html.PartialAsync("_CardInfoClientes");
                 }
                 else
                 {
-                    await Html.RenderPartialAsync("_CardInfoClientes");
+                    await Html.PartialAsync("_InfoClients");
                 }
             }
 
@@ -207,7 +211,7 @@
         @{
             if (Model.Produtos == null)
             {
-                await Html.RenderPartialAsync("_TabelaConsultaProdutos");
+                await Html.PartialAsync("_TabelaConsultaProdutos");
             }
         }
 
@@ -236,7 +240,7 @@
                             @{
                                 if (Model.Produtos != null)
                                 {
-                                    await Html.RenderPartialAsync("_TabelaProdutos");
+                                    await Html.PartialAsync("_TabelaProdutos");
                                 }
 
                             }
